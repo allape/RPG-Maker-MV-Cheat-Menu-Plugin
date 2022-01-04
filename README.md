@@ -1,14 +1,4 @@
-## Auto Translator for RPG Maker MV
-
-### ⚠️⚠️⚠️ This plugin will not replace the original text, it will display the translated text in an individual viewport ⚠️⚠️⚠️
-
-### Features
-- ✔ Message window translate
-- ✔ Choices translate
-- ❌ Menu or Item translate
-- ❌ Image text translate
-
-### Translate Server: [https://github.com/LibreTranslate/LibreTranslate#mirrors](https://github.com/LibreTranslate/LibreTranslate#mirrors)
+## Cheater for RPG Maker MV
 
 ### Instructions
 - Download release zip

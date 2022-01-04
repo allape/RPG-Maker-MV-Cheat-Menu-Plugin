@@ -1,0 +1,60 @@
+.as-cheater-container-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  background: rgba(0, 0, 0, .5);
+  color: white;
+  //transition: .3s;
+  transform: translateY(-100%);
+  padding: 10px;
+  .cheater-nav {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: -10px -10px 0;
+    border-bottom: 1px solid white;
+    .nav-button {
+      padding: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: .25s;
+    }
+    .nav-title {
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 10px;
+    }
+  }
+  .as-cheater-container {
+    padding-top: 10px;
+    .cheater-items-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 1px solid white;
+      .cheater-item-wrapper {
+        flex: 1;
+        min-width: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 80px;
+        border: 1px solid white;
+        cursor: pointer;
+        padding-bottom: 10px;
+        color: white;
+        line-height: 24px;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+}

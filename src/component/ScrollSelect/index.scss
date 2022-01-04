@@ -1,0 +1,18 @@
+.row-select-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .button {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .text {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+  }
+}

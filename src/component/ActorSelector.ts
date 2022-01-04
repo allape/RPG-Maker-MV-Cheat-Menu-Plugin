@@ -1,4 +1,8 @@
 import {Renderer} from '../core/renderer'
+import Input from './Input'
+import MV from '../core/mv'
+
+import RowSelect from './ScrollSelect'
 
 export interface IActorSelectorProps {
   onChange?: (actor?: Game_Actor) => void
@@ -6,82 +10,81 @@ export interface IActorSelectorProps {
 
 export class ActorSelector extends Renderer {
 
-  private readonly prevButton: HTMLElement = document.createElement('div')
-  private readonly nameContainer: HTMLElement = document.createElement('div')
-  private readonly nextButton: HTMLElement = document.createElement('div')
-
   private readonly props: IActorSelectorProps
 
-  private index: number = 0
-  private current?: Game_Actor
+  private readonly searchInput: HTMLInputElement = new Input().render()
 
-  private _selectPrev = () => {
-    SoundManager.playSystemSound(0)
-    this.index = this.index <= 0 ? $gameActors._data.length : (this.index - 1)
+  private readonly row: RowSelect = new RowSelect()
+
+  private _index: number = 0
+  private _keyword: string = ''
+
+  private _onSearchChange = (e: Event) => {
+    e.stopPropagation()
+    this._index = 0
+    this._keyword = this.searchInput.value?.toLowerCase() || ''
     this._onChange()
   }
 
-  private _selectNext = () => {
-    SoundManager.playSystemSound(0)
-    this.index = this.index >= ($gameActors._data.length - 1) ? 0 : (this.index + 1)
-    this._onChange()
+  private _onGameStart = () => {
+    setTimeout(() => {
+      this._index = 0
+      this._onChange()
+    })
   }
 
   constructor(props: IActorSelectorProps) {
     super()
     this.props = props
+
+    MV.singleton().on('loadGame', this._onGameStart)
+    MV.singleton().on('setupNewGame', this._onGameStart)
+
+    this.row = new RowSelect({
+      keymap: RowSelect.KeyMap34,
+      onLeft: () => {
+        this._index = (this._index <= 0 ? this._getActors().length : this._index) - 1
+        this._onChange()
+      },
+      onRight: () => {
+        this._index = this._index >= (this._getActors().length - 1) ? 0 : (this._index + 1)
+        this._onChange()
+      },
+    })
+
     this._onChange()
   }
 
   private _onChange() {
-    this.current = $gameActors._data[this.index]
-    this.props.onChange?.(this.current)
-
-    const {index, current, nameContainer} = this
-    nameContainer.innerHTML = `${index}: ${current?._name || '(null)'}`
+    const {_index, row} = this
+    const actors = this._getActors()
+    const current = actors[_index]
+    this.props.onChange?.(current)
+    row.value = `[${_index + 1}/${actors.length}]: ${current?._name || '(null)'}`
   }
 
-  private static _styleButton(button: HTMLElement) {
-    const { style } = button
-    style.padding = '0 10px'
-    style.color = 'white'
-    style.minWidth = '80px'
-    style.display = 'flex'
-    style.justifyContent = 'center'
-    style.alignItems = 'center'
-    style.cursor = 'pointer'
+  private _getActors(): Game_Actor[] {
+    return $gameActors._data.filter(i => !!i && i._name?.toLowerCase().includes(this._keyword)) || []
   }
 
   dispose() {
     super.dispose()
-    const { prevButton, nextButton } = this
-    prevButton.removeEventListener('click', this._selectPrev)
-    nextButton.removeEventListener('click', this._selectNext)
+
+    this.row.dispose()
+
+    MV.singleton().off('loadGame', this._onGameStart)
+    MV.singleton().off('setupNewGame', this._onGameStart)
   }
 
   render(): HTMLElement {
-    const { prevButton, nameContainer, nextButton } = this
-
     const container = document.createElement('div')
+    container.classList.add('actor-selector-wrapper')
 
-    container.style.padding = '10px 0'
-    container.style.display = 'flex'
+    this.searchInput.placeholder = 'Search Hero'
+    this.searchInput.addEventListener('change', this._onSearchChange, true)
+    container.append(this.searchInput)
 
-    ActorSelector._styleButton(prevButton)
-    prevButton.innerHTML = '<'
-    prevButton.addEventListener('click', this._selectPrev)
-    container.append(prevButton)
-
-    const nameStyle = nameContainer.style
-    nameStyle.flex = '1'
-    nameStyle.color = 'white'
-    nameStyle.textAlign = 'center'
-    container.append(nameContainer)
-
-    ActorSelector._styleButton(nextButton)
-    nextButton.innerHTML = '>'
-    nextButton.addEventListener('click', this._selectNext)
-    container.append(nextButton)
+    container.append(this.row.render())
 
     return container
   }
