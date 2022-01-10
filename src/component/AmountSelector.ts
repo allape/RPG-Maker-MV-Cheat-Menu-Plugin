@@ -1,6 +1,6 @@
 import {Renderer} from '../core/renderer'
 import Input from './Input'
-import RowSelect, {IRowSelectKeyMap} from './ScrollSelect'
+import ScrollSelect, {IScrollSelectKeyMap} from './ScrollSelect'
 import MV from '../core/mv'
 
 export function shrink2Precision(value: number | string, precision: number): number {
@@ -12,7 +12,7 @@ export interface IAmountSelectorProps {
   readOnly?: boolean
   default?: number
   precision?: number
-  keymap?: IRowSelectKeyMap
+  keymap?: IScrollSelectKeyMap
   min?: number
   max?: number
   increaseFn?: (value: number) => number
@@ -24,14 +24,14 @@ export interface IAmountSelectorProps {
 
 export default class AmountSelector extends Renderer<HTMLDivElement> {
 
-  static KeyMap = RowSelect.KeyMap56
+  static KeyMap = ScrollSelect.KeyMap56
 
   static defaultIncreaseFn = v => v * 10
   static defaultDecreaseFn = v => v / 10
 
   private readonly props: IAmountSelectorProps
 
-  private readonly row: RowSelect
+  private readonly row: ScrollSelect
   private readonly input = new Input()
 
   get value(): number {
@@ -82,7 +82,7 @@ export default class AmountSelector extends Renderer<HTMLDivElement> {
 
     this.input.value = this.props.default || ''
 
-    this.row = new RowSelect({
+    this.row = new ScrollSelect({
       keymap: this.props.keymap,
       leftText: '-',
       rightText: '+',
@@ -101,7 +101,7 @@ export default class AmountSelector extends Renderer<HTMLDivElement> {
   render(): HTMLDivElement {
     const {row, input, _onChange} = this
 
-    const inputDom = input.render()
+    const inputDom = input.render() as HTMLInputElement
     inputDom.addEventListener('change', _onChange)
     inputDom.classList.add('input')
     inputDom.type = 'number'

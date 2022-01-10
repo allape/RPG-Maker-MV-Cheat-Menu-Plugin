@@ -1,18 +1,18 @@
 import {Renderer} from '../core/renderer'
 import AmountSelector from '../component/AmountSelector'
 import Input from '../component/Input'
-import RowSelect from '../component/ScrollSelect'
+import ScrollSelect from '../component/ScrollSelect'
 import MV from '../core/mv'
 
 export default class Items extends Renderer<HTMLDivElement> {
 
   static MyName = 'Items'
 
-  static KeyMap = RowSelect.KeyMap34
+  static KeyMap = ScrollSelect.KeyMap34
 
   private readonly container = document.createElement('div')
   private readonly search: Input
-  private readonly item: RowSelect
+  private readonly item: ScrollSelect
   private readonly amount: AmountSelector
   private readonly currentAmount: AmountSelector
 
@@ -55,7 +55,7 @@ export default class Items extends Renderer<HTMLDivElement> {
 
     this.search = new Input()
 
-    this.item = new RowSelect({
+    this.item = new ScrollSelect({
       keymap: Items.KeyMap,
       onLeft: this._onPrev,
       onRight: this._onNext,
@@ -69,7 +69,7 @@ export default class Items extends Renderer<HTMLDivElement> {
     this.currentAmount = new AmountSelector({
       precision: 0,
       readOnly: true,
-      keymap: RowSelect.KeyMap78,
+      keymap: ScrollSelect.KeyMap78,
       onLess: () => {
         const current = this._getAllItems()[this._index]
         if (current) {

@@ -17,6 +17,10 @@ declare global {
 
   const $gameSystem: Record<string, any>
 
+  const $gameVariables: Game_Variables
+
+  const $dataSystem: Data_System
+
   const $dataItems: Game_Item[]
 
   class Game_Skill {
@@ -71,8 +75,17 @@ declare global {
     gainGold: (amount: number) => void
   }
 
+  class Game_Variables {
+    value: <T = any>(index: number) => T
+    setValue: <T = any>(index: number, value: T) => T
+  }
+
   class Game_Actors {
     _data: Game_Actor[]
+  }
+
+  class Data_System {
+    variables: Array<string | undefined>
   }
 
   class DataManager {

@@ -1,5 +1,5 @@
 import {Renderer} from '../core/renderer'
-import RowSelect from '../component/ScrollSelect'
+import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
 
 export default class Gold extends Renderer<HTMLDivElement> {
@@ -23,11 +23,11 @@ export default class Gold extends Renderer<HTMLDivElement> {
       min: 1,
       max: 99999999,
       default: 1,
-      keymap: RowSelect.KeyMap34,
+      keymap: ScrollSelect.KeyMap34,
     })
     this.currentAmount = new AmountSelector({
       readOnly: true,
-      keymap: RowSelect.KeyMap56,
+      keymap: ScrollSelect.KeyMap56,
       onLess: () => {
         $gameParty.gainGold(-this.amount.value)
         this._onGoldChange()

@@ -2,7 +2,7 @@ import {Renderer} from '../core/renderer'
 import Input from './Input'
 import MV from '../core/mv'
 
-import RowSelect from './ScrollSelect'
+import ScrollSelect from './ScrollSelect'
 
 export interface IActorSelectorProps {
   onChange?: (actor?: Game_Actor) => void
@@ -12,9 +12,9 @@ export class ActorSelector extends Renderer {
 
   private readonly props: IActorSelectorProps
 
-  private readonly searchInput: HTMLInputElement = new Input().render()
+  private readonly search = new Input()
 
-  private readonly row: RowSelect = new RowSelect()
+  private readonly row: ScrollSelect = new ScrollSelect()
 
   private _index: number = 0
   private _keyword: string = ''
@@ -22,7 +22,7 @@ export class ActorSelector extends Renderer {
   private _onSearchChange = (e: Event) => {
     e.stopPropagation()
     this._index = 0
-    this._keyword = this.searchInput.value?.toLowerCase() || ''
+    this._keyword = this.search.value?.toLowerCase() || ''
     this._onChange()
   }
 
@@ -40,8 +40,8 @@ export class ActorSelector extends Renderer {
     MV.singleton().on('loadGame', this._onGameStart)
     MV.singleton().on('setupNewGame', this._onGameStart)
 
-    this.row = new RowSelect({
-      keymap: RowSelect.KeyMap34,
+    this.row = new ScrollSelect({
+      keymap: ScrollSelect.KeyMap34,
       onLeft: () => {
         this._index = (this._index <= 0 ? this._getActors().length : this._index) - 1
         this._onChange()
@@ -70,6 +70,7 @@ export class ActorSelector extends Renderer {
   dispose() {
     super.dispose()
 
+    this.search.dispose()
     this.row.dispose()
 
     MV.singleton().off('loadGame', this._onGameStart)
@@ -80,9 +81,10 @@ export class ActorSelector extends Renderer {
     const container = document.createElement('div')
     container.classList.add('actor-selector-wrapper')
 
-    this.searchInput.placeholder = 'Search Hero'
-    this.searchInput.addEventListener('change', this._onSearchChange, true)
-    container.append(this.searchInput)
+    const inputDom = this.search.render()
+    inputDom.placeholder = 'Search Hero'
+    inputDom.addEventListener('change', this._onSearchChange, true)
+    container.append(inputDom)
 
     container.append(this.row.render())
 

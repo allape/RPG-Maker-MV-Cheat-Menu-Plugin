@@ -1,5 +1,5 @@
 import {Renderer} from '../core/renderer'
-import RowSelect from '../component/ScrollSelect'
+import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
 import Switch from '../component/Switch'
 
@@ -23,7 +23,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
   private readonly _intervalId: number
 
-  private _onInterval = () => {
+  private readonly _onInterval = () => {
     if (!$gamePlayer._speedCheatInjected) {
       $gamePlayer._speedCheatInjected = true
       Speed.speed = $gamePlayer._moveSpeed
@@ -52,13 +52,13 @@ export default class Speed extends Renderer<HTMLDivElement> {
       default: 1,
       increaseFn: v => v + 0.5,
       decreaseFn: v => v - 0.5,
-      keymap: RowSelect.KeyMap34,
+      keymap: ScrollSelect.KeyMap34,
     })
 
     this.currentAmount = new AmountSelector({
       precision: 2,
       readOnly: true,
-      keymap: RowSelect.KeyMap56,
+      keymap: ScrollSelect.KeyMap56,
       onLess: () => {
         Speed.speed -= this.amount.value
         this._onSpeedChange()

@@ -6,6 +6,7 @@ import {space2line} from './core/dom'
 import Items from './module/Items'
 import Gold from './module/Gold'
 import Speed from './module/Speed'
+import Variables from './module/Variables'
 
 export type SubRenderer<T extends Renderer = any> = T
 export interface SubRenderers {
@@ -54,6 +55,13 @@ export default class App extends Renderer<HTMLDivElement> {
         code: 'Digit6',
       },
       module: Items as SubRenderer,
+    },
+    {
+      keymap: {
+        key: '7',
+        code: 'Digit7',
+      },
+      module: Variables as SubRenderer,
     },
   ]
 
@@ -105,18 +113,19 @@ export default class App extends Renderer<HTMLDivElement> {
 
   private _onKeydown = (e: KeyboardEvent) => {
     if (MV.singleton().visible) {
-      if (this._currentModule && App.KeyMap.back.code === e.code) {
+      if (this._currentModule) {
         // not at home, then show home
-        this._showHome()
+        if (App.KeyMap.back.code === e.code) {
+          this._showHome()
+        }
       } else {
         // module select
         const m = App.Modules.find(i => i.keymap?.code === e.code)?.module
         if (m) this._buildModule(m)
       }
-    } else {
-      switch (e.code) {
-        case App.KeyMap.toggle.code: this._onToggle(); break
-      }
+    }
+    switch (e.code) {
+      case App.KeyMap.toggle.code: this._onToggle(); break
     }
   }
 

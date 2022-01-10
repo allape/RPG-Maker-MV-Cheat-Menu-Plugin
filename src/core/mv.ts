@@ -97,4 +97,25 @@ export default class MV {
     return window.__hookedMV
   }
 
+  static setNumberVariable(varId: number, offsetValue: number) {
+    try {
+      const oldValue = $gameVariables.value(varId)
+      if (isNaN(oldValue)) {
+        $gameVariables.setValue(varId, offsetValue)
+      } else {
+        $gameVariables.setValue(varId, oldValue + offsetValue)
+      }
+    } catch (e) {
+      console.error('error to set value for', varId, 'with', e)
+    }
+  }
+
+  static setVariable(varId: number, value: any) {
+    try {
+      $gameVariables.setValue(varId, value)
+    } catch (e) {
+      console.error('error to set value for', varId, 'with', e)
+    }
+  }
+
 }

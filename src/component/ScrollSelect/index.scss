@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   .button {
     padding: 10px;
     cursor: pointer;
@@ -14,5 +15,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 10px;
+    cursor: text;
+    user-select: text !important;
   }
 }

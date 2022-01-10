@@ -1,9 +1,17 @@
 import './index.scss'
 import {Renderer} from '../../core/renderer'
 
-export default class Input extends Renderer<HTMLInputElement> {
+export type InputElement = HTMLInputElement | HTMLTextAreaElement
 
-  private readonly input = document.createElement('input')
+export interface IInputProps {
+  type?: 'input' | 'textarea'
+}
+
+export default class Input extends Renderer<InputElement> {
+
+  private readonly props: IInputProps
+
+  private readonly input: InputElement
 
   private readonly _stopPropagation = (e: Event) => {
     e.stopPropagation()
@@ -16,7 +24,15 @@ export default class Input extends Renderer<HTMLInputElement> {
     this.input.value = `${v === undefined || v === null ? '' : v}`
   }
 
-  render(): HTMLInputElement {
+  constructor(props?: IInputProps) {
+    super()
+
+    this.props = props || {}
+
+    this.input = document.createElement(this.props.type || 'input')
+  }
+
+  render(): InputElement {
     const {input} = this
     input.classList.add('input-wrapper')
     // input.addEventListener('change', this._stopPropagation, true)

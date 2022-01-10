@@ -1,24 +1,24 @@
 import './index.scss'
 import {IKeyMap, KeyMaps, Renderer} from '../../core/renderer'
 
-export interface IRowSelectKeyMap extends KeyMaps {
+export interface IScrollSelectKeyMap extends KeyMaps {
   left?: IKeyMap
   center?: IKeyMap
   right?: IKeyMap
 }
 
-export interface IRowSelectProps {
+export interface IScrollSelectProps {
   leftText?: string
   rightText?: string
-  keymap?: IRowSelectKeyMap,
+  keymap?: IScrollSelectKeyMap,
   onLeft?: (e?: Event) => void
   onRight?: (e?: Event) => void
   onCenter?: (e?: Event) => void
 }
 
-export default class RowSelect extends Renderer<HTMLDivElement> {
+export default class ScrollSelect extends Renderer<HTMLDivElement> {
 
-  static KeyMap34: IRowSelectKeyMap = {
+  static KeyMap34: IScrollSelectKeyMap = {
     left: {
       key: '3',
       code: 'Digit3',
@@ -29,7 +29,7 @@ export default class RowSelect extends Renderer<HTMLDivElement> {
     },
   }
 
-  static KeyMap56: IRowSelectKeyMap = {
+  static KeyMap56: IScrollSelectKeyMap = {
     left: {
       key: '5',
       code: 'Digit5',
@@ -40,7 +40,7 @@ export default class RowSelect extends Renderer<HTMLDivElement> {
     },
   }
 
-  static KeyMap78: IRowSelectKeyMap = {
+  static KeyMap78: IScrollSelectKeyMap = {
     left: {
       key: '7',
       code: 'Digit7',
@@ -51,7 +51,7 @@ export default class RowSelect extends Renderer<HTMLDivElement> {
     },
   }
 
-  static KeyMap90: IRowSelectKeyMap = {
+  static KeyMap90: IScrollSelectKeyMap = {
     left: {
       key: '9',
       code: 'Digit9',
@@ -62,7 +62,7 @@ export default class RowSelect extends Renderer<HTMLDivElement> {
     },
   }
 
-  private readonly props: IRowSelectProps
+  private readonly props: IScrollSelectProps
 
   readonly row = document.createElement('div')
   readonly left = document.createElement('div')
@@ -108,7 +108,7 @@ export default class RowSelect extends Renderer<HTMLDivElement> {
     }
   }
 
-  constructor(props?: IRowSelectProps) {
+  constructor(props?: IScrollSelectProps) {
     super()
 
     this.props = props || {}
