@@ -11,6 +11,10 @@ export default class Gold extends Renderer<HTMLDivElement> {
 
   private readonly _intervalId: number
 
+  private readonly _onGoldChange = () => {
+    this.currentAmount.value = $gameParty._gold
+  }
+
   constructor() {
     super()
 
@@ -26,16 +30,18 @@ export default class Gold extends Renderer<HTMLDivElement> {
       keymap: RowSelect.KeyMap56,
       onLess: () => {
         $gameParty.gainGold(-this.amount.value)
+        this._onGoldChange()
         return true
       },
       onMore: () => {
         $gameParty.gainGold(this.amount.value)
+        this._onGoldChange()
         return true
       },
     })
 
     this._intervalId = setInterval(() => {
-      this.currentAmount.value = $gameParty._gold
+      this._onGoldChange()
     }, 100) as unknown as number
   }
 

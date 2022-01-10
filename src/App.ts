@@ -1,5 +1,5 @@
 import './App.scss'
-import {Renderer} from './core/renderer'
+import {IKeyMap, Renderer} from './core/renderer'
 import GodMode from './module/GodMode'
 import MV from './core/mv'
 import {space2line} from './core/dom'
@@ -8,6 +8,10 @@ import Gold from './module/Gold'
 import Speed from './module/Speed'
 
 export type SubRenderer<T extends Renderer = any> = T
+export interface SubRenderers {
+  keymap?: IKeyMap
+  module: SubRenderer
+}
 
 export default class App extends Renderer<HTMLDivElement> {
 
@@ -22,11 +26,35 @@ export default class App extends Renderer<HTMLDivElement> {
     },
   }
 
-  static Modules: SubRenderer[] = [
-    GodMode as SubRenderer,
-    Speed as SubRenderer,
-    Gold as SubRenderer,
-    Items as SubRenderer,
+  static Modules: SubRenderers[] = [
+    {
+      keymap: {
+        key: '3',
+        code: 'Digit3',
+      },
+      module: GodMode as SubRenderer,
+    },
+    {
+      keymap: {
+        key: '4',
+        code: 'Digit4',
+      },
+      module: Speed as SubRenderer,
+    },
+    {
+      keymap: {
+        key: '5',
+        code: 'Digit5',
+      },
+      module: Gold as SubRenderer,
+    },
+    {
+      keymap: {
+        key: '6',
+        code: 'Digit6',
+      },
+      module: Items as SubRenderer,
+    },
   ]
 
   private readonly wrapper = document.createElement('div')
@@ -76,13 +104,19 @@ export default class App extends Renderer<HTMLDivElement> {
   }
 
   private _onKeydown = (e: KeyboardEvent) => {
-    switch (e.code) {
-      case App.KeyMap.toggle.code: this._onToggle(); break
-      case App.KeyMap.back.code:
-        if (MV.singleton().visible && this._currentModule) {
-          this._showHome();
-        }
-        break
+    if (MV.singleton().visible) {
+      if (this._currentModule && App.KeyMap.back.code === e.code) {
+        // not at home, then show home
+        this._showHome()
+      } else {
+        // module select
+        const m = App.Modules.find(i => i.keymap?.code === e.code)?.module
+        if (m) this._buildModule(m)
+      }
+    } else {
+      switch (e.code) {
+        case App.KeyMap.toggle.code: this._onToggle(); break
+      }
     }
   }
 
@@ -121,10 +155,10 @@ export default class App extends Renderer<HTMLDivElement> {
     container.append(...(App.Modules.map((m, i) => {
       const mItemContainer = document.createElement('div')
       mItemContainer.classList.add('cheater-item-wrapper')
-      mItemContainer.innerHTML = space2line(m.MyName)
+      mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ''}`)
       mItemContainer.setAttribute('data-index', `${i}`)
       mItemContainer.addEventListener('click', () => {
-        this._buildModule(m)
+        this._buildModule(m.module)
       })
       return mItemContainer
     })))

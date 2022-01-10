@@ -23,9 +23,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
   private readonly _intervalId: number
 
-  constructor() {
-    super()
-
+  private _onInterval = () => {
     if (!$gamePlayer._speedCheatInjected) {
       $gamePlayer._speedCheatInjected = true
       Speed.speed = $gamePlayer._moveSpeed
@@ -38,6 +36,14 @@ export default class Speed extends Renderer<HTMLDivElement> {
         },
       })
     }
+  }
+
+  private _onSpeedChange = () => {
+    this.currentAmount.value = $gamePlayer._moveSpeed
+  }
+
+  constructor() {
+    super()
 
     this.amount = new AmountSelector({
       precision: 2,
@@ -48,15 +54,19 @@ export default class Speed extends Renderer<HTMLDivElement> {
       decreaseFn: v => v - 0.5,
       keymap: RowSelect.KeyMap34,
     })
+
     this.currentAmount = new AmountSelector({
+      precision: 2,
       readOnly: true,
       keymap: RowSelect.KeyMap56,
       onLess: () => {
         Speed.speed -= this.amount.value
+        this._onSpeedChange()
         return true
       },
       onMore: () => {
         Speed.speed += this.amount.value
+        this._onSpeedChange()
         return true
       },
     })
@@ -73,7 +83,8 @@ export default class Speed extends Renderer<HTMLDivElement> {
     })
 
     this._intervalId = setInterval(() => {
-      this.currentAmount.value = $gamePlayer._moveSpeed
+      this._onInterval()
+      this._onSpeedChange()
     }, 100) as unknown as number
   }
 

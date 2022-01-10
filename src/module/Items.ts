@@ -57,8 +57,6 @@ export default class Items extends Renderer<HTMLDivElement> {
 
     this.item = new RowSelect({
       keymap: Items.KeyMap,
-      leftText: '-',
-      rightText: '+',
       onLeft: this._onPrev,
       onRight: this._onNext,
     })

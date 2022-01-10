@@ -5,7 +5,7 @@ import MV from '../core/mv'
 
 export function shrink2Precision(value: number | string, precision: number): number {
   const power = Math.pow(10, ((precision || 0) < 0 ? 0 : precision) || 0)
-  return Math.floor((parseInt(value as string) || 0) * power) / power
+  return Math.floor((parseFloat(value as string) || 0) * power) / power
 }
 
 export interface IAmountSelectorProps {
