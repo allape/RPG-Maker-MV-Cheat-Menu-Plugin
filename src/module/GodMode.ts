@@ -1,5 +1,5 @@
 import {Renderer} from '../core/renderer'
-import ActorSelector from '../component/ActorSelector'
+import ActorSelector from '../component/mv/ActorSelector'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
 
@@ -14,11 +14,11 @@ export default class GodMode extends Renderer {
 
   static MyName = 'God Mode'
 
-  private readonly actorSelector = new ActorSelector()
+  private readonly actor = new ActorSelector()
   private readonly switcher: Switch
 
   private get current(): Game_Actor {
-    return this.actorSelector.value
+    return this.actor.value
   }
 
   private readonly _whoIsYourDaddy = (value: boolean) => {
@@ -26,7 +26,7 @@ export default class GodMode extends Renderer {
     const actor = this.current
     actor._godMode = value
 
-    this._inject(actor)
+    MV.injectGod(actor)
 
     if (actor._godMode) {
       actor._godModeIntervalId = setInterval(() => {
@@ -67,57 +67,10 @@ export default class GodMode extends Renderer {
     MV.singleton().on('saveGame', this._onGameStart)
   }
 
-  private _inject(actor: Game_Actor) {
-    if (!actor._godModeInjected) {
-      try {
-        actor._godModeInjected = true
-
-        actor._gainHP_proxy = actor.gainHp
-        actor.gainHp = (hp) => {
-          actor._gainHP_proxy(actor._godMode ? actor.mhp : hp)
-        }
-
-        actor._setHp_proxy = actor.setHp
-        actor.setHp = (hp) => {
-          actor._setHp_proxy(actor._godMode ? actor.mhp : hp)
-        }
-
-        actor._gainMp_proxy = actor.gainMp
-        actor.gainMp = (mp) => {
-          actor._gainMp_proxy(actor._godMode ? actor.mmp : mp)
-        }
-
-        actor._setMp_proxy = actor.setMp
-        actor.setMp = (mp) => {
-          actor._setMp_proxy(actor._godMode ? actor.mmp : mp)
-        }
-
-        actor._gainTp_proxy = actor.gainTp
-        actor.gainTp = (tp) => {
-          actor._gainTp_proxy(actor._godMode ? actor.maxTp() : tp)
-        }
-
-        actor._setTp_proxy = actor.setTp
-        actor.setTp = (tp) => {
-          actor._setTp_proxy(actor._godMode ? actor.maxTp() : tp)
-        }
-
-        actor._paySkillCost_proxy = actor.paySkillCost;
-        actor.paySkillCost = (skill) => {
-          if (!actor._godMode) {
-            actor._paySkillCost_proxy(skill)
-          }
-        }
-      } catch (e) {
-        console.error(`unable to turn on god mode for: ${actor._name},`, e)
-      }
-    }
-  }
-
   dispose() {
     super.dispose()
 
-    this.actorSelector.dispose()
+    this.actor.dispose()
     this.switcher.dispose()
 
     MV.singleton().off('loadGame', this._onGameStart)
@@ -126,7 +79,7 @@ export default class GodMode extends Renderer {
 
   render(): HTMLElement {
     const container = document.createElement('div')
-    container.append(this.actorSelector.render())
+    container.append(this.actor.render())
     container.append(this.switcher.render())
     return container
   }

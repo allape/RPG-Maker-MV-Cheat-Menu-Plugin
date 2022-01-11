@@ -97,6 +97,53 @@ export default class MV {
     return window.__hookedMV
   }
 
+  static injectGod(actor: Game_Actor) {
+    if (!actor._godModeInjected) {
+      try {
+        actor._godModeInjected = true
+
+        actor._gainHP_proxy = actor.gainHp
+        actor.gainHp = (hp) => {
+          actor._gainHP_proxy(actor._godMode ? actor.mhp : hp)
+        }
+
+        actor._setHp_proxy = actor.setHp
+        actor.setHp = (hp) => {
+          actor._setHp_proxy(actor._godMode ? actor.mhp : hp)
+        }
+
+        actor._gainMp_proxy = actor.gainMp
+        actor.gainMp = (mp) => {
+          actor._gainMp_proxy(actor._godMode ? actor.mmp : mp)
+        }
+
+        actor._setMp_proxy = actor.setMp
+        actor.setMp = (mp) => {
+          actor._setMp_proxy(actor._godMode ? actor.mmp : mp)
+        }
+
+        actor._gainTp_proxy = actor.gainTp
+        actor.gainTp = (tp) => {
+          actor._gainTp_proxy(actor._godMode ? actor.maxTp() : tp)
+        }
+
+        actor._setTp_proxy = actor.setTp
+        actor.setTp = (tp) => {
+          actor._setTp_proxy(actor._godMode ? actor.maxTp() : tp)
+        }
+
+        actor._paySkillCost_proxy = actor.paySkillCost;
+        actor.paySkillCost = (skill) => {
+          if (!actor._godMode) {
+            actor._paySkillCost_proxy(skill)
+          }
+        }
+      } catch (e) {
+        console.error(`unable to turn on god mode for: ${actor._name},`, e)
+      }
+    }
+  }
+
   static setNumberVariable(varId: number, offsetValue: number) {
     try {
       const oldValue = $gameVariables.value(varId)

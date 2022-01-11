@@ -1,5 +1,5 @@
-import FilterableScrollSelect from './FilterableScrollSelect'
-import ScrollSelect from './ScrollSelect'
+import FilterableScrollSelect from '../FilterableScrollSelect'
+import ScrollSelect from '../ScrollSelect'
 
 export default class ActorSelector extends FilterableScrollSelect<Game_Actor> {
   constructor() {
