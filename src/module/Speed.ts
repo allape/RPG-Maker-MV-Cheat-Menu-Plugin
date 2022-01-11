@@ -93,6 +93,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
     this.amount.dispose()
     this.currentAmount.dispose()
+    this.speedLocker.dispose()
 
     Speed.speedLocked = false
 
