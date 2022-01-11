@@ -2,79 +2,50 @@ import {Renderer} from '../core/renderer'
 import AmountSelector from '../component/AmountSelector'
 import ScrollSelect from '../component/ScrollSelect'
 import ItemSelector from '../component/mv/ItemSelector'
+import FSSWithAA from '../component/mv/FSSWithAA'
 
-export default class Items extends Renderer<HTMLDivElement> {
+export default class Items extends FSSWithAA<Game_Item> {
 
   static MyName = 'Items'
 
-  static KeyMap = ScrollSelect.KeyMap34
+  static VALUE_FN = current => $gameParty._items[$dataItems.indexOf(current)]
 
-  private readonly container = document.createElement('div')
-  private readonly item = new ItemSelector()
-  private readonly amount: AmountSelector
-  private readonly currentAmount: AmountSelector
+  protected readonly scrollSelector = new ItemSelector()
 
-  private readonly _itemAmountRefreshIntervalId: number
+  protected readonly amountSelector = new AmountSelector({
+    default: 1,
+    precision: 0,
+    min: 1,
+    max: 99,
+  })
 
-  private get current(): Game_Item {
-    return this.item.value
-  }
-
-  constructor() {
-    super()
-
-    this.amount = new AmountSelector({
-      default: 1,
-      precision: 0,
-      min: 1,
-      max: 99,
-    })
-
-    this.currentAmount = new AmountSelector({
-      precision: 0,
-      readOnly: true,
-      keymap: ScrollSelect.KeyMap78,
-      onLess: () => {
-        const current = this.current
-        if (current) {
-          $gameParty.gainItem(current, -this.amount.value);
-        }
-        return true
-      },
-      onMore: () => {
-        const current = this.current
-        if (current) {
-          $gameParty.gainItem(current, this.amount.value);
-        }
-        return true
-      },
-    })
-
-    this._itemAmountRefreshIntervalId = setInterval(() => {
-      const current = this.current
+  protected readonly currentAmountSelector = new AmountSelector({
+    precision: 0,
+    readOnly: true,
+    keymap: ScrollSelect.KeyMap78,
+    onLess: () => {
+      const current = this.scrollSelector.value
       if (current) {
-        this.currentAmount.value = $gameParty._items[$dataItems.indexOf(current)]
+        $gameParty.gainItem(current, -this.amountSelector.value)
+        this.currentAmountSelector.value = Items.VALUE_FN(current)
       }
-    }, 100) as unknown as number
-  }
-
-  dispose() {
-    super.dispose()
-
-    this.item.dispose()
-    this.amount.dispose()
-
-    clearInterval(this._itemAmountRefreshIntervalId)
-  }
-
-  render(): HTMLDivElement {
-    const {container, item, amount, currentAmount} = this
-
-    container.append(item.render())
-    container.append(amount.render())
-    container.append(currentAmount.render())
-
-    return container
+      return true
+    },
+    onMore: () => {
+      const current = this.scrollSelector.value
+      if (current) {
+        $gameParty.gainItem(current, this.amountSelector.value)
+        this.currentAmountSelector.value = Items.VALUE_FN(current)
+      }
+      return true
+    },
+  })
+  
+  constructor() {
+    super({
+      currentAmountProvider: Items.VALUE_FN,
+      enableValueIntervalRefresh: true,
+    })
   }
 
 }
