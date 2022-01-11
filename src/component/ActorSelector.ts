@@ -1,93 +1,13 @@
-import {Renderer} from '../core/renderer'
-import Input from './Input'
-import MV from '../core/mv'
-
+import FilterableScrollSelect from './FilterableScrollSelect'
 import ScrollSelect from './ScrollSelect'
 
-export interface IActorSelectorProps {
-  onChange?: (actor?: Game_Actor) => void
-}
-
-export class ActorSelector extends Renderer {
-
-  private readonly props: IActorSelectorProps
-
-  private readonly search = new Input()
-
-  private readonly row: ScrollSelect = new ScrollSelect()
-
-  private _index: number = 0
-  private _keyword: string = ''
-
-  private _onSearchChange = (e: Event) => {
-    e.stopPropagation()
-    this._index = 0
-    this._keyword = this.search.value?.toLowerCase() || ''
-    this._onChange()
-  }
-
-  private _onGameStart = () => {
-    setTimeout(() => {
-      this._index = 0
-      this._onChange()
-    })
-  }
-
-  constructor(props: IActorSelectorProps) {
-    super()
-    this.props = props
-
-    MV.singleton().on('loadGame', this._onGameStart)
-    MV.singleton().on('setupNewGame', this._onGameStart)
-
-    this.row = new ScrollSelect({
+export default class ActorSelector extends FilterableScrollSelect<Game_Actor> {
+  constructor() {
+    super({
       keymap: ScrollSelect.KeyMap34,
-      onLeft: () => {
-        this._index = (this._index <= 0 ? this._getActors().length : this._index) - 1
-        this._onChange()
-      },
-      onRight: () => {
-        this._index = this._index >= (this._getActors().length - 1) ? 0 : (this._index + 1)
-        this._onChange()
-      },
+      listProvider: keyword => $gameActors._data.filter(i => !!i && i._name?.toLowerCase().includes(keyword)) || [],
+      nameProvider: item => item?._name,
+      placeholder: 'Search Hero by Name',
     })
-
-    this._onChange()
-  }
-
-  private _onChange() {
-    const {_index, row} = this
-    const actors = this._getActors()
-    const current = actors[_index]
-    this.props.onChange?.(current)
-    row.value = `[${_index + 1}/${actors.length}]: ${current?._name || '(null)'}`
-  }
-
-  private _getActors(): Game_Actor[] {
-    return $gameActors._data.filter(i => !!i && i._name?.toLowerCase().includes(this._keyword)) || []
-  }
-
-  dispose() {
-    super.dispose()
-
-    this.search.dispose()
-    this.row.dispose()
-
-    MV.singleton().off('loadGame', this._onGameStart)
-    MV.singleton().off('setupNewGame', this._onGameStart)
-  }
-
-  render(): HTMLElement {
-    const container = document.createElement('div')
-    container.classList.add('actor-selector-wrapper')
-
-    const inputDom = this.search.render()
-    inputDom.placeholder = 'Search Hero'
-    inputDom.addEventListener('change', this._onSearchChange, true)
-    container.append(inputDom)
-
-    container.append(this.row.render())
-
-    return container
   }
 }

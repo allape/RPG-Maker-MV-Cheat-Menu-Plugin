@@ -11,9 +11,9 @@ export interface IScrollSelectProps {
   leftText?: string
   rightText?: string
   keymap?: IScrollSelectKeyMap,
-  onLeft?: (e?: Event) => void
-  onRight?: (e?: Event) => void
-  onCenter?: (e?: Event) => void
+  onLeft?: (e?: Event) => boolean | void
+  onRight?: (e?: Event) => boolean | void
+  onCenter?: (e?: Event) => boolean | void
 }
 
 export default class ScrollSelect extends Renderer<HTMLDivElement> {
@@ -76,22 +76,25 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
 
   private readonly _onLeft = (e?: Event) => {
     if (this.props.onLeft) {
-      SoundManager.playSystemSound(1)
-      this.props.onLeft(e)
+      if (!this.props.onLeft(e)) {
+        SoundManager.playSystemSound(1)
+      }
     }
   }
 
   private readonly _onCenter = (e?: Event) => {
     if (this.props.onCenter) {
-      SoundManager.playSystemSound(0)
-      this.props.onCenter(e)
+      if (!this.props.onCenter(e)) {
+        SoundManager.playSystemSound(0)
+      }
     }
   }
 
   private readonly _onRight = (e?: Event) => {
     if (this.props.onRight) {
-      SoundManager.playSystemSound(2)
-      this.props.onRight(e)
+      if (!this.props.onRight(e)) {
+        SoundManager.playSystemSound(2)
+      }
     }
   }
 

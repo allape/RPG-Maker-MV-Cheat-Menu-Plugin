@@ -1,5 +1,5 @@
 import {Renderer} from '../core/renderer'
-import {ActorSelector} from '../component/ActorSelector'
+import ActorSelector from '../component/ActorSelector'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
 
@@ -14,10 +14,12 @@ export default class GodMode extends Renderer {
 
   static MyName = 'God Mode'
 
-  private readonly actorSelector: ActorSelector
+  private readonly actorSelector = new ActorSelector()
   private readonly switcher: Switch
 
-  private current?: Game_Actor
+  private get current(): Game_Actor {
+    return this.actorSelector.value
+  }
 
   private readonly _whoIsYourDaddy = (value: boolean) => {
     if (!this.current) return
@@ -47,13 +49,6 @@ export default class GodMode extends Renderer {
 
   constructor() {
     super()
-
-    this.actorSelector = new ActorSelector({
-      onChange: (actor?: Game_Actor) => {
-        this.current = actor as Game_Actor
-        this._onGameStart()
-      },
-    })
 
     this.switcher = new Switch({
       default: !!this.current?._godMode,
