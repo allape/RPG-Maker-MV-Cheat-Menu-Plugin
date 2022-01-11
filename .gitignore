@@ -1,6 +1,9 @@
 .idea
+.vscode
 node_modules
 package-lock.json
 dist
 build
 src/**/*.js
+
+copycat.json
