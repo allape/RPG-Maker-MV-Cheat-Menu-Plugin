@@ -84,7 +84,7 @@ export default class Variables extends Renderer<HTMLDivElement> {
     this.amount = new AmountSelector({
       default: 1,
       precision: 0,
-      min: 0,
+      min: 1,
       max: Number.MAX_SAFE_INTEGER,
     })
 

@@ -114,12 +114,12 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
     this.props = props || {}
     this.props.keymap = this.props.keymap || {}
 
-    window.addEventListener('keydown', this._onKeydown, true)
+    window.addEventListener('keydown', this._onKeydown)
   }
 
   dispose() {
     super.dispose()
-    window.removeEventListener('keydown', this._onKeydown, true)
+    window.removeEventListener('keydown', this._onKeydown)
   }
 
   render(): HTMLDivElement {

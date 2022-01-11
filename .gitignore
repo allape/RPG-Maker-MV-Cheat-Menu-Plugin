@@ -1,9 +1,12 @@
 .idea
 .vscode
+
 node_modules
 package-lock.json
+
 dist
 build
+public/index.js
 src/**/*.js
 
 copycat.json

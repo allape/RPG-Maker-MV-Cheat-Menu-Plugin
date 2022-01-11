@@ -7,6 +7,7 @@
     padding: 10px;
     cursor: pointer;
     user-select: none;
+    min-width: 60px;
   }
   .text {
     flex: 1;
@@ -17,5 +18,8 @@
     padding: 0 10px;
     cursor: text;
     user-select: text !important;
+    & + .button {
+      text-align: right;
+    }
   }
 }
