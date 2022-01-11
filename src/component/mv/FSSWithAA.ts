@@ -1,6 +1,7 @@
 import { Renderer } from '../../core/renderer'
 import AmountSelector from '../AmountSelector'
 import FilterableScrollSelect from '../FilterableScrollSelect'
+import ScrollSelect from '../ScrollSelect'
 
 export interface IProps<T> {
   currentAmountProvider: (value: T) => any
@@ -14,11 +15,13 @@ export interface IProps<T> {
  */
 export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
+  private readonly props: IProps<T>
+
   private readonly container = document.createElement('div')
 
   protected abstract readonly scrollSelector: FilterableScrollSelect<T>
-  protected abstract readonly amountSelector: AmountSelector
-  protected abstract readonly currentAmountSelector: AmountSelector
+  protected abstract readonly amountSelector: AmountSelector | ScrollSelect
+  protected abstract readonly currentAmountSelector: AmountSelector | ScrollSelect
 
   private readonly _valueRefreshIntervalId: number = -1
 
@@ -26,15 +29,20 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
     return this.scrollSelector.value
   }
 
+  protected readonly _triggerValueChange = () => {
+    const current = this.scrollSelector?.value
+    if (current) {
+      this.currentAmountSelector.value = this.props.currentAmountProvider(current)
+    }
+  }
+
   constructor(props: IProps<T>) {
     super()
+    this.props = props
     if (props.enableValueIntervalRefresh) {
       this._valueRefreshIntervalId = setInterval(() => {
-        const current = this.scrollSelector?.value
-        if (current) {
-          this.currentAmountSelector.value = props.currentAmountProvider(this.scrollSelector.value)
-        }
-      }, 100) as unknown as number
+        this._triggerValueChange()
+      }, 500) as unknown as number
     }
   }
 

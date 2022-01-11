@@ -1,4 +1,3 @@
-import {Renderer} from '../core/renderer'
 import AmountSelector from '../component/AmountSelector'
 import ScrollSelect from '../component/ScrollSelect'
 import ItemSelector from '../component/mv/ItemSelector'
@@ -8,9 +7,13 @@ export default class Items extends FSSWithAA<Game_Item> {
 
   static MyName = 'Items'
 
-  static VALUE_FN = current => $gameParty._items[$dataItems.indexOf(current)]
+  static VALUE_FN = (current: Game_Item) => $gameParty._items[$dataItems.indexOf(current)]
 
-  protected readonly scrollSelector = new ItemSelector()
+  protected readonly scrollSelector = new ItemSelector({
+    onChange: () => {
+      this._triggerValueChange()
+    },
+  })
 
   protected readonly amountSelector = new AmountSelector({
     default: 1,
@@ -27,7 +30,7 @@ export default class Items extends FSSWithAA<Game_Item> {
       const current = this.scrollSelector.value
       if (current) {
         $gameParty.gainItem(current, -this.amountSelector.value)
-        this.currentAmountSelector.value = Items.VALUE_FN(current)
+        this._triggerValueChange()
       }
       return true
     },
@@ -35,7 +38,7 @@ export default class Items extends FSSWithAA<Game_Item> {
       const current = this.scrollSelector.value
       if (current) {
         $gameParty.gainItem(current, this.amountSelector.value)
-        this.currentAmountSelector.value = Items.VALUE_FN(current)
+        this._triggerValueChange()
       }
       return true
     },

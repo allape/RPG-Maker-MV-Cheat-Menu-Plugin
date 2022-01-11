@@ -1,162 +1,75 @@
-import {Renderer} from '../core/renderer'
 import Input from '../component/Input'
 import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
 import MV from '../core/mv'
+import VariableSelector, { IVariable } from '../component/mv/VariableSelector'
+import FSSWithAA from '../component/mv/FSSWithAA'
 
-export interface IVariable {
-  index: number
-  name?: string
-}
-
-export default class Variables extends Renderer<HTMLDivElement> {
+export default class Variables extends FSSWithAA<IVariable> {
 
   static MyName = 'Variables'
 
-  static KeyMap = ScrollSelect.KeyMap34
+  static VALUE_FN = (current: IVariable) => $gameVariables.value(current.index)
 
-  private readonly container = document.createElement('div')
+  protected readonly scrollSelector = new VariableSelector({
+    onChange: () => {
+      this._triggerValueChange()
+    },
+  })
 
-  private readonly search: Input
-  private readonly variable: ScrollSelect
-  private readonly amount: AmountSelector
-  private readonly currentVariableValue: Input
-  private readonly currentVariableValueWrapper: ScrollSelect
+  protected readonly amountSelector = new AmountSelector({
+    default: 1,
+    precision: 0,
+    min: 1,
+    max: Number.MAX_SAFE_INTEGER,
+  })
 
-  private readonly _variableValueTimer: number
+  private readonly currentAmountValue = new Input({
+    type: 'textarea',
+  })
 
-  private _keyword = ''
-  private _index = 0
-
-  private get filteredVariables(): IVariable[] {
-    return ($dataSystem.variables || []).map((name, index) => ({
-      name,
-      index,
-    })).filter(i => i.name?.toLowerCase().includes(this._keyword))
-  }
-
-  private readonly _onChange = () => {
-    const variables = this.filteredVariables
-    const variable = variables[this._index]
-    this.variable.value = `[${this._index + 1}/${variables.length}]: ${variable?.name || '(null)'}`
-    this._onVariableValueChange()
-  }
-
-  private readonly _onVariableValueChange = () => {
-    const variable = this.filteredVariables[this._index]
-    this.currentVariableValue.value = variable ? $gameVariables.value(variable.index) : ''
-  }
-
-  private _onKeywordChange = (e: Event) => {
-    e.stopPropagation()
-    this._index = 0
-    this._keyword = this.search.value.toLowerCase()
-    this._onChange()
-  }
-
-  private _onPrev = () => {
-    if (MV.singleton().visible) {
-      const items = this.filteredVariables
-      this._index = (this._index <= 0 ? items.length : this._index) - 1
-      this._onChange()
-    }
-  }
-
-  private _onNext = () => {
-    if (MV.singleton().visible) {
-      const items = this.filteredVariables
-      this._index = (this._index >= items.length - 1 ? -1 : this._index) + 1
-      this._onChange()
-    }
-  }
+  protected readonly currentAmountSelector = new ScrollSelect({
+    keymap: ScrollSelect.KeyMap78,
+    valueProvider: value => {
+      this.currentAmountValue.value = value
+    },
+    onLeft: () => {
+      const current = this.scrollSelector.value
+      if (current) {
+        MV.setNumberVariable(current.index, -this.amountSelector.value)
+        this._triggerValueChange()
+      }
+    },
+    onRight: () => {
+      const current = this.scrollSelector.value
+      if (current) {
+        MV.setNumberVariable(current.index, this.amountSelector.value)
+        this._triggerValueChange()
+      }
+    },
+  })
 
   constructor() {
-    super()
-
-    this.search = new Input()
-
-    this.variable = new ScrollSelect({
-      keymap: Variables.KeyMap,
-      onLeft: this._onPrev,
-      onRight: this._onNext,
+    super({
+      currentAmountProvider: Variables.VALUE_FN,
+      enableValueIntervalRefresh: true,
     })
 
-    this.amount = new AmountSelector({
-      default: 1,
-      precision: 0,
-      min: 1,
-      max: Number.MAX_SAFE_INTEGER,
+    const value = this.currentAmountValue.render() as HTMLTextAreaElement
+    value.addEventListener('change', () => {
+      const variable = this.scrollSelector.value
+      if (variable) {
+        MV.setVariable(variable.index, this.currentAmountValue.value)
+        this._triggerValueChange()
+      }
     })
-
-    this.currentVariableValue = new Input({
-      type: 'textarea',
-    })
-    this.currentVariableValueWrapper = new ScrollSelect({
-      keymap: ScrollSelect.KeyMap78,
-      onLeft: () => {
-        const variable = this.filteredVariables[this._index]
-        if (variable)
-          MV.setNumberVariable(variable.index, -this.amount.value)
-      },
-      onRight: () => {
-        const variable = this.filteredVariables[this._index]
-        if (variable)
-          MV.setNumberVariable(variable.index, this.amount.value)
-      },
-    })
-
-    this._variableValueTimer = setInterval(() => {
-      this._onVariableValueChange()
-    }, 500) as unknown as number
-
-    this._onChange()
+    value.rows = 5
+    this.currentAmountSelector.text.append(value)
   }
 
   dispose() {
     super.dispose()
-
-    this.search.dispose()
-    this.variable.dispose()
-    this.amount.dispose()
-    this.currentVariableValue.dispose()
-    this.currentVariableValueWrapper.dispose()
-
-    clearInterval(this._variableValueTimer)
+    this.currentAmountValue.dispose()
   }
 
-  render(): HTMLDivElement {
-    const {
-      container,
-      search,
-      variable,
-      amount,
-      currentVariableValue,
-      currentVariableValueWrapper,
-    } = this
-
-    const searchDom = search.render()
-    searchDom.placeholder = 'Search Variable'
-    searchDom.addEventListener('change', this._onKeywordChange, true)
-    container.append(searchDom)
-
-    container.append(variable.render())
-
-    container.append(amount.render())
-
-    const wrapper = currentVariableValueWrapper.render()
-    container.append(wrapper)
-
-    const value = currentVariableValue.render() as HTMLTextAreaElement
-    value.addEventListener('change', () => {
-      const variable = this.filteredVariables[this._index]
-      if (variable) {
-        MV.setVariable(variable.index, currentVariableValue.value)
-        this._onVariableValueChange()
-      }
-    })
-    value.rows = 5
-    currentVariableValueWrapper.text.append(value)
-
-    return container
-  }
 }

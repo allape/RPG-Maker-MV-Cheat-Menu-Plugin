@@ -11,6 +11,7 @@ export interface IScrollSelectProps {
   leftText?: string
   rightText?: string
   keymap?: IScrollSelectKeyMap,
+  valueProvider?: (value: string) => void
   onLeft?: (e?: Event) => boolean | void
   onRight?: (e?: Event) => boolean | void
   onCenter?: (e?: Event) => boolean | void
@@ -70,8 +71,12 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
   readonly right = document.createElement('div')
 
   set value(v: string) {
-    this.text.innerHTML = v
-    this.text.title = v
+    if (this.props.valueProvider) {
+      this.props.valueProvider(v)
+    } else {
+      this.text.innerHTML = v
+      this.text.title = v
+    }
   }
 
   private readonly _onLeft = (e?: Event) => {
