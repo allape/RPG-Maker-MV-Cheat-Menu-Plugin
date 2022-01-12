@@ -3,10 +3,9 @@ import AmountSelector from '../AmountSelector'
 import FilterableScrollSelect from '../FilterableScrollSelect'
 import ScrollSelect from '../ScrollSelect'
 
-export interface IProps<T> {
-  currentAmountProvider: (value: T) => any
-  // enable an interval to reload current amount value
-  enableValueIntervalRefresh?: boolean
+export interface IProps {
+  // disable an interval to reload current amount value
+  disableIntervalRefresh?: boolean
 }
 
 /**
@@ -14,8 +13,6 @@ export interface IProps<T> {
  * AA = two {@link AmountSelector}s, one for select value, one current value
  */
 export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
-
-  private readonly props: IProps<T>
 
   private readonly container = document.createElement('div')
 
@@ -25,6 +22,8 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
   private readonly _valueRefreshIntervalId: number = -1
 
+  protected readonly abstract currentAmountProvider: (value: T) => any
+
   protected get current(): T {
     return this.scrollSelector.value
   }
@@ -32,14 +31,13 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
   protected readonly _triggerValueChange = () => {
     const current = this.scrollSelector?.value
     if (current) {
-      this.currentAmountSelector.value = this.props.currentAmountProvider(current)
+      this.currentAmountSelector.value = this.currentAmountProvider(current)
     }
   }
 
-  constructor(props: IProps<T>) {
+  constructor(props: IProps = {}) {
     super()
-    this.props = props
-    if (props.enableValueIntervalRefresh) {
+    if (!props.disableIntervalRefresh) {
       this._valueRefreshIntervalId = setInterval(() => {
         this._triggerValueChange()
       }, 500) as unknown as number

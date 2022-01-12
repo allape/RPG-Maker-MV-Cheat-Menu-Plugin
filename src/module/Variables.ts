@@ -9,7 +9,7 @@ export default class Variables extends FSSWithAA<IVariable> {
 
   static MyName = 'Variables'
 
-  static VALUE_FN = (current: IVariable) => $gameVariables.value(current.index)
+  protected readonly currentAmountProvider = (current: IVariable) => $gameVariables.value(current.index)
 
   protected readonly scrollSelector = new VariableSelector({
     onChange: () => {
@@ -50,10 +50,7 @@ export default class Variables extends FSSWithAA<IVariable> {
   })
 
   constructor() {
-    super({
-      currentAmountProvider: Variables.VALUE_FN,
-      enableValueIntervalRefresh: true,
-    })
+    super()
 
     const value = this.currentAmountValue.render() as HTMLTextAreaElement
     value.addEventListener('change', () => {
