@@ -27,8 +27,8 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
   }
 
   private static DefaultSwitchProps: Partial<ISwitchProps> = {
-    default: false,
-    offHTML: 'Activate',
+    default: true,
+    onHTML: 'Activate',
   }
 
   private readonly aliveTitle = new Title({ title: 'Alive' })
@@ -67,7 +67,7 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
 
     this.alive2Max = new Switch({
       ...PBasedModule.DefaultSwitchProps,
-      label: `${props.name} to max`,
+      label: `${props.name} to MAX`,
       keymap: PBasedModule.KeyMap.alive2Max,
       onChange: () => {
         props.onAlive2Max()
@@ -97,7 +97,7 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
 
     this.all2Max = new Switch({
       ...PBasedModule.DefaultSwitchProps,
-      label: `${props.name} to max`,
+      label: `${props.name} to MAX`,
       keymap: PBasedModule.KeyMap.all2Max,
       onChange: () => {
         props.onAll2Max()

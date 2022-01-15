@@ -8,6 +8,8 @@ import Gold from './module/Gold'
 import Speed from './module/Speed'
 import Variables from './module/Variables'
 import PartyHP from './module/PartyHP'
+import PartyMP from './module/PartyMP'
+import PartyTP from './module/PartyTP'
 
 export type SubRenderer<T extends Renderer = any> = T
 export interface SubRenderers {
@@ -46,6 +48,14 @@ export default class App extends Renderer<HTMLDivElement> {
     {
       keymap: KEY_MAPS.Digit8,
       module: PartyHP as SubRenderer,
+    },
+    {
+      keymap: KEY_MAPS.Digit9,
+      module: PartyMP as SubRenderer,
+    },
+    {
+      keymap: KEY_MAPS.Digit0,
+      module: PartyTP as SubRenderer,
     },
   ]
 

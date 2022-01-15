@@ -80,4 +80,12 @@ export const KEY_MAPS = {
     key: '0',
     code: 'Digit0',
   },
+  Minus: {
+    key: '-',
+    code: 'Minus',
+  },
+  Equal: {
+    key: '=',
+    code: 'Equal',
+  },
 }

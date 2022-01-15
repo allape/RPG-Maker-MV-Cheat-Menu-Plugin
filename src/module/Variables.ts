@@ -29,6 +29,8 @@ export default class Variables extends FSSWithAA<IVariable> {
   })
 
   protected readonly currentAmountSelector = new ScrollSelect({
+    leftText: '-',
+    rightText: '+',
     keymap: ScrollSelect.KeyMap78,
     valueProvider: value => {
       this.currentAmountValue.value = value
