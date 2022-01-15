@@ -213,4 +213,20 @@ export default class MV {
     }
   }
 
+  static setEnemyHp(hp: number, alive: boolean = false) {
+    for (const member of $gameTroop.members()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setHp(hp)
+      }
+    }
+  }
+
+  static recoverEnemyHp(alive: boolean = false) {
+    for (const member of $gameTroop.members()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setHp(member.mhp)
+      }
+    }
+  }
+
 }

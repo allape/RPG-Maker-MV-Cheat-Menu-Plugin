@@ -15,6 +15,8 @@ declare global {
 
   const $gameParty: Game_Party
 
+  const $gameTroop: Game_Troop
+
   const $gameSystem: Record<string, any>
 
   const $gameVariables: Game_Variables
@@ -77,6 +79,10 @@ declare global {
     gainItem: (item: Game_Item, amount: number) => void
     gainGold: (amount: number) => void
     allMembers: () => Game_Actor[]
+  }
+
+  class Game_Troop {
+    members: () => Game_Actor[]
   }
 
   class Game_Variables {
