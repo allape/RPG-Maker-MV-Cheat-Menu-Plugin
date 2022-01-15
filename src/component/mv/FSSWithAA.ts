@@ -1,4 +1,4 @@
-import { Renderer } from '../../core/renderer'
+import {Renderer} from '../../core/renderer'
 import AmountSelector from '../AmountSelector'
 import FilterableScrollSelect from '../FilterableScrollSelect'
 import ScrollSelect from '../ScrollSelect'
@@ -35,7 +35,7 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
     }
   }
 
-  constructor(props: IProps = {}) {
+  protected constructor(props: IProps = {}) {
     super()
     if (!props.disableIntervalRefresh) {
       this._valueRefreshIntervalId = setInterval(() => {

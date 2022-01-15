@@ -1,5 +1,5 @@
 import './index.scss'
-import {IKeyMap, KeyMaps, Renderer} from '../../core/renderer'
+import {IKeyMap, KEY_MAPS, KeyMaps, Renderer} from '../../core/renderer'
 
 export interface IScrollSelectKeyMap extends KeyMaps {
   left?: IKeyMap
@@ -20,47 +20,23 @@ export interface IScrollSelectProps {
 export default class ScrollSelect extends Renderer<HTMLDivElement> {
 
   static KeyMap34: IScrollSelectKeyMap = {
-    left: {
-      key: '3',
-      code: 'Digit3',
-    },
-    right: {
-      key: '4',
-      code: 'Digit4',
-    },
+    left: KEY_MAPS.Digit3,
+    right: KEY_MAPS.Digit4,
   }
 
   static KeyMap56: IScrollSelectKeyMap = {
-    left: {
-      key: '5',
-      code: 'Digit5',
-    },
-    right: {
-      key: '6',
-      code: 'Digit6',
-    },
+    left: KEY_MAPS.Digit5,
+    right: KEY_MAPS.Digit6,
   }
 
   static KeyMap78: IScrollSelectKeyMap = {
-    left: {
-      key: '7',
-      code: 'Digit7',
-    },
-    right: {
-      key: '8',
-      code: 'Digit8',
-    },
+    left: KEY_MAPS.Digit7,
+    right: KEY_MAPS.Digit8,
   }
 
   static KeyMap90: IScrollSelectKeyMap = {
-    left: {
-      key: '9',
-      code: 'Digit9',
-    },
-    right: {
-      key: '0',
-      code: 'Digit0',
-    },
+    left: KEY_MAPS.Digit9,
+    right: KEY_MAPS.Digit0,
   }
 
   private readonly props: IScrollSelectProps

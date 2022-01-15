@@ -1,4 +1,4 @@
-import {Renderer} from '../core/renderer'
+import {KEY_MAPS, Renderer} from '../core/renderer'
 import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
 import Switch from '../component/Switch'
@@ -6,10 +6,7 @@ import Switch from '../component/Switch'
 export default class Speed extends Renderer<HTMLDivElement> {
 
   static KeyMap = {
-    speedLock: {
-      key: '7',
-      code: 'Digit7',
-    },
+    speedLock: KEY_MAPS.Digit7,
   }
 
   static MyName = 'Speed'
@@ -72,6 +69,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
     })
 
     this.speedLocker = new Switch({
+      label: 'Lock Speed',
       default: Speed.speedLocked,
       keymap: Speed.KeyMap.speedLock,
       onHTML: 'locked',

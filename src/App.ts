@@ -1,5 +1,5 @@
 import './App.scss'
-import {IKeyMap, Renderer} from './core/renderer'
+import {IKeyMap, KEY_MAPS, Renderer} from './core/renderer'
 import GodMode from './module/GodMode'
 import MV from './core/mv'
 import {space2line} from './core/dom'
@@ -7,6 +7,7 @@ import Items from './module/Items'
 import Gold from './module/Gold'
 import Speed from './module/Speed'
 import Variables from './module/Variables'
+import PartyHP from './module/PartyHP'
 
 export type SubRenderer<T extends Renderer = any> = T
 export interface SubRenderers {
@@ -17,51 +18,34 @@ export interface SubRenderers {
 export default class App extends Renderer<HTMLDivElement> {
 
   static KeyMap = {
-    toggle: {
-      key: '1',
-      code: 'Digit1',
-    },
-    back: {
-      key: '2',
-      code: 'Digit2',
-    },
+    toggle: KEY_MAPS.Digit1,
+    back: KEY_MAPS.Digit2,
   }
 
   static Modules: SubRenderers[] = [
     {
-      keymap: {
-        key: '3',
-        code: 'Digit3',
-      },
+      keymap: KEY_MAPS.Digit3,
       module: GodMode as SubRenderer,
     },
     {
-      keymap: {
-        key: '4',
-        code: 'Digit4',
-      },
+      keymap: KEY_MAPS.Digit4,
       module: Speed as SubRenderer,
     },
     {
-      keymap: {
-        key: '5',
-        code: 'Digit5',
-      },
+      keymap: KEY_MAPS.Digit5,
       module: Gold as SubRenderer,
     },
     {
-      keymap: {
-        key: '6',
-        code: 'Digit6',
-      },
+      keymap: KEY_MAPS.Digit6,
       module: Items as SubRenderer,
     },
     {
-      keymap: {
-        key: '7',
-        code: 'Digit7',
-      },
+      keymap: KEY_MAPS.Digit7,
       module: Variables as SubRenderer,
+    },
+    {
+      keymap: KEY_MAPS.Digit8,
+      module: PartyHP as SubRenderer,
     },
   ]
 

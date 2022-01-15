@@ -21,8 +21,8 @@ export default abstract class ItemBaseModule<T> extends FSSWithAA<T> {
     onLess: () => this.onLess(),
     onMore: () => this.onMore(),
   })
-  
-  constructor() {
+
+  protected constructor() {
     super()
   }
 

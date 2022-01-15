@@ -165,4 +165,52 @@ export default class MV {
     }
   }
 
+  static setPartyHp(hp: number, alive: boolean = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setHp(hp)
+      }
+    }
+  }
+
+  static recoverPartyHp(alive: boolean = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setHp(member.mhp)
+      }
+    }
+  }
+
+  static setPartyMp(mp: number, alive: boolean = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setMp(mp)
+      }
+    }
+  }
+
+  static recoverPartyMp(alive: boolean = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setMp(member.mmp)
+      }
+    }
+  }
+
+  static setPartyTp(tp: number, alive: boolean = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setTp(tp)
+      }
+    }
+  }
+
+  static recoverPartyTp(alive: boolean = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setTp(member.maxTp())
+      }
+    }
+  }
+
 }

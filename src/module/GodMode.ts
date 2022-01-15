@@ -1,4 +1,4 @@
-import {Renderer} from '../core/renderer'
+import {KEY_MAPS, Renderer} from '../core/renderer'
 import ActorSelector from '../component/mv/ActorSelector'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
@@ -6,10 +6,7 @@ import Switch from '../component/Switch'
 export default class GodMode extends Renderer {
 
   static KeyMap = {
-    toggle: {
-      key: '5',
-      code: 'Digit5',
-    },
+    toggle: KEY_MAPS.Digit5,
   }
 
   static MyName = 'God Mode'
@@ -51,6 +48,7 @@ export default class GodMode extends Renderer {
     super()
 
     this.switcher = new Switch({
+      label: 'Current Status',
       default: !!this.current?._godMode,
       keymap: GodMode.KeyMap.toggle,
       onChange: (value, e) => {
@@ -61,7 +59,6 @@ export default class GodMode extends Renderer {
         this.switcher.value = value
       },
     })
-    this.switcher.text = 'Current Status'
 
     MV.singleton().on('loadGame', this._onGameStart)
     MV.singleton().on('saveGame', this._onGameStart)

@@ -29,6 +29,9 @@ declare global {
 
   class Game_Actor {
     _name: string
+    _hp: number
+    _mp: number
+    _tp: number
 
     // max hp
     mhp: number
@@ -73,6 +76,7 @@ declare global {
     _gold: number
     gainItem: (item: Game_Item, amount: number) => void
     gainGold: (amount: number) => void
+    allMembers: () => Game_Actor[]
   }
 
   class Game_Variables {

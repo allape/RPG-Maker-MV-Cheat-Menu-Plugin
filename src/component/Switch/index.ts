@@ -9,6 +9,7 @@ export interface ISwitchProps {
   onStyle?: string
   offStyle?: string
 
+  label?: string
   default?: boolean
   onChange?: (value: boolean, e?: Event) => void
 }
@@ -66,6 +67,9 @@ export default class Switch extends Renderer<HTMLDivElement> {
     if (this.props.keymap) {
       window.addEventListener('keydown', this._onKeydown)
     }
+    if (this.props.label) {
+      this.text = this.props.label
+    }
 
     this.value = !!this.props.default
   }
@@ -82,7 +86,6 @@ export default class Switch extends Renderer<HTMLDivElement> {
     container.classList.add('switch-wrapper')
 
     label.classList.add('label')
-    this.text = `Status`
     container.append(label)
 
     const statusWrapper = document.createElement('div')
