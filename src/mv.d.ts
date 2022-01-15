@@ -96,6 +96,9 @@ declare global {
 
   class Data_System {
     variables: Array<string | undefined>
+    terms: {
+      params: string[]
+    }
   }
 
   class DataManager {
