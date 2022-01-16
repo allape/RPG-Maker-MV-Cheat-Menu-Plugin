@@ -11,6 +11,7 @@ import PartyHP from './module/PartyHP'
 import PartyMP from './module/PartyMP'
 import PartyTP from './module/PartyTP'
 import EnemyHP from './module/EnemyHP'
+import Stat from './module/Stat'
 
 export type SubRenderer<T extends Renderer = any> = T
 export interface SubRenderers {
@@ -61,6 +62,10 @@ export default class App extends Renderer<HTMLDivElement> {
     {
       keymap: KEY_MAPS.Minus,
       module: PartyHP as SubRenderer,
+    },
+    {
+      keymap: KEY_MAPS.Equal,
+      module: Stat as SubRenderer,
     },
   ]
 

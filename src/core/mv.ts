@@ -229,4 +229,10 @@ export default class MV {
     }
   }
 
+  static opeStatAmount(actor: Game_Actor, statIndex: number, amount: number) {
+    if (actor._paramPlus[statIndex] !== undefined) {
+      actor.addParam(statIndex, amount)
+    }
+  }
+
 }

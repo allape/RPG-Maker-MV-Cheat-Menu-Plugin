@@ -8,7 +8,7 @@ export default abstract class ItemBaseModule<T> extends FSSWithAA<T> {
   protected readonly abstract onMore: () => void | boolean
 
   protected readonly amountSelector = new AmountSelector({
-    default: 1,
+    default: 10,
     precision: 0,
     min: 1,
     max: 99,

@@ -6,9 +6,7 @@ export default class Items extends ItemBaseModule<Game_Item> {
   static MyName = 'Items'
 
   protected readonly scrollSelector = new ItemSelector({
-    onChange: () => {
-      this._triggerValueChange()
-    },
+    onChange: this._triggerValueChange,
   })
 
   protected readonly currentAmountProvider = (current: Game_Item) => $gameParty._items[$dataItems.indexOf(current)]
@@ -30,7 +28,7 @@ export default class Items extends ItemBaseModule<Game_Item> {
     }
     return true
   }
-  
+
   constructor() {
     super()
   }

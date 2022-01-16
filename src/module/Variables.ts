@@ -9,12 +9,11 @@ export default class Variables extends FSSWithAA<IVariable> {
 
   static MyName = 'Variables'
 
-  protected readonly currentAmountProvider = (current: IVariable) => $gameVariables.value(current.index)
+  protected readonly currentAmountProvider =
+    (current: IVariable) => current ? $gameVariables.value(current.index) : undefined
 
   protected readonly scrollSelector = new VariableSelector({
-    onChange: () => {
-      this._triggerValueChange()
-    },
+    onChange: this._triggerValueChange,
   })
 
   protected readonly amountSelector = new AmountSelector({
@@ -36,14 +35,14 @@ export default class Variables extends FSSWithAA<IVariable> {
       this.currentAmountValue.value = value
     },
     onLeft: () => {
-      const current = this.scrollSelector.value
+      const current = this.current
       if (current) {
         MV.setNumberVariable(current.index, -this.amountSelector.value)
         this._triggerValueChange()
       }
     },
     onRight: () => {
-      const current = this.scrollSelector.value
+      const current = this.current
       if (current) {
         MV.setNumberVariable(current.index, this.amountSelector.value)
         this._triggerValueChange()

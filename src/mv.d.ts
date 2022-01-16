@@ -34,6 +34,7 @@ declare global {
     _hp: number
     _mp: number
     _tp: number
+    _paramPlus: number[]
 
     // max hp
     mhp: number
@@ -49,6 +50,7 @@ declare global {
     gainTp: (tp: number) => void;
     setTp: (tp: number) => void;
     paySkillCost: (skill: Game_Skill) => void;
+    addParam: (statIndex: number, amount: number) => void;
 
     // injected
 

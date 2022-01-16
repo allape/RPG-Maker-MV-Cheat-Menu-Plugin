@@ -22,7 +22,7 @@ export default class Gold extends Renderer<HTMLDivElement> {
       precision: 0,
       min: 1,
       max: 99999999,
-      default: 1,
+      default: 10000,
       keymap: ScrollSelect.KeyMap34,
     })
     this.currentAmount = new AmountSelector({

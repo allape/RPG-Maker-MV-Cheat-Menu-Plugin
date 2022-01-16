@@ -14,7 +14,7 @@ export interface IProps {
  */
 export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
-  private readonly container = document.createElement('div')
+  protected readonly container = document.createElement('div')
 
   protected abstract readonly scrollSelector: FilterableScrollSelect<T>
   protected abstract readonly amountSelector: AmountSelector | ScrollSelect
@@ -22,15 +22,15 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
   private readonly _valueRefreshIntervalId: number = -1
 
-  protected readonly abstract currentAmountProvider: (value: T) => any
+  protected readonly abstract currentAmountProvider: (value?: T) => any
 
   protected get current(): T {
-    return this.scrollSelector.value
+    return this.scrollSelector?.value
   }
 
-  protected readonly _triggerValueChange = () => {
-    const current = this.scrollSelector?.value
-    if (current) {
+  protected readonly _triggerValueChange = (): void => {
+    const current = this.current
+    if (this.currentAmountSelector) {
       this.currentAmountSelector.value = this.currentAmountProvider(current)
     }
   }
