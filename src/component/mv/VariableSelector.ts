@@ -7,7 +7,7 @@ export interface IVariable {
 }
 
 export default class VariableSelector extends FilterableScrollSelect<IVariable> {
-  constructor(props?: Pick<IFilterableScrollSelectProps, 'onChange'>) {
+  constructor(props?: Pick<IFilterableScrollSelectProps<IVariable>, 'onChange'>) {
     super({
       ...props,
       keymap: ScrollSelect.KeyMap34,

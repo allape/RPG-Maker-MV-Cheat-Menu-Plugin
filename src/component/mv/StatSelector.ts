@@ -6,12 +6,8 @@ export interface IStat {
   name?: string
 }
 
-export interface IStatSelectorProps extends Pick<IFilterableScrollSelectProps, 'onChange'> {
-  actor?: Game_Actor
-}
-
 export default class StatSelector extends FilterableScrollSelect<IStat> {
-  constructor(props?: IStatSelectorProps) {
+  constructor(props?: Pick<IFilterableScrollSelectProps<IStat>, 'onChange'>) {
     super({
       ...props,
       keymap: ScrollSelect.KeyMap56,

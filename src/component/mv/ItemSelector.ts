@@ -2,7 +2,7 @@ import FilterableScrollSelect, { IFilterableScrollSelectProps } from '../Filtera
 import ScrollSelect from '../ScrollSelect'
 
 export default class ItemSelector extends FilterableScrollSelect<Game_Item> {
-  constructor(props?: Pick<IFilterableScrollSelectProps, 'onChange'>) {
+  constructor(props?: Pick<IFilterableScrollSelectProps<Game_Item>, 'onChange'>) {
     super({
       ...props,
       keymap: ScrollSelect.KeyMap34,
