@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 300px;
+  width: 500px;
   background: rgba(0, 0, 0, .5);
   color: white;
   //transition: .3s;
@@ -20,7 +20,10 @@
       padding: 10px;
       cursor: pointer;
       user-select: none;
-      transition: .25s;
+      color: rgba(255, 255, 255, .8);
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+      }
     }
     .nav-title {
       flex: 1;

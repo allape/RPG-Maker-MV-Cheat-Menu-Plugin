@@ -39,6 +39,10 @@ export const KEY_MAPS = {
   //     },
   //   }
   // }, {})),
+  Backquote: {
+    key: '`',
+    code: 'Backquote',
+  },
   Digit1: {
     key: '1',
     code: 'Digit1',

@@ -31,6 +31,7 @@ export default class App extends Renderer<HTMLDivElement> {
   static KeyMap = {
     toggle: KEY_MAPS.Digit1,
     back: KEY_MAPS.Digit2,
+    next: KEY_MAPS.Backquote,
   }
 
   static Modules: SubRenderers[] = [
@@ -96,6 +97,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
   private readonly wrapper = document.createElement('div')
   private readonly navBackButton = document.createElement('div')
+  private readonly navNextButton = document.createElement('div')
   private readonly navTextContainer = document.createElement('div')
   private readonly container = document.createElement('div')
   private readonly homeContainer = document.createElement('div')
@@ -110,10 +112,19 @@ export default class App extends Renderer<HTMLDivElement> {
     }
 
     this.navBackButton.style.opacity = '0'
+    this.navNextButton.style.opacity = '0'
     this.navTextContainer.innerHTML = ''
 
     this.container.innerHTML = ''
     this.container.append(this.homeContainer)
+  }
+
+  private _nextModule = () => {
+    if (this._currentModule) {
+      let currentIndex = App.Modules.findIndex(i => i.module === (this._currentModule as unknown as typeof Function).constructor)
+      currentIndex = (currentIndex >= App.Modules.length - 1 ? -1 : currentIndex) + 1
+      this._buildModule(App.Modules[currentIndex].module)
+    }
   }
 
   private _buildModule = (m: SubRenderer) => {
@@ -123,6 +134,7 @@ export default class App extends Renderer<HTMLDivElement> {
       SoundManager.playSystemSound(1)
 
       this.navBackButton.style.opacity = '1'
+      this.navNextButton.style.opacity = '1'
       this.navTextContainer.innerHTML = m.MyName
 
       this._currentModule = new m()
@@ -145,8 +157,13 @@ export default class App extends Renderer<HTMLDivElement> {
     if (MV.singleton().visible) {
       if (this._currentModule) {
         // not at home, then show home
-        if (App.KeyMap.back.code === e.code) {
+        switch (e.code) {
+        case App.KeyMap.back.code:
           this._showHome()
+          break
+        case App.KeyMap.next.code:
+          this._nextModule()
+          break
         }
       } else {
         // module select
@@ -173,6 +190,12 @@ export default class App extends Renderer<HTMLDivElement> {
     navBack.innerHTML = `← [${App.KeyMap.back.key}]`
     navBack.addEventListener('click', this._showHome)
     nav.append(navBack)
+
+    const navNext = this.navNextButton
+    navNext.classList.add('nav-button')
+    navNext.innerHTML = `[${App.KeyMap.next.key}] Next`
+    navNext.addEventListener('click', this._nextModule)
+    nav.append(navNext)
 
     const navTitle = this.navTextContainer
     navTitle.classList.add('nav-title')
