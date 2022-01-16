@@ -45,6 +45,8 @@ export default abstract class DualFSSWithAA<FT, ST> extends FSSWithAA<FT> {
     container.append(amountSelector.render())
     container.append(currentAmountSelector.render())
 
+    this._triggerValueChange()
+
     return container
   }
 
