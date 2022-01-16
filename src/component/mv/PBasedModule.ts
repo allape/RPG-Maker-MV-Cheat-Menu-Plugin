@@ -42,7 +42,7 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
   private readonly allTo1: Switch
   private readonly all2Max: Switch
 
-  constructor(props: IPBasedModuleProps) {
+  protected constructor(props: IPBasedModuleProps) {
     super()
 
     this.aliveTo0 = new Switch({

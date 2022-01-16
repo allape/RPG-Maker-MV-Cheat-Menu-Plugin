@@ -16,17 +16,17 @@ export interface ISwitchProps {
 
 export default class Switch extends Renderer<HTMLDivElement> {
 
-  static OnHTML = `on`
-  static OffHTML = `off`
-  static OnStyle = ``
-  static OffStyle = ``
+  static OnHTML = 'on'
+  static OffHTML = 'off'
+  static OnStyle = ''
+  static OffStyle = ''
 
   private readonly props: ISwitchProps
 
   private readonly label = document.createElement('div')
   private readonly status = document.createElement('span')
 
-  private _value: boolean = false
+  private _value = false
 
   set text(v: string) {
     this.label.innerHTML = `${v}: `
@@ -41,7 +41,7 @@ export default class Switch extends Renderer<HTMLDivElement> {
       onStyle = Switch.OnStyle,
       offStyle = Switch.OffStyle,
     }} = this
-    status.innerHTML = ``
+    status.innerHTML = ''
     status.append(v ? onHTML : offHTML)
     status.setAttribute('style', v ? onStyle : offStyle)
     status.classList.add('on', 'off')

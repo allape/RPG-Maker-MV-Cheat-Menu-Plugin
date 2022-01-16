@@ -20,7 +20,7 @@ export default class Input extends Renderer<InputElement> {
   get value(): string {
     return this.input.value || ''
   }
-  set value(v: any) {
+  set value(v: string | number | unknown) {
     this.input.value = `${v === undefined || v === null ? '' : v}`
   }
 

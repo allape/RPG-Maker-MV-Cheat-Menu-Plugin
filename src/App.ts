@@ -12,7 +12,10 @@ import PartyMP from './module/PartyMP'
 import PartyTP from './module/PartyTP'
 import EnemyHP from './module/EnemyHP'
 import Stat from './module/Stat'
+import Weapons from './module/Weapons'
+import Armors from './module/Armors'
 
+// eslint-disable-next-line
 export type SubRenderer<T extends Renderer = any> = T
 export interface SubRenderers {
   keymap?: IKeyMap
@@ -66,6 +69,12 @@ export default class App extends Renderer<HTMLDivElement> {
     {
       keymap: KEY_MAPS.Equal,
       module: Stat as SubRenderer,
+    },
+    {
+      module: Weapons as SubRenderer,
+    },
+    {
+      module: Armors as SubRenderer,
     },
   ]
 
@@ -129,7 +138,7 @@ export default class App extends Renderer<HTMLDivElement> {
       }
     }
     switch (e.code) {
-      case App.KeyMap.toggle.code: this._onToggle(); break
+    case App.KeyMap.toggle.code: this._onToggle(); break
     }
   }
 

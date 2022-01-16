@@ -24,7 +24,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
     if (!$gamePlayer._speedCheatInjected) {
       $gamePlayer._speedCheatInjected = true
       Speed.speed = $gamePlayer._moveSpeed
-      Object.defineProperty($gamePlayer, "_moveSpeed", {
+      Object.defineProperty($gamePlayer, '_moveSpeed', {
         get: () => Speed.speed,
         set: (value: number) => {
           if (!Speed.speedLocked) {

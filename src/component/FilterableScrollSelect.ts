@@ -3,22 +3,22 @@ import { Renderer } from '../core/renderer'
 import Input from './Input'
 import ScrollSelect, { IScrollSelectProps } from './ScrollSelect'
 
-export interface IFilterableScrollSelectProps<T = any> extends IScrollSelectProps {
+export interface IFilterableScrollSelectProps<T> extends IScrollSelectProps {
   listProvider: (keyword: string) => T[]
   nameProvider: (item?: T) => string | undefined
   onChange?: (value: T) => void
   placeholder?: string
 }
 
-export default class FilterableScrollSelect<T = any> extends Renderer<HTMLDivElement> {
+export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> {
 
   private readonly props: IFilterableScrollSelectProps<T>
 
   private readonly search = new Input()
   private readonly row: ScrollSelect = new ScrollSelect()
 
-  private _index: number = 0
-  private _keyword: string = ''
+  private _index = 0
+  private _keyword = ''
 
   private _onChange = () => {
     const { _index, row, _keyword } = this
@@ -57,7 +57,7 @@ export default class FilterableScrollSelect<T = any> extends Renderer<HTMLDivEle
     const { listProvider, onLeft, onCenter, onRight } = this.props
 
     this.row = new ScrollSelect({
-    keymap: ScrollSelect.KeyMap34,
+      keymap: ScrollSelect.KeyMap34,
       onLeft: (e) => {
         if (onLeft?.(e)) return true
         this._index = (this._index <= 0 ? listProvider(this._keyword).length : this._index) - 1

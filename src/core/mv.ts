@@ -5,7 +5,7 @@ export default class MV {
   /**
    * 全局对象: 是否显示作弊器
    */
-  visible: boolean = false
+  visible = false
 
   private readonly _loadGameQueue: LoadGame[] = []
   private readonly _setupNewGameQueue: SetupNewGame[] = []
@@ -73,17 +73,17 @@ export default class MV {
 
   on(name: 'loadGame' | 'setupNewGame' | 'saveGame', fn: LoadGame | SetupNewGame | SaveGame): void {
     switch (name) {
-      case 'loadGame': this._loadGameQueue.push(fn); break
-      case 'setupNewGame': this._setupNewGameQueue.push(fn as SetupNewGame); break
-      case 'saveGame': this._saveGameQueue.push(fn); break
+    case 'loadGame': this._loadGameQueue.push(fn); break
+    case 'setupNewGame': this._setupNewGameQueue.push(fn as SetupNewGame); break
+    case 'saveGame': this._saveGameQueue.push(fn); break
     }
   }
 
   off(name: 'loadGame' | 'setupNewGame' | 'saveGame', fn: LoadGame | SetupNewGame | SaveGame): void {
     switch (name) {
-      case 'loadGame': MV._removeFromArray(this._loadGameQueue, fn); break
-      case 'setupNewGame': MV._removeFromArray(this._setupNewGameQueue, fn as SetupNewGame); break
-      case 'saveGame': MV._removeFromArray(this._saveGameQueue, fn); break
+    case 'loadGame': MV._removeFromArray(this._loadGameQueue, fn); break
+    case 'setupNewGame': MV._removeFromArray(this._setupNewGameQueue, fn as SetupNewGame); break
+    case 'saveGame': MV._removeFromArray(this._saveGameQueue, fn); break
     }
   }
 
@@ -132,7 +132,7 @@ export default class MV {
           actor._setTp_proxy(actor._godMode ? actor.maxTp() : tp)
         }
 
-        actor._paySkillCost_proxy = actor.paySkillCost;
+        actor._paySkillCost_proxy = actor.paySkillCost
         actor.paySkillCost = (skill) => {
           if (!actor._godMode) {
             actor._paySkillCost_proxy(skill)
@@ -157,7 +157,7 @@ export default class MV {
     }
   }
 
-  static setVariable(varId: number, value: any) {
+  static setVariable(varId: number, value: number | string | unknown) {
     try {
       $gameVariables.setValue(varId, value)
     } catch (e) {
@@ -165,7 +165,7 @@ export default class MV {
     }
   }
 
-  static setPartyHp(hp: number, alive: boolean = false) {
+  static setPartyHp(hp: number, alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setHp(hp)
@@ -173,7 +173,7 @@ export default class MV {
     }
   }
 
-  static recoverPartyHp(alive: boolean = false) {
+  static recoverPartyHp(alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setHp(member.mhp)
@@ -181,7 +181,7 @@ export default class MV {
     }
   }
 
-  static setPartyMp(mp: number, alive: boolean = false) {
+  static setPartyMp(mp: number, alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setMp(mp)
@@ -189,7 +189,7 @@ export default class MV {
     }
   }
 
-  static recoverPartyMp(alive: boolean = false) {
+  static recoverPartyMp(alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setMp(member.mmp)
@@ -197,7 +197,7 @@ export default class MV {
     }
   }
 
-  static setPartyTp(tp: number, alive: boolean = false) {
+  static setPartyTp(tp: number, alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setTp(tp)
@@ -205,7 +205,7 @@ export default class MV {
     }
   }
 
-  static recoverPartyTp(alive: boolean = false) {
+  static recoverPartyTp(alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setTp(member.maxTp())
@@ -213,7 +213,7 @@ export default class MV {
     }
   }
 
-  static setEnemyHp(hp: number, alive: boolean = false) {
+  static setEnemyHp(hp: number, alive = false) {
     for (const member of $gameTroop.members()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setHp(hp)
@@ -221,7 +221,7 @@ export default class MV {
     }
   }
 
-  static recoverEnemyHp(alive: boolean = false) {
+  static recoverEnemyHp(alive = false) {
     for (const member of $gameTroop.members()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setHp(member.mhp)

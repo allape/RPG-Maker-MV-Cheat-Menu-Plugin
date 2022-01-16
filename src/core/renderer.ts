@@ -10,17 +10,16 @@ export abstract class Renderer<T extends HTMLElement = HTMLElement> {
 
   static MyIcon = ''
 
-  static MyName: string = ''
+  static MyName = ''
 
   static KeyMap: KeyMaps = {}
-
-  constructor() {
-  }
 
   /**
    * dispose current rendered obj
    */
-  public dispose(): void {}
+  public dispose(): void {
+    // nothing here
+  }
 
   /**
    * render content

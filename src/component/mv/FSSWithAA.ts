@@ -22,7 +22,7 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
   private readonly _valueRefreshIntervalId: number = -1
 
-  protected readonly abstract currentAmountProvider: (value?: T) => any
+  protected readonly abstract currentAmountProvider: (value?: T) => number | string | undefined
 
   protected get current(): T {
     return this.scrollSelector?.value
@@ -30,7 +30,7 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
   protected readonly _triggerValueChange = (): void => {
     const current = this.current
-    if (this.currentAmountSelector) {
+    if (this.currentAmountSelector && this.currentAmountProvider) {
       this.currentAmountSelector.value = this.currentAmountProvider(current)
     }
   }

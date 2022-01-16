@@ -9,7 +9,7 @@ export default abstract class DualFSSWithAA<FT, ST> extends FSSWithAA<FT> {
 
   protected abstract readonly secondScrollSelector: FilterableScrollSelect<ST>
 
-  protected readonly abstract amountProvider: (f?: FT, s?: ST) => any
+  protected readonly abstract amountProvider: (f?: FT, s?: ST) => number | string | undefined
 
   protected readonly currentAmountProvider = () => {
     throw new Error('Do not implement this method!')

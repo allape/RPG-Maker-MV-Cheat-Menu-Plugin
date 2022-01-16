@@ -9,7 +9,7 @@ export default class Stat extends DualFSSWithAA<Game_Actor, IStat> {
 
   static MyName = 'Stats'
 
-  protected readonly amountProvider = (f: Game_Actor, s: IStat): any => {
+  protected readonly amountProvider = (f: Game_Actor, s: IStat) => {
     return f && s ? f._paramPlus[s.index] : undefined
   }
 

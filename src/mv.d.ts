@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// noinspection JSUnusedGlobalSymbols
+
 import MV from './core/mv'
 
 export {}
@@ -23,6 +26,10 @@ declare global {
 
   const $dataSystem: Data_System
 
+  const $dataWeapons: Game_Weapon[]
+
+  const $dataArmors: Game_Weapon[]
+
   const $dataItems: Game_Item[]
 
   class Game_Skill {
@@ -43,27 +50,27 @@ declare global {
 
     maxTp: () => number
 
-    gainHp: (hp: number) => void;
-    setHp: (hp: number) => void;
-    gainMp: (mp: number) => void;
-    setMp: (mp: number) => void;
-    gainTp: (tp: number) => void;
-    setTp: (tp: number) => void;
-    paySkillCost: (skill: Game_Skill) => void;
-    addParam: (statIndex: number, amount: number) => void;
+    gainHp: (hp: number) => void
+    setHp: (hp: number) => void
+    gainMp: (mp: number) => void
+    setMp: (mp: number) => void
+    gainTp: (tp: number) => void
+    setTp: (tp: number) => void
+    paySkillCost: (skill: Game_Skill) => void
+    addParam: (statIndex: number, amount: number) => void
 
     // injected
 
     _godModeInjected: boolean | undefined
     _godMode: boolean
     _godModeIntervalId: number | undefined
-    _gainHP_proxy: (hp: number) => void;
-    _setHp_proxy: (hp: number) => void;
-    _gainMp_proxy: (mp: number) => void;
-    _setMp_proxy: (mp: number) => void;
-    _gainTp_proxy: (tp: number) => void;
-    _setTp_proxy: (tp: number) => void;
-    _paySkillCost_proxy: (skill: Game_Skill) => void;
+    _gainHP_proxy: (hp: number) => void
+    _setHp_proxy: (hp: number) => void
+    _gainMp_proxy: (mp: number) => void
+    _setMp_proxy: (mp: number) => void
+    _gainTp_proxy: (tp: number) => void
+    _setTp_proxy: (tp: number) => void
+    _paySkillCost_proxy: (skill: Game_Skill) => void
   }
 
   class Game_Player {
@@ -76,6 +83,8 @@ declare global {
   }
 
   class Game_Party {
+    _weapons: number[]
+    _armors: number[]
     _items: number[]
     _gold: number
     gainItem: (item: Game_Item, amount: number) => void
@@ -95,6 +104,9 @@ declare global {
   class Game_Actors {
     _data: Game_Actor[]
   }
+
+  class Game_Weapon extends Game_Item {}
+  class Game_Armor extends Game_Item {}
 
   class Data_System {
     variables: Array<string | undefined>
