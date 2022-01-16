@@ -24,6 +24,8 @@ declare global {
 
   const $gameVariables: Game_Variables
 
+  const $gameSwitches: Game_Switches
+
   const $dataSystem: Data_System
 
   const $dataWeapons: Game_Weapon[]
@@ -104,6 +106,11 @@ declare global {
     setValue: <T = any>(index: number, value: T) => T
   }
 
+  class Game_Switches {
+    value: (index: number) => boolean
+    setValue: (index: number, value: boolean) => boolean
+  }
+
   class Game_Actors {
     _data: Game_Actor[]
   }
@@ -112,7 +119,8 @@ declare global {
   class Game_Armor extends Game_Item {}
 
   class Data_System {
-    variables: Array<string | undefined>
+    switches: string[]
+    variables: string[]
     terms: {
       params: string[]
     }

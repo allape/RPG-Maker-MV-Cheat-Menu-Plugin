@@ -16,6 +16,7 @@ import Weapons from './module/Weapons'
 import Armors from './module/Armors'
 import NoClip from './module/NoClip'
 import GiveExp from './module/GiveExp'
+import Switches from './module/Switches'
 
 // eslint-disable-next-line
 export type SubRenderer<T extends Renderer = any> = T
@@ -83,6 +84,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: GiveExp as SubRenderer,
+    },
+    {
+      module: Switches as SubRenderer,
     },
   ]
 
