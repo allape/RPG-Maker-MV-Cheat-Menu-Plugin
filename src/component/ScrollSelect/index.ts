@@ -8,10 +8,13 @@ export interface IScrollSelectKeyMap extends KeyMaps {
 }
 
 export interface IScrollSelectProps {
-  leftText?: string
-  rightText?: string
-  keymap?: IScrollSelectKeyMap,
+  keymap?: IScrollSelectKeyMap
   valueProvider?: (value: string) => void
+  leftText?: HTMLElement | string
+  rightText?: HTMLElement | string
+  centerPrefix?: HTMLElement | string
+  center?: HTMLElement | string
+  centerSuffix?: HTMLElement | string
   onLeft?: (e?: Event) => boolean | void
   onRight?: (e?: Event) => boolean | void
   onCenter?: (e?: Event) => boolean | void
@@ -41,10 +44,10 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
 
   private readonly props: IScrollSelectProps
 
-  readonly row = document.createElement('div')
-  readonly left = document.createElement('div')
-  readonly text = document.createElement('div')
-  readonly right = document.createElement('div')
+  private readonly row = document.createElement('div')
+  private readonly left = document.createElement('div')
+  private readonly text = document.createElement('div')
+  private readonly right = document.createElement('div')
 
   set value(v: string) {
     if (this.props.valueProvider) {
@@ -111,6 +114,9 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
       leftText,
       rightText,
       keymap,
+      centerPrefix,
+      center,
+      centerSuffix,
     }} = this
 
     row.classList.add('row-select-wrapper')
@@ -122,6 +128,15 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
 
     text.classList.add('text')
     text.addEventListener('click', this._onCenter)
+    if (centerPrefix) {
+      text.append(centerPrefix)
+    }
+    if (center) {
+      text.append(center)
+    }
+    if (centerSuffix) {
+      text.append(centerSuffix)
+    }
     row.append(text)
 
     right.classList.add('button')

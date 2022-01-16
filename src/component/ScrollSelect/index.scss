@@ -11,11 +11,13 @@
   }
   .text {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 10px;
     cursor: text;
     user-select: text !important;
     & + .button {

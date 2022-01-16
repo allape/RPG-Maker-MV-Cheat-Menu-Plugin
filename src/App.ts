@@ -17,6 +17,7 @@ import Armors from './module/Armors'
 import NoClip from './module/NoClip'
 import GiveExp from './module/GiveExp'
 import Switches from './module/Switches'
+import Teleport from './module/Teleport'
 
 // eslint-disable-next-line
 export type SubRenderer<T extends Renderer = any> = T
@@ -87,6 +88,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Switches as SubRenderer,
+    },
+    {
+      module: Teleport as SubRenderer,
     },
   ]
 
@@ -176,7 +180,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navClose = document.createElement('div')
     navClose.classList.add('nav-button')
-    navClose.innerHTML = `x [${App.KeyMap.toggle.key}]`
+    navClose.innerHTML = `[${App.KeyMap.toggle.key}] X`
     navClose.addEventListener('click', this._onToggle)
     nav.append(navClose)
 

@@ -61,6 +61,8 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
     container.append(amountSelector.render())
     container.append(currentAmountSelector.render())
 
+    this._triggerValueChange()
+
     return container
   }
 

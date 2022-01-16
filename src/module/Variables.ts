@@ -62,7 +62,30 @@ export default class Variables extends FSSWithAA<IVariable> {
       }
     })
     value.rows = 5
-    this.currentAmountSelector.text.append(value)
+
+    this.currentAmountSelector = new ScrollSelect({
+      leftText: '-',
+      rightText: '+',
+      center: value,
+      keymap: ScrollSelect.KeyMap78,
+      valueProvider: value => {
+        this.currentAmountValue.value = value
+      },
+      onLeft: () => {
+        const current = this.current
+        if (current) {
+          MV.setNumberVariable(current.index, -this.amountSelector.value)
+          this._triggerValueChange()
+        }
+      },
+      onRight: () => {
+        const current = this.current
+        if (current) {
+          MV.setNumberVariable(current.index, this.amountSelector.value)
+          this._triggerValueChange()
+        }
+      },
+    })
   }
 
   dispose() {

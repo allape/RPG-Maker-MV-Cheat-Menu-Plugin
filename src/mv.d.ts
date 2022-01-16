@@ -34,6 +34,8 @@ declare global {
 
   const $dataItems: Game_Item[]
 
+  const $dataMapInfos: Game_Map[]
+
   class Game_Skill {
 
   }
@@ -80,9 +82,16 @@ declare global {
   class Game_Player {
     _speedCheatInjected: boolean
     _moveSpeed: number
+    direction: () => any
+    reserveTransfer: (mapId: number, x: number, y: number, direction: any, other: number) => void
+    setPosition: (x: number, y: number) => void
   }
 
   class Game_Item {
+    name: string
+  }
+
+  class Game_Map {
     name: string
   }
 
