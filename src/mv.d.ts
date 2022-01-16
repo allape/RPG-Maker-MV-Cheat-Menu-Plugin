@@ -26,6 +26,8 @@ declare global {
 
   const $gameSwitches: Game_Switches
 
+  const $gameMap: Game_Map
+
   const $dataSystem: Data_System
 
   const $dataWeapons: Game_Weapon[]
@@ -34,7 +36,7 @@ declare global {
 
   const $dataItems: Game_Item[]
 
-  const $dataMapInfos: Game_Map[]
+  const $dataMapInfos: Game_Map_Info[]
 
   class Game_Skill {
 
@@ -80,6 +82,8 @@ declare global {
   }
 
   class Game_Player {
+    x: number
+    y: number
     _speedCheatInjected: boolean
     _moveSpeed: number
     direction: () => any
@@ -91,8 +95,12 @@ declare global {
     name: string
   }
 
-  class Game_Map {
+  class Game_Map_Info {
     name: string
+  }
+
+  class Game_Map {
+    mapId: () => number
   }
 
   class Game_Party {

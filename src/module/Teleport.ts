@@ -3,6 +3,7 @@ import MapSelector from '../component/mv/MapSelector'
 import AmountSelector, {IAmountSelectorProps} from '../component/AmountSelector'
 import ScrollSelect from '../component/ScrollSelect'
 import Switch from '../component/Switch'
+import MV from '../core/mv'
 
 export default class Teleport extends Renderer<HTMLDivElement> {
   static MyName = 'Teleport'
@@ -24,7 +25,10 @@ export default class Teleport extends Renderer<HTMLDivElement> {
   }
 
   private readonly _triggerOnChange = () => {
-    // 1
+    const map = $dataMapInfos[$gameMap.mapId()]
+    if (map && this.teleport) {
+      this.teleport.text = `${map.name || '(null)'} (${$gameMap.mapId()}: [${$gamePlayer.x}, ${$gamePlayer.y}])`
+    }
   }
 
   private readonly mapSelector = new MapSelector({
@@ -60,9 +64,27 @@ export default class Teleport extends Renderer<HTMLDivElement> {
         $gamePlayer.reserveTransfer(mapId, x, y, $gamePlayer.direction(), 0)
         $gamePlayer.setPosition(x, y)
         SoundManager.playSystemSound(1)
+        this._triggerOnChange()
       }
     },
   })
+
+  private readonly _intervalId: number
+
+  private readonly _onGameStart = () => {
+    this._triggerOnChange()
+  }
+
+  constructor() {
+    super()
+
+    this._intervalId = setInterval(() => {
+      this._triggerOnChange()
+    }, 500) as unknown as number
+
+    MV.singleton().on('setupNewGame', this._onGameStart)
+    MV.singleton().on('loadGame', this._onGameStart)
+  }
 
   dispose() {
     super.dispose()
@@ -71,6 +93,9 @@ export default class Teleport extends Renderer<HTMLDivElement> {
     this.xSelector.dispose()
     this.ySelector.dispose()
     this.teleport.dispose()
+
+    MV.singleton().off('setupNewGame', this._onGameStart)
+    MV.singleton().off('loadGame', this._onGameStart)
   }
 
   render(): HTMLDivElement {
