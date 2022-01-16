@@ -58,6 +58,9 @@ export default class Gold extends Renderer<HTMLDivElement> {
     const container = document.createElement('div')
     container.append(this.amount.render())
     container.append(this.currentAmount.render())
+
+    this._onGoldChange()
+
     return container
   }
 

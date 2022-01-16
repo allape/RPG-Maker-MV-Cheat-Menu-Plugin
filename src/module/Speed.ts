@@ -103,6 +103,9 @@ export default class Speed extends Renderer<HTMLDivElement> {
     container.append(this.amount.render())
     container.append(this.currentAmount.render())
     container.append(this.speedLocker.render())
+
+    this._onSpeedChange()
+
     return container
   }
 
