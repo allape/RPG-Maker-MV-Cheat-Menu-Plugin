@@ -58,6 +58,8 @@ declare global {
     setTp: (tp: number) => void
     paySkillCost: (skill: Game_Skill) => void
     addParam: (statIndex: number, amount: number) => void
+    currentExp: () => number
+    gainExp: (exp: number) => void
 
     // injected
 

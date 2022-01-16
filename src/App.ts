@@ -15,6 +15,7 @@ import Stat from './module/Stat'
 import Weapons from './module/Weapons'
 import Armors from './module/Armors'
 import NoClip from './module/NoClip'
+import GiveExp from './module/GiveExp'
 
 // eslint-disable-next-line
 export type SubRenderer<T extends Renderer = any> = T
@@ -79,6 +80,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: NoClip as SubRenderer,
+    },
+    {
+      module: GiveExp as SubRenderer,
     },
   ]
 

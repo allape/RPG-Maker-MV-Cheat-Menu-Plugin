@@ -7,9 +7,11 @@ export default class NoClip extends Renderer<HTMLDivElement> {
 
   private readonly switch = new Switch({
     keymap: KEY_MAPS.Digit3,
+    label: 'Status',
     default: $gameParty._through,
     onChange: () => {
       $gameParty._through = !$gameParty._through
+      SoundManager.playSystemSound($gameParty._through ? 1 : 2)
       this._onChange()
     },
   })
