@@ -14,6 +14,7 @@ import EnemyHP from './module/EnemyHP'
 import Stat from './module/Stat'
 import Weapons from './module/Weapons'
 import Armors from './module/Armors'
+import NoClip from './module/NoClip'
 
 // eslint-disable-next-line
 export type SubRenderer<T extends Renderer = any> = T
@@ -75,6 +76,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Armors as SubRenderer,
+    },
+    {
+      module: NoClip as SubRenderer,
     },
   ]
 

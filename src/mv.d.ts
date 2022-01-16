@@ -87,6 +87,7 @@ declare global {
     _armors: number[]
     _items: number[]
     _gold: number
+    _through: boolean
     gainItem: (item: Game_Item, amount: number) => void
     gainGold: (amount: number) => void
     allMembers: () => Game_Actor[]
