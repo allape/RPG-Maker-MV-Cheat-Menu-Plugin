@@ -103,10 +103,11 @@ export default class App extends Renderer<HTMLDivElement> {
   private _currentModule?: Renderer = undefined
 
   private _showHome = () => {
-    SoundManager.playSystemSound(0)
-
-    this._currentModule?.dispose()
-    this._currentModule = undefined
+    if (this._currentModule) {
+      SoundManager.playSystemSound(0)
+      this._currentModule.dispose()
+      this._currentModule = undefined
+    }
 
     this.navBackButton.style.opacity = '0'
     this.navTextContainer.innerHTML = ''
