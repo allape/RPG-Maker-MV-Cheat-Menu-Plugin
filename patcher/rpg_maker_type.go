@@ -6,32 +6,33 @@ import (
 	"github.com/robertkrimen/otto/ast"
 	"github.com/robertkrimen/otto/parser"
 	"os"
+	"path"
 )
 
 type RPGMakerEngineType struct {
 	Name    string `json:"name"`
-	Handler func()
+	Handler func(pluginName string, printMsg bool) bool
 }
 
 func panicEngineType(str string) {
 	_, _ = Red.Printf("Unable to patch this Game, %s\n", str)
 }
 
-func InjectPatchPlugin(pluginsDotJs string, patcherName string) {
+func InjectPatchPlugin(pluginsDotJs string, patcherName string) bool {
 	_, err := os.Stat(pluginsDotJs)
 	if err != nil {
 		panicEngineType(fmt.Sprintf("%s does NOT exist", pluginsDotJs))
-		return
+		return false
 	}
 	pluginsDotJsContent, err := os.ReadFile(pluginsDotJs)
 	if err != nil {
 		panicEngineType(fmt.Sprintf("unable to load %s", pluginsDotJs))
-		return
+		return false
 	}
 	program, err := parser.ParseFile(nil, "", string(pluginsDotJsContent), 0)
 	if err != nil {
 		panicEngineType("failed to patch programmatically, please patch this game manually...😅")
-		return
+		return false
 	}
 	for _, declaration := range program.DeclarationList {
 		if vd, ok := declaration.(*ast.VariableDeclaration); ok {
@@ -46,7 +47,7 @@ func InjectPatchPlugin(pluginsDotJs string, patcherName string) {
 										if pluginName, ok := property.Value.(*ast.StringLiteral); ok {
 											if pluginName.Value == patcherName {
 												panicEngineType("because this Game has been patched 😊")
-												return
+												return false
 											}
 										}
 									}
@@ -121,49 +122,71 @@ func InjectPatchPlugin(pluginsDotJs string, patcherName string) {
 							)
 							if err != nil {
 								panicEngineType(fmt.Sprintf("failed to write into %s", pluginsDotJs))
-								return
+								return false
 							}
-							_, _ = Cyan.Printf("Patched this Game successfully! Enjoy! 😄\n")
+							_, _ = Cyan.Printf("%s patched!\n", patcherName)
+							return true
 						} else {
 							panicEngineType("unable to find a place to patch...")
 						}
-						return
 					}
 				}
 			}
 		}
 	}
 	panicEngineType(fmt.Sprintf("%s is not a valid plugins.js file", pluginsDotJs))
+	return false
 }
 
-//var RPGMakerEngineTypes = []RPGMakerEngineType{
-//	{
-//		Name: "Auto",
-//		Handler: func() {
-//			pwd, err := os.Getwd()
-//			if err != nil {
-//				panicEngineType("can NOT read current running folder")
-//				panic(err)
-//			}
-//			fs.FileInfo()
-//		},
-//	},
-//	{
-//		Name: "MV",
-//		Handler: func() {
-//			pwd, err := os.Getwd()
-//			if err != nil {
-//				panicEngineType("can NOT read current running folder")
-//				panic(err)
-//			}
-//			jsFolder, err := os.Stat(path.Join(pwd, "www/js"))
-//			if err != nil {
-//				panicEngineType("this is NOT a game made by RPG Maker MV")
-//			}
-//			pluginsFolder, err := os.Stat(path.Join(pwd, "www/js/plugins"))
-//			if err != nil {
-//				panicEngineType("this is no plugins folder found")
-//			}
-//		},
-//	},
-//}
+const Auto = "Auto"
+
+var RPGMakerEngineTypes = []RPGMakerEngineType{
+	{
+		Name: Auto,
+		Handler: func(pluginName string, printMsg bool) bool {
+			return false
+		},
+	},
+	{
+		Name: "MV",
+		Handler: func(pluginName string, printMsg bool) bool {
+			pwd, err := os.Getwd()
+			if err != nil {
+				if printMsg {
+					panicEngineType("can NOT read current running folder")
+				}
+				return false
+			}
+			pluginsJsPath := path.Join(pwd, "www/js/plugins.js")
+			_, err = os.Stat(pluginsJsPath)
+			if err != nil {
+				if printMsg {
+					panicEngineType("this is NOT a RPG Maker MV game")
+					return false
+				}
+			}
+			return InjectPatchPlugin(pluginsJsPath, pluginName)
+		},
+	},
+	{
+		Name: "MZ",
+		Handler: func(pluginName string, printMsg bool) bool {
+			pwd, err := os.Getwd()
+			if err != nil {
+				if printMsg {
+					panicEngineType("can NOT read current running folder")
+				}
+				return false
+			}
+			pluginsJsPath := path.Join(pwd, "js/plugins.js")
+			_, err = os.Stat(pluginsJsPath)
+			if err != nil {
+				if printMsg {
+					panicEngineType("this is NOT a RPG Maker MZ game")
+					return false
+				}
+			}
+			return InjectPatchPlugin(pluginsJsPath, pluginName)
+		},
+	},
+}
