@@ -12,7 +12,7 @@ import (
 
 type RPGMakerEngineType struct {
 	Name    string `json:"name"`
-	Handler func(pluginName string) bool
+	Handler func(pluginName string, shouldBackupPluginJs bool) bool
 }
 
 func panicEngineType(str string) bool {
@@ -20,7 +20,7 @@ func panicEngineType(str string) bool {
 	return false
 }
 
-func InjectPatchPlugin(pluginsDotJs string, patcherName string) bool {
+func InjectPatchPlugin(pluginsDotJs string, patcherName string, shouldBackupPluginJs bool) bool {
 	_, err := os.Stat(pluginsDotJs)
 	if err != nil {
 		return panicEngineType(fmt.Sprintf("%s does NOT exist", pluginsDotJs))
@@ -99,10 +99,17 @@ func InjectPatchPlugin(pluginsDotJs string, patcherName string) bool {
 							}
 						}
 						if readyForInjection {
-							pluginObjectBytes := []byte(fmt.Sprintf("{\"name\":\"%s\",\"status\":true,\"description\":\"\",\"parameters\":{}},", patcherName))
+							pluginObjectBytes := []byte(fmt.Sprintf("{\"name\":\"%s\",\"status\":true,\"description\":\"\",\"parameters\":{}}", patcherName))
 							extraBytes := []byte("")
 							if len(suffixBytes) > 0 && suffixBytes[0] != '\n' {
 								extraBytes = []byte("\n")
+							}
+							if shouldBackupPluginJs {
+								backupFileName := pluginsDotJs + ".bak"
+								err = os.WriteFile(backupFileName, pluginsDotJsContent, 0o666)
+								if err != nil {
+									return panicEngineType(fmt.Sprintf("failed to backup %s as %s", pluginsDotJs, backupFileName))
+								}
 							}
 							err = os.WriteFile(
 								pluginsDotJs,
@@ -139,13 +146,13 @@ const Auto = "Auto"
 var RPGMakerEngineTypes = []RPGMakerEngineType{
 	{
 		Name: Auto,
-		Handler: func(pluginName string) bool {
+		Handler: func(pluginName string, shouldBackupPluginJs bool) bool {
 			return false
 		},
 	},
 	{
 		Name: "MV",
-		Handler: func(pluginName string) bool {
+		Handler: func(pluginName string, shouldBackupPluginJs bool) bool {
 			pwd, err := os.Getwd()
 			if err != nil {
 				return panicEngineType("can NOT read current running folder")
@@ -155,12 +162,12 @@ var RPGMakerEngineTypes = []RPGMakerEngineType{
 			if err != nil {
 				return panicEngineType("this is NOT a RPG Maker MV game")
 			}
-			return InjectPatchPlugin(pluginsJsPath, pluginName)
+			return InjectPatchPlugin(pluginsJsPath, pluginName, shouldBackupPluginJs)
 		},
 	},
 	{
 		Name: "MZ",
-		Handler: func(pluginName string) bool {
+		Handler: func(pluginName string, shouldBackupPluginJs bool) bool {
 			pwd, err := os.Getwd()
 			if err != nil {
 				return panicEngineType("can NOT read current running folder")
@@ -170,7 +177,7 @@ var RPGMakerEngineTypes = []RPGMakerEngineType{
 			if err != nil {
 				return panicEngineType("this is NOT a RPG Maker MZ game")
 			}
-			return InjectPatchPlugin(pluginsJsPath, pluginName)
+			return InjectPatchPlugin(pluginsJsPath, pluginName, shouldBackupPluginJs)
 		},
 	},
 }
