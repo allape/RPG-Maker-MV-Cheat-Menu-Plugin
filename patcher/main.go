@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"os"
 	"path"
 	"strings"
@@ -56,6 +57,7 @@ func main() {
 	}
 
 	_, _ = Cyan.Printf("Done, press \"Enter\" to exit...\n")
+	_, _ = bufio.NewReader(os.Stdin).ReadString('\n')
 	os.Exit(0)
 }
 
