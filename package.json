@@ -4,10 +4,14 @@
   "description": "Refined cheat plugin for RPG Maker MV",
   "private": true,
   "scripts": {
-    "clean": "npx rimraf build/ dist/",
-    "cp": "copyfiles -u 1 src/**/*.scss src/**/*.sass src/**/*.css build/",
-    "prebuild": "npm run clean && tsc",
-    "build": "npm run cp && webpack",
+    "prepare:clean": "npx rimraf build/ dist/",
+    "prepare:webpack": "copyfiles -u 1 src/**/*.scss src/**/*.sass src/**/*.css build/",
+
+    "build:ts": "npm run prepare:clean && tsc",
+    "build:webpack": "npm run prepare:webpack && webpack",
+    "build:go": "cd patcher && build.sh",
+
+    "build": "npm run build:ts && npm run build:webpack && npm run build:go",
     "postbuild": "node postbuild.js"
   },
   "keywords": [

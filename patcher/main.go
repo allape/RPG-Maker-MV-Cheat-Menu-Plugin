@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/manifoldco/promptui"
 	"os"
 	"path"
 	"strings"
+
+	"github.com/manifoldco/promptui"
 )
 
-const pluginsPatchFileName = "plugins_patch.txt"
+const pluginsPatchFileName = "plugins_patch.go.txt"
 
 func main() {
 	InitColorfulOutput()
@@ -47,17 +48,10 @@ func main() {
 		return
 	}
 
-	if result == Auto {
-		for i := 1; i < len(RPGMakerEngineTypes); i++ {
-			engineType := RPGMakerEngineTypes[i]
-			runInjection(engineType, pluginNames, false)
-		}
-	} else {
-		for i := 0; i < len(RPGMakerEngineTypes); i++ {
-			engineType := RPGMakerEngineTypes[i]
-			if engineType.Name == result {
-				runInjection(engineType, pluginNames, true)
-			}
+	for i := 1; i < len(RPGMakerEngineTypes); i++ {
+		engineType := RPGMakerEngineTypes[i]
+		if engineType.Name == result || result == Auto {
+			runInjection(engineType, pluginNames)
 		}
 	}
 
@@ -65,11 +59,11 @@ func main() {
 	os.Exit(0)
 }
 
-func runInjection(engineType RPGMakerEngineType, pluginNames []string, printMsg bool) {
+func runInjection(engineType RPGMakerEngineType, pluginNames []string) {
 	for i := 0; i < len(pluginNames); i++ {
 		trimmedPluginName := strings.TrimSpace(pluginNames[i])
 		if trimmedPluginName != "" {
-			engineType.Handler(trimmedPluginName, printMsg)
+			engineType.Handler(trimmedPluginName)
 		}
 	}
 }

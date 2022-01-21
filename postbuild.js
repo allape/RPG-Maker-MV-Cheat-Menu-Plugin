@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path')
 
-fs.copyFileSync('./dist/www/js/plugins/AsCheater.js', './public/index.js')
 fs.copyFileSync('./plugins_patch.txt', './dist/plugins_patch.txt')
+fs.copyFileSync('./plugins_patch.go.txt', './dist/plugins_patch.go.txt')
+
+fs.copyFileSync('./dist/www/js/plugins/AsCheater.js', './public/index.js')
 
 const copycat = path.join(__dirname, 'copycat.json')
 if (fs.existsSync(copycat)) {
