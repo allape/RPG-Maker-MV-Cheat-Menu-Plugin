@@ -100,6 +100,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
   private readonly wrapper = document.createElement('div')
   private readonly navBackButton = document.createElement('div')
+  private readonly navShiftButton = document.createElement('div')
   private readonly navNextButton = document.createElement('div')
   private readonly navTextContainer = document.createElement('div')
   private readonly container = document.createElement('div')
@@ -117,8 +118,9 @@ export default class App extends Renderer<HTMLDivElement> {
       this._currentModule = undefined
     }
 
-    this.navBackButton.style.opacity = '0'
-    this.navNextButton.style.opacity = '0'
+    this.navBackButton.style.display = 'none'
+    this.navShiftButton.style.display = 'block'
+    this.navNextButton.style.display = 'none'
     this.navTextContainer.innerHTML = ''
 
     this.container.innerHTML = ''
@@ -141,8 +143,9 @@ export default class App extends Renderer<HTMLDivElement> {
 
       SoundManager.playSystemSound(1)
 
-      this.navBackButton.style.opacity = '1'
-      this.navNextButton.style.opacity = '1'
+      this.navBackButton.style.display = 'block'
+      this.navShiftButton.style.display = 'none'
+      this.navNextButton.style.display = 'block'
       this.navTextContainer.innerHTML = m.MyName
 
       this._currentModule = new m()
@@ -161,6 +164,12 @@ export default class App extends Renderer<HTMLDivElement> {
     SoundManager.playSystemSound(mv.visible ? 1 : 0)
   }
 
+  private _shiftShortcuts = () => {
+    const maxFactor = Math.floor(App.Modules.length / App.ModulesKeymaps.length)
+    this._moduleIndexFactor = this._moduleIndexFactor >= maxFactor ? 0 : (this._moduleIndexFactor + 1)
+    this._showHome()
+  }
+
   private _onKeydown = (e: KeyboardEvent) => {
     if (MV.singleton().visible) {
       if (this._currentModule) {
@@ -176,9 +185,7 @@ export default class App extends Renderer<HTMLDivElement> {
       } else {
         if (e.code === App.KeyMap.back.code) {
           // shift shortcuts
-          const maxFactor = Math.floor(App.Modules.length / App.ModulesKeymaps.length)
-          this._moduleIndexFactor = this._moduleIndexFactor >= maxFactor ? 0 : (this._moduleIndexFactor + 1)
-          this._showHome()
+          this._shiftShortcuts()
         } else {
           // module select
           const m = App.Modules.find(i => i.keymap?.code === e.code)?.module
@@ -205,6 +212,12 @@ export default class App extends Renderer<HTMLDivElement> {
     navBack.innerHTML = `← [${App.KeyMap.back.key}]`
     navBack.addEventListener('click', this._showHome)
     nav.append(navBack)
+
+    const navShift = this.navShiftButton
+    navShift.classList.add('nav-button')
+    navShift.innerHTML = `[${App.KeyMap.back.key}] shift`
+    navShift.addEventListener('click', this._shiftShortcuts)
+    nav.append(navShift)
 
     const navNext = this.navNextButton
     navNext.classList.add('nav-button')
