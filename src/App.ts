@@ -34,45 +34,48 @@ export default class App extends Renderer<HTMLDivElement> {
     next: KEY_MAPS.Backquote,
   }
 
+  static ModulesKeymaps = [
+    KEY_MAPS.Digit3,
+    KEY_MAPS.Digit4,
+    KEY_MAPS.Digit5,
+    KEY_MAPS.Digit6,
+    KEY_MAPS.Digit7,
+    KEY_MAPS.Digit8,
+    KEY_MAPS.Digit9,
+    KEY_MAPS.Digit0,
+    KEY_MAPS.Minus,
+    KEY_MAPS.Equal,
+  ]
+
   static Modules: SubRenderers[] = [
     {
-      keymap: KEY_MAPS.Digit3,
       module: GodMode as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit4,
       module: Speed as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit5,
       module: Gold as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit6,
       module: Items as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit7,
       module: Variables as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit8,
       module: EnemyHP as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit9,
       module: PartyMP as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Digit0,
       module: PartyTP as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Minus,
       module: PartyHP as SubRenderer,
     },
     {
-      keymap: KEY_MAPS.Equal,
       module: Stat as SubRenderer,
     },
     {
@@ -100,13 +103,16 @@ export default class App extends Renderer<HTMLDivElement> {
   private readonly navNextButton = document.createElement('div')
   private readonly navTextContainer = document.createElement('div')
   private readonly container = document.createElement('div')
-  private readonly homeContainer = document.createElement('div')
 
   private _currentModule?: Renderer = undefined
 
+  /**
+   * used for shifting shortcut for modules
+   */
+  private _moduleIndexFactor = 0
+
   private _showHome = () => {
     if (this._currentModule) {
-      SoundManager.playSystemSound(0)
       this._currentModule.dispose()
       this._currentModule = undefined
     }
@@ -116,7 +122,9 @@ export default class App extends Renderer<HTMLDivElement> {
     this.navTextContainer.innerHTML = ''
 
     this.container.innerHTML = ''
-    this.container.append(this.homeContainer)
+    this.container.append(this._buildHome())
+
+    SoundManager.playSystemSound(0)
   }
 
   private _nextModule = () => {
@@ -166,9 +174,16 @@ export default class App extends Renderer<HTMLDivElement> {
           break
         }
       } else {
-        // module select
-        const m = App.Modules.find(i => i.keymap?.code === e.code)?.module
-        if (m) this._buildModule(m)
+        if (e.code === App.KeyMap.back.code) {
+          // shift shortcuts
+          const maxFactor = Math.floor(App.Modules.length / App.ModulesKeymaps.length)
+          this._moduleIndexFactor = this._moduleIndexFactor >= maxFactor ? 0 : (this._moduleIndexFactor + 1)
+          this._showHome()
+        } else {
+          // module select
+          const m = App.Modules.find(i => i.keymap?.code === e.code)?.module
+          if (m) this._buildModule(m)
+        }
       }
     }
     switch (e.code) {
@@ -212,12 +227,19 @@ export default class App extends Renderer<HTMLDivElement> {
   }
 
   private _buildHome() {
-    const container = this.homeContainer
+    const container = document.createElement('div')
     container.classList.add('cheater-items-wrapper')
+
+    const keymapLength = App.ModulesKeymaps.length
+
     container.append(...(App.Modules.map((m, i) => {
+      // shortcut apples to shift
+      m.keymap = Math.floor(i / keymapLength) === this._moduleIndexFactor ?
+        App.ModulesKeymaps[i % keymapLength] : undefined
+
       const mItemContainer = document.createElement('div')
       mItemContainer.classList.add('cheater-item-wrapper')
-      mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ''}`)
+      mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ' *'}`)
       mItemContainer.setAttribute('data-index', `${i}`)
       mItemContainer.addEventListener('click', () => {
         this._buildModule(m.module)
@@ -243,8 +265,6 @@ export default class App extends Renderer<HTMLDivElement> {
     wrapper.style.zIndex = `${Number.MAX_SAFE_INTEGER}`
 
     wrapper.append(this._buildNav())
-
-    this._buildHome()
 
     container.classList.add('as-cheater-container')
     wrapper.append(container)
