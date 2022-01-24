@@ -12,8 +12,4 @@ export default class Weapons extends ItemBaseModule<Game_Weapon> {
   protected readonly currentAmountProvider =
     (current: Game_Weapon) => current ? $gameParty._weapons[$dataWeapons.indexOf(current)] : undefined
 
-  constructor() {
-    super()
-  }
-
 }

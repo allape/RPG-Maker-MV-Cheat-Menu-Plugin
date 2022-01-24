@@ -9,7 +9,7 @@
 
     "build:ts": "npm run prepare:clean && tsc",
     "build:webpack": "npm run prepare:webpack && webpack",
-    "build:go": "cd patcher && build.sh",
+    "build:go": "cd patcher && ./build.sh",
 
     "build": "npm run build:ts && npm run build:webpack && npm run build:go",
     "postbuild": "node postbuild.js"

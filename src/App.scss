@@ -40,12 +40,12 @@
     .cheater-items-wrapper {
       display: flex;
       justify-content: space-evenly;
-      align-items: center;
+      align-items: flex-start;
       flex-wrap: wrap;
       border: 1px solid white;
       .cheater-item-wrapper {
         flex: 1;
-        min-width: 80px;
+        min-width: 60px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -57,6 +57,7 @@
         line-height: 24px;
         font-size: 14px;
         text-align: center;
+        padding: 5px;
         &:hover {
           background-color: rgba(0, 0, 0, .3);
         }

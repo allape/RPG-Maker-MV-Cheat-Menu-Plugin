@@ -215,7 +215,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navShift = this.navShiftButton
     navShift.classList.add('nav-button')
-    navShift.innerHTML = `[${App.KeyMap.back.key}] shift`
+    navShift.innerHTML = `[${App.KeyMap.back.key}] Shift Shortcuts`
     navShift.addEventListener('click', this._shiftShortcuts)
     nav.append(navShift)
 
@@ -232,7 +232,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navClose = document.createElement('div')
     navClose.classList.add('nav-button')
-    navClose.innerHTML = `[${App.KeyMap.toggle.key}] X`
+    navClose.innerHTML = `[${App.KeyMap.toggle.key}] ✕`
     navClose.addEventListener('click', this._onToggle)
     nav.append(navClose)
 
@@ -252,7 +252,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
       const mItemContainer = document.createElement('div')
       mItemContainer.classList.add('cheater-item-wrapper')
-      mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ' *'}`)
+      mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ' <br>'}`)
       mItemContainer.setAttribute('data-index', `${i}`)
       mItemContainer.addEventListener('click', () => {
         this._buildModule(m.module)
@@ -283,6 +283,10 @@ export default class App extends Renderer<HTMLDivElement> {
     wrapper.append(container)
 
     this._showHome()
+
+    wrapper.addEventListener('mousedown', e => {
+      e.stopImmediatePropagation()
+    }, true)
 
     return wrapper
   }

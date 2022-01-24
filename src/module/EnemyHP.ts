@@ -1,7 +1,7 @@
 import MV from '../core/mv'
-import PBasedModule from '../component/mv/PBasedModule'
+import XPBasedModule from '../component/mv/XPBasedModule'
 
-export default class EnemyHP extends PBasedModule {
+export default class EnemyHP extends XPBasedModule {
 
   static MyName = 'Enemy HP'
 
@@ -27,14 +27,6 @@ export default class EnemyHP extends PBasedModule {
         MV.recoverEnemyHp(false)
       },
     })
-  }
-
-  dispose() {
-    super.dispose()
-  }
-
-  render(): HTMLDivElement {
-    return super.render()
   }
 
 }

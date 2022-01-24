@@ -27,28 +27,7 @@ export default class Variables extends FSSWithAA<IVariable> {
     type: 'textarea',
   })
 
-  protected readonly currentAmountSelector = new ScrollSelect({
-    leftText: '-',
-    rightText: '+',
-    keymap: ScrollSelect.KeyMap78,
-    valueProvider: value => {
-      this.currentAmountValue.value = value
-    },
-    onLeft: () => {
-      const current = this.current
-      if (current) {
-        MV.setNumberVariable(current.index, -this.amountSelector.value)
-        this._triggerValueChange()
-      }
-    },
-    onRight: () => {
-      const current = this.current
-      if (current) {
-        MV.setNumberVariable(current.index, this.amountSelector.value)
-        this._triggerValueChange()
-      }
-    },
-  })
+  protected readonly currentAmountSelector
 
   constructor() {
     super()

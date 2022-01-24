@@ -13,9 +13,9 @@ export interface IPBasedModuleProps {
 }
 
 /**
- * P = HP or MP or TP, or something like this
+ * *P = HP or MP or TP, or something like this
  */
-export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
+export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
 
   static KeyMap = {
     aliveTo0: KEY_MAPS.Digit3,
@@ -46,9 +46,9 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
     super()
 
     this.aliveTo0 = new Switch({
-      ...PBasedModule.DefaultSwitchProps,
+      ...XPBasedModule.DefaultSwitchProps,
       label: `${props.name} to 0`,
-      keymap: PBasedModule.KeyMap.aliveTo0,
+      keymap: XPBasedModule.KeyMap.aliveTo0,
       onChange: () => {
         props.onAliveTo0()
         SoundManager.playSystemSound(1)
@@ -56,9 +56,9 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.aliveTo1 = new Switch({
-      ...PBasedModule.DefaultSwitchProps,
+      ...XPBasedModule.DefaultSwitchProps,
       label: `${props.name} to 1`,
-      keymap: PBasedModule.KeyMap.aliveTo1,
+      keymap: XPBasedModule.KeyMap.aliveTo1,
       onChange: () => {
         props.onAliveTo1()
         SoundManager.playSystemSound(1)
@@ -66,9 +66,9 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.alive2Max = new Switch({
-      ...PBasedModule.DefaultSwitchProps,
+      ...XPBasedModule.DefaultSwitchProps,
       label: `${props.name} to MAX`,
-      keymap: PBasedModule.KeyMap.alive2Max,
+      keymap: XPBasedModule.KeyMap.alive2Max,
       onChange: () => {
         props.onAlive2Max()
         SoundManager.playSystemSound(1)
@@ -76,9 +76,9 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.allTo0 = new Switch({
-      ...PBasedModule.DefaultSwitchProps,
+      ...XPBasedModule.DefaultSwitchProps,
       label: `${props.name} to 0`,
-      keymap: PBasedModule.KeyMap.allTo0,
+      keymap: XPBasedModule.KeyMap.allTo0,
       onChange: () => {
         props.onAllTo0()
         SoundManager.playSystemSound(1)
@@ -86,9 +86,9 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.allTo1 = new Switch({
-      ...PBasedModule.DefaultSwitchProps,
+      ...XPBasedModule.DefaultSwitchProps,
       label: `${props.name} to 1`,
-      keymap: PBasedModule.KeyMap.allTo1,
+      keymap: XPBasedModule.KeyMap.allTo1,
       onChange: () => {
         props.onAllTo1()
         SoundManager.playSystemSound(1)
@@ -96,9 +96,9 @@ export default abstract class PBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.all2Max = new Switch({
-      ...PBasedModule.DefaultSwitchProps,
+      ...XPBasedModule.DefaultSwitchProps,
       label: `${props.name} to MAX`,
-      keymap: PBasedModule.KeyMap.all2Max,
+      keymap: XPBasedModule.KeyMap.all2Max,
       onChange: () => {
         props.onAll2Max()
         SoundManager.playSystemSound(1)

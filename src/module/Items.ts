@@ -12,8 +12,4 @@ export default class Items extends ItemBaseModule<Game_Item> {
   protected readonly currentAmountProvider =
     (current?: Game_Item) => current ? $gameParty._items[$dataItems.indexOf(current)] : undefined
 
-  constructor() {
-    super()
-  }
-
 }

@@ -1,7 +1,7 @@
 import MV from '../core/mv'
-import PBasedModule from '../component/mv/PBasedModule'
+import XPBasedModule from '../component/mv/XPBasedModule'
 
-export default class PartyTP extends PBasedModule {
+export default class PartyTP extends XPBasedModule {
 
   static MyName = 'Party TP'
 
@@ -27,14 +27,6 @@ export default class PartyTP extends PBasedModule {
         MV.recoverPartyTp(false)
       },
     })
-  }
-
-  dispose() {
-    super.dispose()
-  }
-
-  render(): HTMLDivElement {
-    return super.render()
   }
 
 }

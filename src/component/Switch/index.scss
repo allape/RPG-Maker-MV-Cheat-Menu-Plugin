@@ -12,6 +12,10 @@
     cursor: pointer;
     user-select: none;
     padding: 10px;
+    opacity: .8;
+    &:hover {
+      opacity: 1;
+    }
     .keystroke {
       padding: 0 0 0 10px;
     }

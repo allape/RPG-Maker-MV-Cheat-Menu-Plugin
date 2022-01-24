@@ -1,7 +1,7 @@
 import ItemBaseModule from '../component/mv/ItemBaseModule'
 import ArmorSelector from '../component/mv/ArmorSelector'
 
-export default class Armors extends ItemBaseModule<Game_Weapon> {
+export default class Armors extends ItemBaseModule<Game_Armor> {
 
   static MyName = 'Armors'
 
@@ -10,7 +10,7 @@ export default class Armors extends ItemBaseModule<Game_Weapon> {
   })
 
   protected readonly currentAmountProvider =
-    (current: Game_Weapon) => current ? $gameParty._armors[$dataArmors.indexOf(current)] : undefined
+    (current: Game_Armor) => current ? $gameParty._armors[$dataArmors.indexOf(current)] : undefined
 
   constructor() {
     super()
