@@ -5,10 +5,12 @@ import Input from '../../component/Input'
 import ScrollSelect from '../../component/ScrollSelect'
 import './index.scss'
 
-interface ILanguage {
+export interface ILanguage {
   code: string
   name: string
 }
+
+export type HTMLString = string
 
 export const _cache: Record<string, Record<string, string>> = {}
 
@@ -78,6 +80,14 @@ export default class Translate extends Renderer<HTMLDivElement> {
     this._languages = await this.fetchLanguages()
     this.sls.index = this._languages.findIndex(i => i.code === this.sourceLanguage)
     this.tls.index = this._languages.findIndex(i => i.code === this.targetLanguage)
+
+    console.log(this)
+  }
+
+  private getCurrentLanguageCache (): Record<string, string> {
+    const key = `${this.sourceLanguage}>${this.targetLanguage}`
+    _cache[key] = _cache[key] || {}
+    return _cache[key]
   }
 
   private async fetchLanguages(): Promise<ILanguage[]> {
@@ -91,6 +101,32 @@ export default class Translate extends Renderer<HTMLDivElement> {
       this._loading = false
     }
     return []
+  } 
+  
+  private async translate(source: string): Promise<HTMLString> {
+    if (!source || !source.trim()) return source
+    const cache = this.getCurrentLanguageCache()
+    if (cache[source]) {
+      return cache[source]
+    }
+    try {
+      const res = await fetch(
+        `${this.translatorServerBaseURL}/translate?${(new URLSearchParams({
+          q: source,
+          source: this.sourceLanguage,
+          target: this.targetLanguage,
+          format: 'text',
+        })).toString()}`, 
+        {
+          method: 'POST',
+        }
+      )
+      const result = (await res.json()).translatedText
+      cache[source] = result
+      return result
+    } catch (e) {
+      return `<failed to translate: ${Translate.stringifyError(e)}>`
+    }
   }
 
   private buildComponent(): HTMLDivElement {
