@@ -8,6 +8,7 @@ export {}
 declare global {
   interface Window {
     __hookedMV: MV
+    __permission_network?: boolean;
   }
 
   const nw: any

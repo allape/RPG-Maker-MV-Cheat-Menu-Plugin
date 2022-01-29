@@ -1,0 +1,16 @@
+.module-translate-wrapper {
+  width: calc(50vw - 40px);
+  .url-row-wrapper {
+    display: flex;
+    align-items: center;
+    .input-col {
+      flex: 1;
+    }
+  }
+  .language-selector-row {
+    display: flex;
+    .language-selector {
+      flex: 1;
+    }
+  }
+}

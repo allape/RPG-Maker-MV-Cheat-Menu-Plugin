@@ -2,7 +2,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 500px;
+  min-width: 500px;
+  max-width: 50%;
   background: rgba(0, 0, 0, .5);
   color: white;
   //transition: .3s;

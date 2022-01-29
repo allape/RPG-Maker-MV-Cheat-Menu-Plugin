@@ -18,6 +18,7 @@ import NoClip from './module/NoClip'
 import GiveExp from './module/GiveExp'
 import Switches from './module/Switches'
 import Teleport from './module/Teleport'
+import Translate from './module/Translate'
 
 // eslint-disable-next-line
 export type SubRenderer<T extends Renderer = any> = T
@@ -95,6 +96,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Teleport as SubRenderer,
+    },
+    {
+      module: Translate as SubRenderer,
     },
   ]
 

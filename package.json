@@ -6,11 +6,9 @@
   "scripts": {
     "prepare:clean": "npx rimraf build/ dist/",
     "prepare:webpack": "copyfiles -u 1 src/**/*.scss src/**/*.sass src/**/*.css build/",
-
     "build:ts": "npm run prepare:clean && tsc",
     "build:webpack": "npm run prepare:webpack && webpack",
     "build:go": "cd patcher && ./build.sh",
-
     "build": "npm run build:ts && npm run build:webpack && npm run build:go",
     "postbuild": "node postbuild.js"
   },
@@ -33,5 +31,8 @@
     "typescript": "^4.4.4",
     "webpack": "^5.62.1",
     "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.6.2"
   }
 }
