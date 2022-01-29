@@ -11,11 +11,11 @@ export default class GodMode extends Renderer {
 
   static MyName = 'God Mode'
 
-  private readonly actor = new ActorSelector()
+  private readonly actor: ActorSelector
   private readonly switcher: Switch
 
-  private get current(): Game_Actor {
-    return this.actor.value
+  private get current(): Game_Actor | undefined {
+    return this.actor?.value
   }
 
   private readonly _whoIsYourDaddy = (value: boolean) => {
@@ -47,6 +47,13 @@ export default class GodMode extends Renderer {
   constructor() {
     super()
 
+    this.actor = new ActorSelector({
+      onChange: actor => {
+        if (actor && this.switcher) {
+          this.switcher.value = !!actor._godMode
+        }
+      },
+    })
     this.switcher = new Switch({
       label: 'Current Status',
       default: !!this.current?._godMode,
@@ -78,6 +85,9 @@ export default class GodMode extends Renderer {
     const container = document.createElement('div')
     container.append(this.actor.render())
     container.append(this.switcher.render())
+
+    this._onGameStart()
+
     return container
   }
 }
