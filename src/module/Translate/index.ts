@@ -1,7 +1,9 @@
-import { Renderer } from '../../core/renderer'
+import { KeyMaps, KEY_MAPS, Renderer } from '../../core/renderer'
 import 'whatwg-fetch'
 import FilterableScrollSelect from '../../component/FilterableScrollSelect'
 import Input from '../../component/Input'
+import ScrollSelect from '../../component/ScrollSelect'
+import './index.scss'
 
 interface ILanguage {
   code: string
@@ -10,12 +12,23 @@ interface ILanguage {
 
 export const _cache: Record<string, Record<string, string>> = {}
 
+/**
+ * sls = source language selector
+ * tls = target language selector
+ */
 export default class Translate extends Renderer<HTMLDivElement> {
+  static MyName = 'Translate'
+
+  static KeyMap: KeyMaps = {
+    reload: KEY_MAPS.Equal,
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static stringifyError(e: any): string {
     return e ? ('message' in e ? e.message : e) : 'unknown error'
   }
 
+  private _loading = false
   private _languages: ILanguage[] = []
 
   private translatorServerBaseURL = 'https://translate.mentality.rip'
@@ -25,46 +38,63 @@ export default class Translate extends Renderer<HTMLDivElement> {
   private readonly urlInput = new Input()
   private readonly retry = document.createElement('button')
 
-  private readonly sourceLanguageSelector = new FilterableScrollSelect<ILanguage>({
+  // private readonly slsTitle = new Title({ title: 'Source Language' })
+  private readonly sls = new FilterableScrollSelect<ILanguage>({
+    keymap: ScrollSelect.KeyMap34,
     listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
-    nameProvider: v => v.name,
-    placeholder: 'Search Language by Name',
+    nameProvider: v => v?.name,
+    placeholder: 'Search Source Language by Name',
     onChange: v => {
       if (v) this.sourceLanguage = v.code
     },
   })
 
-  private readonly targetLanguageSelector = new FilterableScrollSelect<ILanguage>({
+  // private readonly tlsTitle = new Title({ title: 'Target Language' })
+  private readonly tls = new FilterableScrollSelect<ILanguage>({
+    keymap: ScrollSelect.KeyMap56,
     listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
-    nameProvider: v => v.name,
-    placeholder: 'Search Language by Name',
+    nameProvider: v => v?.name,
+    placeholder: 'Search Target Language by Name',
     onChange: v => {
       if (v) this.targetLanguage = v.code
     },
   })
 
+  private _onKeydown = (e: KeyboardEvent) => {
+    switch (e.code) {
+    case Translate.KeyMap.reload.code: this.init().then(); break
+    }
+  }
+
   constructor() {
     super()
 
     this.init().then()
+    window.addEventListener('keydown', this._onKeydown)
   }
 
   private async init() {
+    if (this._loading) return
     this._languages = await this.fetchLanguages()
+    this.sls.index = this._languages.findIndex(i => i.code === this.sourceLanguage)
+    this.tls.index = this._languages.findIndex(i => i.code === this.targetLanguage)
   }
 
   private async fetchLanguages(): Promise<ILanguage[]> {
     try {
+      this._loading = true
       const res = await fetch(`${this.translatorServerBaseURL}/languages`)
       return await res.json()
     } catch (e) {
       alert('failed to load support language, please retry: ' + Translate.stringifyError(e))
+    } finally {
+      this._loading = false
     }
     return []
   }
 
   private buildComponent(): HTMLDivElement {
-    const { urlInput, retry, sourceLanguageSelector, targetLanguageSelector } = this
+    const { urlInput, retry, sls, tls } = this
 
     const container = document.createElement('div')
     container.classList.add('module-translate-wrapper')
@@ -78,13 +108,14 @@ export default class Translate extends Renderer<HTMLDivElement> {
     urlRow.append(inputCol)
 
     const inputRef = urlInput.render()
+    inputRef.placeholder = 'URL is required'
+    inputRef.value = this.translatorServerBaseURL
     inputRef.addEventListener('change', () => {
       this.translatorServerBaseURL = urlInput.value
     })
     inputCol.append(inputRef)
 
-    retry.innerHTML = 'retry'
-    retry.style.display = 'none'
+    retry.innerHTML = `RELOAD [${Translate.KeyMap.reload.key}]`
     retry.addEventListener('click', () => {
       this.init().then()
     })
@@ -94,16 +125,15 @@ export default class Translate extends Renderer<HTMLDivElement> {
     languageSelectorRow.classList.add('language-selector-row')
     container.append(languageSelectorRow)
 
-    // sls = source language selector
     const slsWrapper = document.createElement('div')
     slsWrapper.classList.add('language-selector')
-    slsWrapper.append(sourceLanguageSelector.render())
-    languageSelectorRow.classList.add('language-selector-row')
+    slsWrapper.append(sls.render())
+    languageSelectorRow.append(slsWrapper)
 
-    // tls = target language selector
     const tlsWrapper = document.createElement('div')
     tlsWrapper.classList.add('language-selector')
-    tlsWrapper.append(targetLanguageSelector.render())
+    tlsWrapper.append(tls.render())
+    languageSelectorRow.append(tlsWrapper)
 
     return container
   }
@@ -111,8 +141,9 @@ export default class Translate extends Renderer<HTMLDivElement> {
   public dispose(): void {
     super.dispose()
     this.urlInput.dispose()
-    this.sourceLanguageSelector.dispose()
-    this.targetLanguageSelector.dispose()
+    this.sls.dispose()
+    this.tls.dispose()
+    window.removeEventListener('keydown', this._onKeydown)
   }
 
   render(): HTMLDivElement {

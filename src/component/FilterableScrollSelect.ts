@@ -45,6 +45,10 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
   get value(): T | undefined {
     return this.props.listProvider(this._keyword)[this._index]
   }
+  set index(i: number) {
+    this._index = i
+    this._onChange()
+  }
 
   constructor(props: IFilterableScrollSelectProps<T>) {
     super()
@@ -57,7 +61,7 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
     const { listProvider, onLeft, onCenter, onRight } = this.props
 
     this.row = new ScrollSelect({
-      keymap: ScrollSelect.KeyMap34,
+      keymap: props.keymap || ScrollSelect.KeyMap34,
       onLeft: (e) => {
         if (onLeft?.(e)) return true
         this._index = (this._index <= 0 ? listProvider(this._keyword).length : this._index) - 1
