@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 500px;
+  min-width: 500px;
   background: rgba(0, 0, 0, .5);
   color: white;
   //transition: .3s;
@@ -43,6 +43,7 @@
       align-items: flex-start;
       flex-wrap: wrap;
       border: 1px solid white;
+      max-width: 500px;
       .cheater-item-wrapper {
         flex: 1;
         min-width: 60px;

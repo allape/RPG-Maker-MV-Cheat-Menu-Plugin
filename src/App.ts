@@ -21,10 +21,12 @@ import Teleport from './module/Teleport'
 import Translate from './module/Translate'
 
 // eslint-disable-next-line
-export type SubRenderer<T extends Renderer = any> = T
-export interface SubRenderers {
+export type RenderClass<T extends Renderer = any> = T
+export interface IModule {
   keymap?: IKeyMap
-  module: SubRenderer
+  // css width
+  width?: string
+  module: RenderClass
 }
 
 export default class App extends Renderer<HTMLDivElement> {
@@ -48,57 +50,58 @@ export default class App extends Renderer<HTMLDivElement> {
     KEY_MAPS.Equal,
   ]
 
-  static Modules: SubRenderers[] = [
+  static Modules: IModule[] = [
     {
-      module: GodMode as SubRenderer,
+      module: GodMode as RenderClass,
     },
     {
-      module: Speed as SubRenderer,
+      module: Speed as RenderClass,
     },
     {
-      module: Gold as SubRenderer,
+      module: Gold as RenderClass,
     },
     {
-      module: Items as SubRenderer,
+      module: Items as RenderClass,
     },
     {
-      module: Variables as SubRenderer,
+      module: Variables as RenderClass,
     },
     {
-      module: EnemyHP as SubRenderer,
+      module: EnemyHP as RenderClass,
     },
     {
-      module: PartyMP as SubRenderer,
+      module: PartyMP as RenderClass,
     },
     {
-      module: PartyTP as SubRenderer,
+      module: PartyTP as RenderClass,
     },
     {
-      module: PartyHP as SubRenderer,
+      module: PartyHP as RenderClass,
     },
     {
-      module: Stat as SubRenderer,
+      module: Stat as RenderClass,
     },
     {
-      module: Weapons as SubRenderer,
+      module: Weapons as RenderClass,
     },
     {
-      module: Armors as SubRenderer,
+      module: Armors as RenderClass,
     },
     {
-      module: NoClip as SubRenderer,
+      module: NoClip as RenderClass,
     },
     {
-      module: GiveExp as SubRenderer,
+      module: GiveExp as RenderClass,
     },
     {
-      module: Switches as SubRenderer,
+      module: Switches as RenderClass,
     },
     {
-      module: Teleport as SubRenderer,
+      module: Teleport as RenderClass,
     },
     {
-      module: Translate as SubRenderer,
+      module: Translate as RenderClass,
+      width: '800px',
     },
   ]
 
@@ -137,12 +140,14 @@ export default class App extends Renderer<HTMLDivElement> {
     if (this._currentModule) {
       let currentIndex = App.Modules.findIndex(i => i.module === (this._currentModule as unknown as typeof Function).constructor)
       currentIndex = (currentIndex >= App.Modules.length - 1 ? -1 : currentIndex) + 1
-      this._buildModule(App.Modules[currentIndex].module)
+      this._buildModule(App.Modules[currentIndex])
     }
   }
 
-  private _buildModule = (m: SubRenderer) => {
+  private _buildModule = (module: IModule) => {
     if (MV.singleton().visible) {
+      const {module: m, width} = module
+
       this._currentModule?.dispose()
 
       SoundManager.playSystemSound(1)
@@ -153,9 +158,12 @@ export default class App extends Renderer<HTMLDivElement> {
       this.navTextContainer.innerHTML = m.MyName
 
       this._currentModule = new m()
-
+      const moduleWrapper = document.createElement('div')
+      moduleWrapper.style.width = width || '500px'
+      moduleWrapper.append(this._currentModule.render())
+      
       this.container.innerHTML = ''
-      this.container.append(this._currentModule.render())
+      this.container.append(moduleWrapper)
     }
   }
 
@@ -192,7 +200,7 @@ export default class App extends Renderer<HTMLDivElement> {
           this._shiftShortcuts()
         } else {
           // module select
-          const m = App.Modules.find(i => i.keymap?.code === e.code)?.module
+          const m = App.Modules.find(i => i.keymap?.code === e.code)
           if (m) this._buildModule(m)
         }
       }
@@ -259,7 +267,7 @@ export default class App extends Renderer<HTMLDivElement> {
       mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ' <br>'}`)
       mItemContainer.setAttribute('data-index', `${i}`)
       mItemContainer.addEventListener('click', () => {
-        this._buildModule(m.module)
+        this._buildModule(m)
       })
       return mItemContainer
     })))

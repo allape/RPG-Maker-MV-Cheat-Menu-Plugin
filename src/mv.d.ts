@@ -104,6 +104,11 @@ declare global {
     mapId: () => number
   }
 
+  class Game_Message {
+    add: (message: string) => void
+    __add_proxy: (message: string) => void
+  }
+
   class Game_Party {
     _weapons: number[]
     _armors: number[]

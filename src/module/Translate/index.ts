@@ -12,98 +12,44 @@ export interface ILanguage {
 
 export type HTMLString = string
 
+export type TranslateMapper = Record<string, string>
+
 export const _cache: Record<string, Record<string, string>> = {}
 
-/**
- * sls = source language selector
- * tls = target language selector
- */
-export default class Translate extends Renderer<HTMLDivElement> {
-  static MyName = 'Translate'
-
-  static KeyMap: KeyMaps = {
-    reload: KEY_MAPS.Equal,
-  }
-
+abstract class TranslateCore  extends Renderer<HTMLDivElement> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private static stringifyError(e: any): string {
+  protected static stringifyError(e: any): string {
     return e ? ('message' in e ? e.message : e) : 'unknown error'
   }
 
-  private _loading = false
-  private _languages: ILanguage[] = []
+  protected translatorServerBaseURL = 'https://translate.mentality.rip'
+  protected sourceLanguage = 'ja'
+  protected targetLanguage = 'en'
 
-  private translatorServerBaseURL = 'https://translate.mentality.rip'
-  private sourceLanguage = 'ja'
-  private targetLanguage = 'en'
+  protected _loading = false
+  protected _languages: ILanguage[] = []
 
-  private readonly urlInput = new Input()
-  private readonly retry = document.createElement('button')
 
-  // private readonly slsTitle = new Title({ title: 'Source Language' })
-  private readonly sls = new FilterableScrollSelect<ILanguage>({
-    keymap: ScrollSelect.KeyMap34,
-    listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
-    nameProvider: v => v?.name,
-    placeholder: 'Search Source Language by Name',
-    onChange: v => {
-      if (v) this.sourceLanguage = v.code
-    },
-  })
-
-  // private readonly tlsTitle = new Title({ title: 'Target Language' })
-  private readonly tls = new FilterableScrollSelect<ILanguage>({
-    keymap: ScrollSelect.KeyMap56,
-    listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
-    nameProvider: v => v?.name,
-    placeholder: 'Search Target Language by Name',
-    onChange: v => {
-      if (v) this.targetLanguage = v.code
-    },
-  })
-
-  private _onKeydown = (e: KeyboardEvent) => {
-    switch (e.code) {
-    case Translate.KeyMap.reload.code: this.init().then(); break
-    }
-  }
-
-  constructor() {
-    super()
-
-    this.init().then()
-    window.addEventListener('keydown', this._onKeydown)
-  }
-
-  private async init() {
-    if (this._loading) return
-    this._languages = await this.fetchLanguages()
-    this.sls.index = this._languages.findIndex(i => i.code === this.sourceLanguage)
-    this.tls.index = this._languages.findIndex(i => i.code === this.targetLanguage)
-
-    console.log(this)
-  }
-
-  private getCurrentLanguageCache (): Record<string, string> {
+  protected getCurrentLanguageCache (): Record<string, string> {
     const key = `${this.sourceLanguage}>${this.targetLanguage}`
     _cache[key] = _cache[key] || {}
     return _cache[key]
   }
 
-  private async fetchLanguages(): Promise<ILanguage[]> {
+  protected async fetchLanguages(): Promise<ILanguage[]> {
     try {
       this._loading = true
       const res = await fetch(`${this.translatorServerBaseURL}/languages`)
       return await res.json()
     } catch (e) {
-      alert('failed to load support language, please retry: ' + Translate.stringifyError(e))
+      alert('failed to fetch supported language, please retry: ' + Translate.stringifyError(e))
     } finally {
       this._loading = false
     }
     return []
-  } 
-  
-  private async translate(source: string): Promise<HTMLString> {
+  }
+
+  protected async translate(source: string): Promise<HTMLString> {
     if (!source || !source.trim()) return source
     const cache = this.getCurrentLanguageCache()
     if (cache[source]) {
@@ -116,7 +62,7 @@ export default class Translate extends Renderer<HTMLDivElement> {
           source: this.sourceLanguage,
           target: this.targetLanguage,
           format: 'text',
-        })).toString()}`, 
+        })).toString()}`,
         {
           method: 'POST',
         }
@@ -125,8 +71,142 @@ export default class Translate extends Renderer<HTMLDivElement> {
       cache[source] = result
       return result
     } catch (e) {
-      return `<failed to translate: ${Translate.stringifyError(e)}>`
+      return `<span style="color:red;">failed to translate: ${Translate.stringifyError(e)}</span>`
     }
+  }
+}
+
+/**
+ * sls = source language selector
+ * tls = target language selector
+ */
+export default class Translate extends TranslateCore {
+  private static readonly makeAMessageRow = (): [HTMLElement, HTMLElement, HTMLElement] => {
+    const messageRow = document.createElement('div')
+    messageRow.classList.add('message-row')
+
+    const sourceMessage = document.createElement('div')
+    sourceMessage.classList.add('source-message')
+    messageRow.append(sourceMessage)
+
+    const translatedMessage = document.createElement('div')
+    translatedMessage.classList.add('translated-message')
+    messageRow.append(translatedMessage)
+
+    return [messageRow, sourceMessage, translatedMessage]
+  }
+
+  static MyName = 'Translate'
+
+  static KeyMap: KeyMaps = {
+    reload: KEY_MAPS.Equal,
+  }
+
+  private readonly urlInput = new Input()
+  private readonly retry = document.createElement('button')
+
+  private readonly sls = new FilterableScrollSelect<ILanguage>({
+    keymap: ScrollSelect.KeyMap34,
+    disableResetOnGameStarted: true,
+    listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
+    nameProvider: v => v?.name,
+    placeholder: 'Search Source Language by Name',
+    onChange: v => {
+      if (v) this.sourceLanguage = v.code
+    },
+  })
+  private readonly tls = new FilterableScrollSelect<ILanguage>({
+    keymap: ScrollSelect.KeyMap56,
+    disableResetOnGameStarted: true,
+    listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
+    nameProvider: v => v?.name,
+    placeholder: 'Search Target Language by Name',
+    onChange: v => {
+      if (v) this.targetLanguage = v.code
+    },
+  })
+
+  private readonly messagesContainer = document.createElement('div')
+  private readonly choicesContainer = document.createElement('div')
+
+  private _onKeydown = (e: KeyboardEvent) => {
+    switch (e.code) {
+    case Translate.KeyMap.reload.code: this.init().then(); break
+    }
+  }
+
+  private gameMessages: TranslateMapper = {}
+  private lastGameMessageAppendedTime = Date.now()
+
+  private init = async () => {
+    if (this._loading) return
+    this._languages = await this.fetchLanguages()
+    this.sls.index = this._languages.findIndex(i => i.code === this.sourceLanguage)
+    this.tls.index = this._languages.findIndex(i => i.code === this.targetLanguage)
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const translator = this
+    Game_Message.prototype.__add_proxy = Game_Message.prototype.add
+    Game_Message.prototype.add = function (text) {
+      this.__add_proxy(text)
+      translator.translateGameMessage(text).then()
+    }
+    Object.defineProperties(Game_Message.prototype, {
+      _choices: {
+        configurable: true,
+        set: function (value) {
+          value = value || []
+          if (value instanceof Array) {
+            translator.translateChoices(value).then()
+          }
+          this._wrappedChoices = value
+        },
+        get: function () {
+          return this._wrappedChoices || []
+        }
+      }
+    })
+  }
+
+  private translateGameMessage = async (source: string): Promise<void> => {
+    if (Date.now() - this.lastGameMessageAppendedTime > 10) {
+      this.gameMessages = {}
+      this.messagesContainer.innerHTML = ''
+    }
+    this.gameMessages[source] = undefined
+    this.lastGameMessageAppendedTime = Date.now()
+
+
+    const [messageRow, sourceMessage, translatedMessage] = Translate.makeAMessageRow()
+    this.messagesContainer.append(messageRow)
+    sourceMessage.innerHTML = source
+    translatedMessage.innerHTML = '...'
+
+    this.gameMessages[source] = await this.translate(source)
+    translatedMessage.innerHTML = this.gameMessages[source]
+  }
+
+  public translateChoices = async (choices: string[]): Promise<void> => {
+    if (choices.length === 0) {
+      this.choicesContainer.innerHTML = ''
+    } else {
+      for (const choice of choices) {
+        const [messageRow, sourceMessage, translatedMessage] = Translate.makeAMessageRow()
+        this.choicesContainer.append(messageRow)
+        sourceMessage.innerHTML = choice
+        translatedMessage.innerHTML = '...'
+        this.translate(choice).then(translated => {
+          translatedMessage.innerHTML = translated
+        })
+      }
+    }
+  }
+
+  constructor() {
+    super()
+
+    this.init().then()
+    window.addEventListener('keydown', this._onKeydown)
   }
 
   private buildComponent(): HTMLDivElement {
@@ -154,6 +234,9 @@ export default class Translate extends Renderer<HTMLDivElement> {
     retry.innerHTML = `RELOAD [${Translate.KeyMap.reload.key}]`
     retry.addEventListener('click', () => {
       this.init().then()
+      Object.keys(_cache).forEach(key => {
+        delete _cache[key]
+      })
     })
     urlRow.append(retry)
 
@@ -171,10 +254,26 @@ export default class Translate extends Renderer<HTMLDivElement> {
     tlsWrapper.append(tls.render())
     languageSelectorRow.append(tlsWrapper)
 
+    this.messagesContainer.classList.add('messages-container')
+    container.append(this.messagesContainer)
+    this.choicesContainer.classList.add('messages-container')
+    container.append(this.choicesContainer)
+
     return container
   }
 
   public dispose(): void {
+    if (Game_Message.prototype.__add_proxy) {
+      Game_Message.prototype.add = Game_Message.prototype.__add_proxy
+      delete Game_Message.prototype.__add_proxy
+    }
+    Object.defineProperties(Game_Message.prototype, {
+      _choices: {
+        configurable: true,
+        value: [],
+      },
+    })
+
     super.dispose()
     this.urlInput.dispose()
     this.sls.dispose()
@@ -191,5 +290,4 @@ export default class Translate extends Renderer<HTMLDivElement> {
     }
     return document.createElement('div')
   }
-
 }

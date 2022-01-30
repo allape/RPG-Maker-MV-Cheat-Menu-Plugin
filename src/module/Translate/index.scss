@@ -31,4 +31,19 @@
       }
     }
   }
+  .messages-container {
+    border-top: 1px solid white;
+    padding: 5px 0;
+    .message-row {
+      padding: 5px 0;
+      .source-message {
+        font-size: 12px;
+        user-select: text;
+      }
+      .translated-message {
+        font-size: 14px;
+        user-select: text;
+      }
+    }
+  }
 }

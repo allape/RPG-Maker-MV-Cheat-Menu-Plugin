@@ -8,6 +8,7 @@ export interface IFilterableScrollSelectProps<T> extends IScrollSelectProps {
   nameProvider: (item?: T) => string | undefined
   onChange?: (value: T) => void
   placeholder?: string
+  disableResetOnGameStarted?: boolean;
 }
 
 export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> {
@@ -55,8 +56,10 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
 
     this.props = props
 
-    MV.singleton().on('loadGame', this._onGameStart)
-    MV.singleton().on('setupNewGame', this._onGameStart)
+    if (!props.disableResetOnGameStarted) {
+      MV.singleton().on('loadGame', this._onGameStart)
+      MV.singleton().on('setupNewGame', this._onGameStart)
+    }
 
     const { listProvider, onLeft, onCenter, onRight } = this.props
 
