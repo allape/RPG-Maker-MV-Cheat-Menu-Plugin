@@ -68,11 +68,14 @@ abstract class TranslateCore  extends Renderer<HTMLDivElement> {
           method: 'POST',
         }
       )
-      const result = (await res.json()).translatedText
-      cache[source] = result
-      return result
+      const result = await res.json()
+      if (result.error) {
+        throw result.error
+      }
+      cache[source] = result.translatedText
+      return cache[source]
     } catch (e) {
-      return `<span style="color:red;">failed to translate: ${Translate.stringifyError(e)}</span>`
+      return `<span style="color:red;">failed: ${Translate.stringifyError(e)}</span>`
     }
   }
 }
@@ -108,20 +111,20 @@ export default class Translate extends TranslateCore {
 
   private readonly sls = new FilterableScrollSelect<ILanguage>({
     keymap: ScrollSelect.KeyMap34,
+    hideFilter: true,
     disableResetOnGameStarted: true,
-    listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
+    listProvider: () => this._languages,
     nameProvider: v => v?.name,
-    placeholder: 'Search Source Language by Name',
     onChange: v => {
       if (v) this.sourceLanguage = v.code
     },
   })
   private readonly tls = new FilterableScrollSelect<ILanguage>({
     keymap: ScrollSelect.KeyMap56,
+    hideFilter: true,
     disableResetOnGameStarted: true,
-    listProvider: keyword => this._languages.filter(i => i.name?.toLowerCase().includes(keyword)),
+    listProvider: () => this._languages,
     nameProvider: v => v?.name,
-    placeholder: 'Search Target Language by Name',
     onChange: v => {
       if (v) this.targetLanguage = v.code
     },
@@ -177,9 +180,8 @@ export default class Translate extends TranslateCore {
   }
 
   public readonly translateChoices = async (choices: string[]): Promise<void> => {
-    if (choices.length === 0) {
-      this.choicesContainer.innerHTML = ''
-    } else {
+    this.choicesContainer.innerHTML = ''
+    if (choices.length > 0) {
       for (const choice of choices) {
         const [messageRow, sourceMessage, translatedMessage] = Translate.makeAMessageRow()
         this.choicesContainer.append(messageRow)

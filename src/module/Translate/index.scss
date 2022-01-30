@@ -3,7 +3,6 @@
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    padding-bottom: 10px;
     .input-col {
       flex: 1;
     }
@@ -22,8 +21,8 @@
         padding-right: 0;
         padding-left: 5px;
         width: calc(50% - 5px);
+        border-left: 1px solid white;
       }
-      flex: 1;
       &:not(:last-child) {
         padding-right: 5px;
         padding-left: 0;

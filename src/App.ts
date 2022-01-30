@@ -101,7 +101,6 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Translate as RenderClass,
-      width: '800px',
     },
   ]
 

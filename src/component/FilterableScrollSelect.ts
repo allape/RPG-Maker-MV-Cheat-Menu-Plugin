@@ -9,6 +9,7 @@ export interface IFilterableScrollSelectProps<T> extends IScrollSelectProps {
   onChange?: (value: T) => void
   placeholder?: string
   disableResetOnGameStarted?: boolean;
+  hideFilter?: boolean;
 }
 
 export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> {
@@ -94,10 +95,12 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
   render(): HTMLDivElement {
     const container = document.createElement('div')
 
-    const inputDom = this.search.render()
-    inputDom.placeholder = this.props.placeholder || 'Search by Keyword'
-    inputDom.addEventListener('change', this._onSearchChange, true)
-    container.append(inputDom)
+    if (!this.props.hideFilter) {
+      const inputDom = this.search.render()
+      inputDom.placeholder = this.props.placeholder || 'Search by Keyword'
+      inputDom.addEventListener('change', this._onSearchChange, true)
+      container.append(inputDom)
+    }
 
     container.append(this.row.render())
 
