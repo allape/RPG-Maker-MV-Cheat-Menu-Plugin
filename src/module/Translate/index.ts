@@ -1,10 +1,10 @@
-import { KeyMaps, KEY_MAPS, Renderer } from '../../core/renderer'
-import 'whatwg-fetch'
+import {KEY_MAPS, KeyMaps, Renderer} from '../../core/renderer'
 import FilterableScrollSelect from '../../component/FilterableScrollSelect'
 import Input from '../../component/Input'
 import ScrollSelect from '../../component/ScrollSelect'
-import './index.scss'
 import MV from '../../core/mv'
+import 'whatwg-fetch'
+import './index.scss'
 
 export interface ILanguage {
   code: string
@@ -18,6 +18,7 @@ export type TranslateMapper = Record<string, string>
 export const _cache: Record<string, Record<string, string>> = {}
 
 abstract class TranslateCore  extends Renderer<HTMLDivElement> {
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected static stringifyError(e: any): string {
     return e ? ('message' in e ? e.message : e) : 'unknown error'
@@ -58,18 +59,19 @@ abstract class TranslateCore  extends Renderer<HTMLDivElement> {
     }
     try {
       const res = await fetch(
-        `${this.translatorServerBaseURL}/translate?${(new URLSearchParams({
+        `${this.translatorServerBaseURL}/translate?${new URLSearchParams({
           q: source,
           source: this.sourceLanguage,
           target: this.targetLanguage,
           format: 'text',
-        })).toString()}`,
+        }).toString()}`,
         {
           method: 'POST',
         }
       )
       const result = await res.json()
       if (result.error) {
+        // noinspection ExceptionCaughtLocallyJS
         throw result.error
       }
       cache[source] = result.translatedText
@@ -78,6 +80,7 @@ abstract class TranslateCore  extends Renderer<HTMLDivElement> {
       return `<span style="color:red;">failed: ${Translate.stringifyError(e)}</span>`
     }
   }
+
 }
 
 /**
@@ -85,6 +88,7 @@ abstract class TranslateCore  extends Renderer<HTMLDivElement> {
  * tls = target language selector
  */
 export default class Translate extends TranslateCore {
+
   private static readonly makeAMessageRow = (): [HTMLElement, HTMLElement, HTMLElement] => {
     const messageRow = document.createElement('div')
     messageRow.classList.add('message-row')
@@ -156,7 +160,7 @@ export default class Translate extends TranslateCore {
     })
     const sources = Object.keys(this.gameMessages)
     sources.forEach(i => this.translateGameMessage(i))
-    this.translateChoices($gameMessage._choices)
+    this.translateChoices($gameMessage._choices).then()
   }
 
   private readonly translateGameMessage = async (source: string): Promise<void> => {
@@ -166,7 +170,6 @@ export default class Translate extends TranslateCore {
     }
     this.gameMessages[source] = undefined
     this.lastGameMessageAppendedTime = Date.now()
-
 
     const [messageRow, sourceMessage, translatedMessage] = Translate.makeAMessageRow()
     this.messagesContainer.append(messageRow)
@@ -267,11 +270,12 @@ export default class Translate extends TranslateCore {
 
   render(): HTMLDivElement {
     if (!('fetch' in window)) {
-      alert('This game is not support network operations')
+      alert('This game does NOT support network operations')
     } if (window.__permission_network || confirm('This function requires NETWORK to operate, continue?')) {
       window.__permission_network = true
       return this.buildComponent()
     }
     return document.createElement('div')
   }
+
 }
