@@ -8,15 +8,45 @@
 - `Searching Text Field` caches with game saving file
 - `Scroll Selector` states cache with game saving file
 
+### Screenshots
+![Index](screenshots/home.png)
+![Translate](screenshots/translate.png)
+
+### Features
+- Keyboard and Mouse both supported 
+- Modules
+  - God Mode: `whoisyourdaddy`
+  - Speed: Move speed cheat, not game running speed; [Cheat Engine](https://www.cheatengine.org/) supports speed hack
+  - Gold
+  - Items
+  - Weapons
+  - Armors
+  - Variables
+  - No Clip
+  - Enemy HP: manipulate HP of enemies in battle
+  - Party MP: manipulate MP of teammates and hero itself in battle
+  - Party TP: manipulate TP of teammates and hero itself in battle
+  - Party HP: manipulate HP of teammates and hero itself in battle
+  - Status: manipulate Max HP, max MP, attack, defense and more
+  - Give Experience
+  - Switches: Toggle boolean variables
+  - Teleport
+  - Translate
+    - Open source online translation services: [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate#mirrors)
+    - ✔ Message window translate
+    - ✔ Choices translate
+    - ❌ Menu or Item translate
+    - ❌ Image text translate
+
 ### Installation
 - Download release zip
-- Old Way
+- Way 1, traditional
   - Download Cheat Plugin patch at [GitHub](https://github.com/emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin)
   - Unzip these zips
   - Copy everything in release zip into `Cheat_Menu/`
   - Copy all files inside `Cheat_Menu/` into game folder
   - Run `MVPluginPatcher.exe`
-- New Way
+- Way 2, with JavaScript interpreter
   - Unzip release zip
   - Copy all files into game folder
   - Run `patcher.exe`
@@ -29,6 +59,7 @@
     - use [EnigmaVBUnpacker](https://f95zone.to/threads/rpg-maker-mv-unpacker.417/post-3577739) to unpack game
 
 ### Dev
+
 #### nodejs
 ```shell
 # install dependencies
