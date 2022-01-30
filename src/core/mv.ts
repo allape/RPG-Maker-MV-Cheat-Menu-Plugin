@@ -1,11 +1,17 @@
 import {LoadGame, SaveGame, SetupNewGame} from '../mv'
 
+export type OnNewMessage = (messages: string) => void
+export type OnChoicesChange = (messages: string[]) => void
+
 export default class MV {
 
   /**
    * 全局对象: 是否显示作弊器
    */
   visible = false
+
+  private readonly _onNewMessageQueue: OnNewMessage[] = []
+  private readonly _onChoicesChangeQueue: OnChoicesChange[] = []
 
   private readonly _loadGameQueue: LoadGame[] = []
   private readonly _setupNewGameQueue: SetupNewGame[] = []
@@ -69,21 +75,74 @@ export default class MV {
       }
       return DataManager._saveGame_proxy(saveFieldId)
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this
+    Game_Message.prototype.__add_proxy = Game_Message.prototype.add
+    Game_Message.prototype.add = function (text) {
+      this.__add_proxy(text)
+      try {
+        self._onNewMessageQueue.forEach(fn => {
+          try {
+            fn(text)
+          } catch (e) {
+            console.error('error in call new message fn:', e)
+          }
+        })
+      } catch (e) {
+        console.error('error in call new message queue:', e)
+      }
+    }
+    Object.defineProperties(Game_Message.prototype, {
+      _choices: {
+        configurable: true,
+        set: function (value) {
+          value = value || []
+          if (value instanceof Array) {
+            try {
+              self._onChoicesChangeQueue.forEach(fn => {
+                try {
+                  fn(value)
+                } catch (e) {
+                  console.error('error in call choice change fn:', e)
+                }
+              })
+            } catch (e) {
+              console.error('error in call choice change queue:', e)
+            }
+          }
+          this._wrappedChoices = value
+        },
+        get: function () {
+          return this._wrappedChoices || []
+        }
+      }
+    })
   }
 
-  on(name: 'loadGame' | 'setupNewGame' | 'saveGame', fn: LoadGame | SetupNewGame | SaveGame): void {
+  on(
+    name: 'loadGame' | 'setupNewGame' | 'saveGame' | 'onNewMessage' | 'onChoicesChange', 
+    fn: LoadGame | SetupNewGame | SaveGame | OnNewMessage | OnChoicesChange,
+  ): void {
     switch (name) {
-    case 'loadGame': this._loadGameQueue.push(fn); break
+    case 'loadGame': this._loadGameQueue.push(fn as LoadGame); break
     case 'setupNewGame': this._setupNewGameQueue.push(fn as SetupNewGame); break
-    case 'saveGame': this._saveGameQueue.push(fn); break
+    case 'saveGame': this._saveGameQueue.push(fn as SaveGame); break
+    case 'onNewMessage': this._onNewMessageQueue.push(fn as OnNewMessage); break
+    case 'onChoicesChange': this._onChoicesChangeQueue.push(fn as OnChoicesChange); break
     }
   }
 
-  off(name: 'loadGame' | 'setupNewGame' | 'saveGame', fn: LoadGame | SetupNewGame | SaveGame): void {
+  off(
+    name: 'loadGame' | 'setupNewGame' | 'saveGame' | 'onNewMessage' | 'onChoicesChange', 
+    fn: LoadGame | SetupNewGame | SaveGame | OnNewMessage | OnChoicesChange,
+  ): void {
     switch (name) {
     case 'loadGame': MV._removeFromArray(this._loadGameQueue, fn); break
-    case 'setupNewGame': MV._removeFromArray(this._setupNewGameQueue, fn as SetupNewGame); break
+    case 'setupNewGame': MV._removeFromArray(this._setupNewGameQueue, fn); break
     case 'saveGame': MV._removeFromArray(this._saveGameQueue, fn); break
+    case 'onNewMessage': MV._removeFromArray(this._onNewMessageQueue, fn); break
+    case 'onChoicesChange': MV._removeFromArray(this._onChoicesChangeQueue, fn); break
     }
   }
 

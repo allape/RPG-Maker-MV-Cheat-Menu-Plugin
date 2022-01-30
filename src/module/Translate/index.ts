@@ -4,6 +4,7 @@ import FilterableScrollSelect from '../../component/FilterableScrollSelect'
 import Input from '../../component/Input'
 import ScrollSelect from '../../component/ScrollSelect'
 import './index.scss'
+import MV from '../../core/mv'
 
 export interface ILanguage {
   code: string
@@ -138,37 +139,24 @@ export default class Translate extends TranslateCore {
   private gameMessages: TranslateMapper = {}
   private lastGameMessageAppendedTime = Date.now()
 
-  private init = async () => {
+  private readonly init = async () => {
     if (this._loading) return
     this._languages = await this.fetchLanguages()
     this.sls.index = this._languages.findIndex(i => i.code === this.sourceLanguage)
     this.tls.index = this._languages.findIndex(i => i.code === this.targetLanguage)
-
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const translator = this
-    Game_Message.prototype.__add_proxy = Game_Message.prototype.add
-    Game_Message.prototype.add = function (text) {
-      this.__add_proxy(text)
-      translator.translateGameMessage(text).then()
-    }
-    Object.defineProperties(Game_Message.prototype, {
-      _choices: {
-        configurable: true,
-        set: function (value) {
-          value = value || []
-          if (value instanceof Array) {
-            translator.translateChoices(value).then()
-          }
-          this._wrappedChoices = value
-        },
-        get: function () {
-          return this._wrappedChoices || []
-        }
-      }
-    })
   }
 
-  private translateGameMessage = async (source: string): Promise<void> => {
+  private readonly reload = async () => {
+    await this.init()
+    Object.keys(_cache).forEach(key => {
+      delete _cache[key]
+    })
+    const sources = Object.keys(this.gameMessages)
+    sources.forEach(i => this.translateGameMessage(i))
+    this.translateChoices($gameMessage._choices)
+  }
+
+  private readonly translateGameMessage = async (source: string): Promise<void> => {
     if (Date.now() - this.lastGameMessageAppendedTime > 10) {
       this.gameMessages = {}
       this.messagesContainer.innerHTML = ''
@@ -182,11 +170,13 @@ export default class Translate extends TranslateCore {
     sourceMessage.innerHTML = source
     translatedMessage.innerHTML = '...'
 
-    this.gameMessages[source] = await this.translate(source)
-    translatedMessage.innerHTML = this.gameMessages[source]
+    if (MV.singleton().visible) {
+      this.gameMessages[source] = await this.translate(source)
+      translatedMessage.innerHTML = this.gameMessages[source]
+    }
   }
 
-  public translateChoices = async (choices: string[]): Promise<void> => {
+  public readonly translateChoices = async (choices: string[]): Promise<void> => {
     if (choices.length === 0) {
       this.choicesContainer.innerHTML = ''
     } else {
@@ -195,9 +185,11 @@ export default class Translate extends TranslateCore {
         this.choicesContainer.append(messageRow)
         sourceMessage.innerHTML = choice
         translatedMessage.innerHTML = '...'
-        this.translate(choice).then(translated => {
-          translatedMessage.innerHTML = translated
-        })
+        if (MV.singleton().visible) {
+          this.translate(choice).then(translated => {
+            translatedMessage.innerHTML = translated
+          })
+        }
       }
     }
   }
@@ -207,6 +199,9 @@ export default class Translate extends TranslateCore {
 
     this.init().then()
     window.addEventListener('keydown', this._onKeydown)
+
+    MV.singleton().on('onNewMessage', this.translateGameMessage)
+    MV.singleton().on('onChoicesChange', this.translateChoices)
   }
 
   private buildComponent(): HTMLDivElement {
@@ -232,12 +227,7 @@ export default class Translate extends TranslateCore {
     inputCol.append(inputRef)
 
     retry.innerHTML = `RELOAD [${Translate.KeyMap.reload.key}]`
-    retry.addEventListener('click', () => {
-      this.init().then()
-      Object.keys(_cache).forEach(key => {
-        delete _cache[key]
-      })
-    })
+    retry.addEventListener('click', this.reload)
     urlRow.append(retry)
 
     const languageSelectorRow = document.createElement('div')
@@ -263,16 +253,8 @@ export default class Translate extends TranslateCore {
   }
 
   public dispose(): void {
-    if (Game_Message.prototype.__add_proxy) {
-      Game_Message.prototype.add = Game_Message.prototype.__add_proxy
-      delete Game_Message.prototype.__add_proxy
-    }
-    Object.defineProperties(Game_Message.prototype, {
-      _choices: {
-        configurable: true,
-        value: [],
-      },
-    })
+    MV.singleton().off('onNewMessage', this.translateGameMessage)
+    MV.singleton().off('onChoicesChange', this.translateChoices)
 
     super.dispose()
     this.urlInput.dispose()

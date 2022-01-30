@@ -29,6 +29,8 @@ declare global {
 
   const $gameMap: Game_Map
 
+  const $gameMessage: Game_Message
+
   const $dataSystem: Data_System
 
   const $dataWeapons: Game_Weapon[]
@@ -105,6 +107,7 @@ declare global {
   }
 
   class Game_Message {
+    _choices: string[]
     add: (message: string) => void
     __add_proxy: (message: string) => void
   }
