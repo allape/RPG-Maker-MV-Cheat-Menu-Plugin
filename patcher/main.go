@@ -38,7 +38,7 @@ func promptBackUpPluginJs() {
 	const no = "NO!"
 
 	prompt := promptui.Select{
-		Label: "Select The RPG Maker Engine",
+		Label: "Backup Original plugins.js",
 		Items: []string{yes, no},
 	}
 
