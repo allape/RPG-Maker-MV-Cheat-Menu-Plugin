@@ -15,24 +15,6 @@ var pluginNames []string
 
 var shouldBackupPluginsJs = false
 
-func readPluginNames() {
-	pwd, err := os.Getwd()
-	if err != nil {
-		_, _ = RedUnderline.Printf("unable to read file %s\n", pluginsPatchFileName)
-		return
-	}
-
-	// read plugins_patch.txt
-	pluginsPatchBytes, err := os.ReadFile(path.Join(pwd, pluginsPatchFileName))
-	if err != nil {
-		_, _ = RedUnderline.Printf("failed to read file %s\n", pluginsPatchFileName)
-		return
-	}
-	pluginsPatchContent := string(pluginsPatchBytes)
-
-	pluginNames = strings.Split(pluginsPatchContent, "\n")
-}
-
 func promptBackUpPluginJs() {
 	const yes = "Yes"
 	const no = "NO!"
@@ -92,7 +74,21 @@ func main() {
 
 	_, _ = Cyan.Printf("Initializing patcher...\n")
 
-	readPluginNames()
+	pwd, err := os.Getwd()
+	if err != nil {
+		_, _ = RedUnderline.Printf("unable to read file %s\n", pluginsPatchFileName)
+		return
+	}
+
+	// read plugins_patch.txt
+	pluginsPatchBytes, err := os.ReadFile(path.Join(pwd, pluginsPatchFileName))
+	if err != nil {
+		_, _ = RedUnderline.Printf("failed to read file %s\n", pluginsPatchFileName)
+		return
+	}
+	pluginsPatchContent := string(pluginsPatchBytes)
+
+	pluginNames = strings.Split(pluginsPatchContent, "\n")
 
 	promptBackUpPluginJs()
 
