@@ -40,6 +40,7 @@ abstract class TranslateCore  extends Renderer<HTMLDivElement> {
 
   protected async fetchLanguages(): Promise<ILanguage[]> {
     try {
+      if (!window.__permission_network) return []
       this._loading = true
       const res = await fetch(`${this.translatorServerBaseURL}/languages`)
       return await res.json()
@@ -52,6 +53,7 @@ abstract class TranslateCore  extends Renderer<HTMLDivElement> {
   }
 
   protected async translate(source: string): Promise<HTMLString> {
+    if (!window.__permission_network) return source
     if (!source || !source.trim()) return source
     const cache = this.getCurrentLanguageCache()
     if (cache[source]) {
@@ -202,7 +204,6 @@ export default class Translate extends TranslateCore {
   constructor() {
     super()
 
-    this.init().then()
     window.addEventListener('keydown', this._onKeydown)
 
     MV.singleton().on('onNewMessage', this.translateGameMessage)
@@ -271,8 +272,9 @@ export default class Translate extends TranslateCore {
   render(): HTMLDivElement {
     if (!('fetch' in window)) {
       alert('This game does NOT support network operations')
-    } if (window.__permission_network || confirm('This function requires NETWORK to operate, continue?')) {
+    } if (window.__permission_network || confirm('This function requires NETWORK to operate, BE AWARE WITH YOUR PRIVACY, continue?')) {
       window.__permission_network = true
+      this.init().then()
       return this.buildComponent()
     }
     return document.createElement('div')
