@@ -8,7 +8,9 @@ export {}
 declare global {
   interface Window {
     __hookedMV: MV
-    __permission_network?: boolean;
+    __permission_network?: boolean
+    __cheat_speed?: number
+    __cheat_speedLocked?: boolean
   }
 
   const nw: any

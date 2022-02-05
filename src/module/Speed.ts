@@ -11,8 +11,19 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
   static MyName = 'Speed'
 
-  private static speed = 4
-  private static speedLocked = false
+  private static get speed(): number {
+    return window.__cheat_speed || 4
+  }
+  private static set speed(v: number) {
+    window.__cheat_speed = v
+  }
+
+  private static get speedLocked(): boolean {
+    return !!window.__cheat_speedLocked
+  }
+  private static set speedLocked(v: boolean) {
+    window.__cheat_speedLocked = v
+  }
 
   private readonly amount: AmountSelector
   private readonly currentAmount: AmountSelector
@@ -21,7 +32,15 @@ export default class Speed extends Renderer<HTMLDivElement> {
   private readonly _intervalId: number
 
   private readonly _onInterval = () => {
-    if (!$gamePlayer._speedCheatInjected) {
+    this._inject()
+  }
+
+  private _onSpeedChange = () => {
+    this.currentAmount.value = $gamePlayer._moveSpeed
+  }
+
+  private _inject = (force = false) => {
+    if (!$gamePlayer._speedCheatInjected || force) {
       $gamePlayer._speedCheatInjected = true
       // Speed.speed = $gamePlayer._moveSpeed
       Object.defineProperty($gamePlayer, '_moveSpeed', {
@@ -34,10 +53,6 @@ export default class Speed extends Renderer<HTMLDivElement> {
         },
       })
     }
-  }
-
-  private _onSpeedChange = () => {
-    this.currentAmount.value = $gamePlayer._moveSpeed
   }
 
   constructor() {
@@ -78,6 +93,10 @@ export default class Speed extends Renderer<HTMLDivElement> {
       onChange: value => {
         Speed.speedLocked = value
         this.speedLocker.value = value
+        SoundManager.playSystemSound(value ? 1 : 2)
+        if (value) {
+          this._inject(true)
+        }
       },
     })
 
