@@ -33,6 +33,7 @@
   - Teleport
   - Translate
     - Open source online translation services: [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate#mirrors)
+    - Draw japanese to translate: [Google Translate](https://translate.google.com/?sl=ja&tl=en&op=translate), [jisho](https://jisho.org/#handwriting)
     - ✔ Message window translate
     - ✔ Choices translate
     - ❌ Menu or Item translate
