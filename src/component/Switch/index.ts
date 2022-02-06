@@ -1,5 +1,6 @@
 import './index.scss'
 import {IKeyMap, Renderer} from '../../core/renderer'
+import MV from '../../core/mv'
 
 export interface ISwitchProps {
   keymap?: IKeyMap
@@ -53,9 +54,11 @@ export default class Switch extends Renderer<HTMLDivElement> {
   }
 
   private _onKeydown = (e: KeyboardEvent) => {
-    const code = this.props.keymap?.code
-    if (code && e.code === code) {
-      this._onChange(e)
+    if (MV.singleton().visible) {
+      const code = this.props.keymap?.code
+      if (code && e.code === code) {
+        this._onChange(e)
+      }
     }
   }
 

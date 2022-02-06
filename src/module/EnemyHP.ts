@@ -14,6 +14,9 @@ export default class EnemyHP extends XPBasedModule {
       onAliveTo1: () => {
         MV.setEnemyHp(1, true)
       },
+      onAlive2Half: () => {
+        MV.setEnemyHpHalf(true)
+      },
       onAlive2Max: () => {
         MV.recoverEnemyHp(true)
       },
@@ -22,6 +25,9 @@ export default class EnemyHP extends XPBasedModule {
       },
       onAllTo1: () => {
         MV.setEnemyHp(1, false)
+      },
+      onAll2Half: () => {
+        MV.setEnemyHpHalf(false)
       },
       onAll2Max: () => {
         MV.recoverEnemyHp(false)

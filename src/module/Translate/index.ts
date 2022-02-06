@@ -140,8 +140,10 @@ export default class Translate extends TranslateCore {
   private readonly choicesContainer = document.createElement('div')
 
   private _onKeydown = (e: KeyboardEvent) => {
-    switch (e.code) {
-    case Translate.KeyMap.reload.code: this.init().then(); break
+    if (MV.singleton().visible) {
+      switch (e.code) {
+      case Translate.KeyMap.reload.code: this.init().then(); break
+      }
     }
   }
 

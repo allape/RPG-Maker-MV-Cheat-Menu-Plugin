@@ -14,6 +14,9 @@ export default class PartyMP extends XPBasedModule {
       onAliveTo1: () => {
         MV.setPartyMp(1, true)
       },
+      onAlive2Half: () => {
+        MV.setPartyMpHalf(true)
+      },
       onAlive2Max: () => {
         MV.recoverPartyMp(true)
       },
@@ -22,6 +25,9 @@ export default class PartyMP extends XPBasedModule {
       },
       onAllTo1: () => {
         MV.setPartyMp(1, false)
+      },
+      onAll2Half: () => {
+        MV.setPartyMpHalf(false)
       },
       onAll2Max: () => {
         MV.recoverPartyMp(false)

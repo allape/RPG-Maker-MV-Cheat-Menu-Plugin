@@ -14,6 +14,9 @@ export default class PartyTP extends XPBasedModule {
       onAliveTo1: () => {
         MV.setPartyTp(1, true)
       },
+      onAlive2Half: () => {
+        MV.setPartyTpHalf(true)
+      },
       onAlive2Max: () => {
         MV.recoverPartyTp(true)
       },
@@ -22,6 +25,9 @@ export default class PartyTP extends XPBasedModule {
       },
       onAllTo1: () => {
         MV.setPartyTp(1, false)
+      },
+      onAll2Half: () => {
+        MV.setPartyTpHalf(false)
       },
       onAll2Max: () => {
         MV.recoverPartyTp(false)

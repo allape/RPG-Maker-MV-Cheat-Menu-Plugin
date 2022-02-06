@@ -14,6 +14,9 @@ export default class PartyHP extends XPBasedModule {
       onAliveTo1: () => {
         MV.setPartyHp(1, true)
       },
+      onAlive2Half: () => {
+        MV.setPartyHpHalf(true)
+      },
       onAlive2Max: () => {
         MV.recoverPartyHp(true)
       },
@@ -22,6 +25,9 @@ export default class PartyHP extends XPBasedModule {
       },
       onAllTo1: () => {
         MV.setPartyHp(1, false)
+      },
+      onAll2Half: () => {
+        MV.setPartyHpHalf(false)
       },
       onAll2Max: () => {
         MV.recoverPartyHp(false)

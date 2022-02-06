@@ -232,6 +232,14 @@ export default class MV {
     }
   }
 
+  static setPartyHpHalf(alive = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setHp(Math.floor(member._hp / 2))
+      }
+    }
+  }
+
   static recoverPartyHp(alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
@@ -244,6 +252,14 @@ export default class MV {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setMp(mp)
+      }
+    }
+  }
+
+  static setPartyMpHalf(alive = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setMp(Math.floor(member._mp / 2))
       }
     }
   }
@@ -264,6 +280,14 @@ export default class MV {
     }
   }
 
+  static setPartyTpHalf(alive = false) {
+    for (const member of $gameParty.allMembers()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setTp(Math.floor(member._tp / 2))
+      }
+    }
+  }
+
   static recoverPartyTp(alive = false) {
     for (const member of $gameParty.allMembers()) {
       if ((alive && member._hp !== 0) || !alive) {
@@ -276,6 +300,14 @@ export default class MV {
     for (const member of $gameTroop.members()) {
       if ((alive && member._hp !== 0) || !alive) {
         member.setHp(hp)
+      }
+    }
+  }
+
+  static setEnemyHpHalf(alive = false) {
+    for (const member of $gameTroop.members()) {
+      if ((alive && member._hp !== 0) || !alive) {
+        member.setHp(Math.floor(member._hp / 2))
       }
     }
   }

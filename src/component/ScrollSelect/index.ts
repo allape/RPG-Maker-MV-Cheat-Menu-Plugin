@@ -1,5 +1,6 @@
 import './index.scss'
 import {IKeyMap, KEY_MAPS, KeyMaps, Renderer} from '../../core/renderer'
+import MV from '../../core/mv'
 
 export interface IScrollSelectKeyMap extends KeyMaps {
   left?: IKeyMap
@@ -83,15 +84,17 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
   }
 
   private _onKeydown = (e: KeyboardEvent) => {
-    const {left, center, right} = this.props.keymap
-    if (left && e.code === left.code) {
-      this._onLeft(e)
-    }
-    if (center && e.code === center.code) {
-      this._onCenter(e)
-    }
-    if (right && e.code === right.code) {
-      this._onRight(e)
+    if (MV.singleton().visible) {
+      const {left, center, right} = this.props.keymap
+      if (left && e.code === left.code) {
+        this._onLeft(e)
+      }
+      if (center && e.code === center.code) {
+        this._onCenter(e)
+      }
+      if (right && e.code === right.code) {
+        this._onRight(e)
+      }
     }
   }
 

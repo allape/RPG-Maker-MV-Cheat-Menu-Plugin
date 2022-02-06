@@ -73,19 +73,19 @@ export default class App extends Renderer<HTMLDivElement> {
       module: EnemyHP as RenderClass,
     },
     {
+      module: PartyHP as RenderClass,
+    },
+    {
       module: PartyMP as RenderClass,
     },
     {
       module: PartyTP as RenderClass,
     },
     {
-      module: PartyHP as RenderClass,
+      module: Teleport as RenderClass,
     },
     {
-      module: Weapons as RenderClass,
-    },
-    {
-      module: Armors as RenderClass,
+      module: Translate as RenderClass,
     },
     {
       module: NoClip as RenderClass,
@@ -97,10 +97,10 @@ export default class App extends Renderer<HTMLDivElement> {
       module: Switches as RenderClass,
     },
     {
-      module: Teleport as RenderClass,
+      module: Weapons as RenderClass,
     },
     {
-      module: Translate as RenderClass,
+      module: Armors as RenderClass,
     },
   ]
 
