@@ -1,7 +1,7 @@
 {
   "name": "rpg-maker-mv-cheater",
-  "version": "0.3.0",
-  "description": "Refined cheat plugin for RPG Maker MV",
+  "version": "0.4.0",
+  "description": "Refined cheat plugin for RPG Maker MV/MZ",
   "private": true,
   "scripts": {
     "prepare:clean": "npx rimraf build/ dist/",
@@ -14,7 +14,11 @@
     "postbuild": "node postbuild.js"
   },
   "keywords": [
-    "RPG-Maker-MV"
+    "translate",
+    "speed hack",
+    "cheat",
+    "RPG-Maker-MV",
+    "RPG-Maker-MZ"
   ],
   "author": "allape",
   "license": "ISC",
