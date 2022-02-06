@@ -34,7 +34,8 @@ export default class App extends Renderer<HTMLDivElement> {
   static KeyMap = {
     toggle: KEY_MAPS.Digit1,
     back: KEY_MAPS.Digit2,
-    next: KEY_MAPS.Backquote,
+    prev: KEY_MAPS.Backquote,
+    next: KEY_MAPS.Equal,
   }
 
   static ModulesKeymaps = [
@@ -46,6 +47,7 @@ export default class App extends Renderer<HTMLDivElement> {
     KEY_MAPS.Digit8,
     KEY_MAPS.Digit9,
     KEY_MAPS.Digit0,
+    KEY_MAPS.Minus,
   ]
 
   static Modules: IModule[] = [
@@ -65,6 +67,9 @@ export default class App extends Renderer<HTMLDivElement> {
       module: Variables as RenderClass,
     },
     {
+      module: Stat as RenderClass,
+    },
+    {
       module: EnemyHP as RenderClass,
     },
     {
@@ -75,9 +80,6 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: PartyHP as RenderClass,
-    },
-    {
-      module: Stat as RenderClass,
     },
     {
       module: Weapons as RenderClass,
@@ -105,6 +107,7 @@ export default class App extends Renderer<HTMLDivElement> {
   private readonly wrapper = document.createElement('div')
   private readonly navBackButton = document.createElement('div')
   private readonly navShiftButton = document.createElement('div')
+  private readonly navPrevButton = document.createElement('div')
   private readonly navNextButton = document.createElement('div')
   private readonly navTextContainer = document.createElement('div')
   private readonly container = document.createElement('div')
@@ -124,6 +127,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     this.navBackButton.style.display = 'none'
     this.navShiftButton.style.display = 'block'
+    this.navPrevButton.style.display = 'none'
     this.navNextButton.style.display = 'none'
     this.navTextContainer.innerHTML = ''
 
@@ -131,6 +135,14 @@ export default class App extends Renderer<HTMLDivElement> {
     this.container.append(this._buildHome())
 
     SoundManager.playSystemSound(0)
+  }
+
+  private _prevModule = () => {
+    if (this._currentModule) {
+      let currentIndex = App.Modules.findIndex(i => i.module === (this._currentModule as unknown as typeof Function).constructor)
+      currentIndex = (currentIndex <= 0 ? App.Modules.length : currentIndex) - 1
+      this._buildModule(App.Modules[currentIndex])
+    }
   }
 
   private _nextModule = () => {
@@ -151,6 +163,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
       this.navBackButton.style.display = 'block'
       this.navShiftButton.style.display = 'none'
+      this.navPrevButton.style.display = 'block'
       this.navNextButton.style.display = 'block'
       this.navTextContainer.innerHTML = m.MyName
 
@@ -186,6 +199,9 @@ export default class App extends Renderer<HTMLDivElement> {
         switch (e.code) {
         case App.KeyMap.back.code:
           this._showHome()
+          break
+        case App.KeyMap.prev.code:
+          this._prevModule()
           break
         case App.KeyMap.next.code:
           this._nextModule()
@@ -227,6 +243,12 @@ export default class App extends Renderer<HTMLDivElement> {
     navShift.innerHTML = `[${App.KeyMap.back.key}] Shift Shortcuts`
     navShift.addEventListener('click', this._shiftShortcuts)
     nav.append(navShift)
+
+    const navPrev = this.navPrevButton
+    navPrev.classList.add('nav-button')
+    navPrev.innerHTML = `Prev [${App.KeyMap.prev.key}]`
+    navPrev.addEventListener('click', this._prevModule)
+    nav.append(navPrev)
 
     const navNext = this.navNextButton
     navNext.classList.add('nav-button')

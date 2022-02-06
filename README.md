@@ -75,3 +75,9 @@ go get
 # build executable patcher
 ./build.sh
 ```
+
+#### Styles inspection, and styles only, [index.html](public/index.html)
+
+#### Copy files after built, details in [postbuild.js](postbuild.js)
+- create a file, `copycat.json`, at project root dir
+- key is a relative path to project root dir, value is an absolute path which is destination

@@ -109,7 +109,7 @@ export default class Translate extends TranslateCore {
   static MyName = 'Translate'
 
   static KeyMap: KeyMaps = {
-    reload: KEY_MAPS.Equal,
+    reload: KEY_MAPS.Minus,
   }
 
   private readonly urlInput = new Input()
