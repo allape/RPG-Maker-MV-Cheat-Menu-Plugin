@@ -185,7 +185,12 @@ export default class App extends Renderer<HTMLDivElement> {
     const mv = MV.singleton()
     mv.visible = !mv.visible
 
-    this.wrapper.style.transform = mv.visible ? 'translateY(0)' : 'translateY(-100%)'
+    const wc = this.wrapper.classList
+    if (mv.visible) {
+      wc.add('shown')
+    } else {
+      wc.remove('shown')
+    }
 
     SoundManager.playSystemSound(mv.visible ? 1 : 0)
   }

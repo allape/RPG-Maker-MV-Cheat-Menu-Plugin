@@ -5,16 +5,22 @@
   min-width: 500px;
   background: rgba(0, 0, 0, .5);
   color: white;
-  //transition: .3s;
-  transform: translateY(-100%);
-  padding: 10px;
+  transition: .3s;
+  transform: translateX(calc(-100% + 55px));
+  &.shown {
+    transform: translateX(0);
+    .as-cheater-container {
+      padding: 10px;
+      max-height: 100vh;
+      overflow: unset;
+    }
+  }
   .cheater-nav {
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
-    margin: -10px -10px 0;
     border-bottom: 1px solid white;
     .nav-button {
       padding: 10px;
@@ -35,8 +41,12 @@
     }
   }
   .as-cheater-container {
-    padding-top: 10px;
     width: 100%;
+    min-width: unset;
+    transition: .3s;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
     .cheater-items-wrapper {
       display: flex;
       justify-content: space-evenly;
