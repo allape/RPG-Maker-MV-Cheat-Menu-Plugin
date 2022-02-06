@@ -5,6 +5,7 @@ export default class ArmorSelector extends FilterableScrollSelect<Game_Armor> {
   constructor(props?: Pick<IFilterableScrollSelectProps<Game_Armor>, 'onChange'>) {
     super({
       ...props,
+      key: 'ArmorSelector',
       keymap: ScrollSelect.KeyMap34,
       listProvider: keyword => $dataArmors?.filter(i => !!i && i.name?.toLowerCase().includes(keyword)) || [],
       nameProvider: item => item?.name,

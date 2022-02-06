@@ -10,6 +10,7 @@ export default class StatSelector extends FilterableScrollSelect<IStat> {
   constructor(props?: Pick<IFilterableScrollSelectProps<IStat>, 'onChange'>) {
     super({
       ...props,
+      key: 'StatSelector',
       keymap: ScrollSelect.KeyMap56,
       listProvider: keyword =>
         $dataSystem.terms.params.map((i, ii) => ({

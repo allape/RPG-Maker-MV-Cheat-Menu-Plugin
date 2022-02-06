@@ -4,10 +4,6 @@
 ### ⚠️⚠️⚠️ Still in TESTING, Save Game Frequently ⚠️⚠️⚠️
 ---
 
-### In Progress
-- `Searching Text Field` caches with game saving file
-- `Scroll Selector` states cache with game saving file
-
 ### Screenshots
 ![Index](screenshots/home.png)
 ![Translate](screenshots/translate.png)

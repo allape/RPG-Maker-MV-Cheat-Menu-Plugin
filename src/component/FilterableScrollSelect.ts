@@ -4,6 +4,8 @@ import Input from './Input'
 import ScrollSelect, { IScrollSelectProps } from './ScrollSelect'
 
 export interface IFilterableScrollSelectProps<T> extends IScrollSelectProps {
+  // used for cache keyword, the same key will produce the same cached keyword
+  key?: string
   listProvider: (keyword: string) => T[]
   nameProvider: (item?: T) => string | undefined
   onChange?: (value: T) => void
@@ -23,15 +25,34 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
   private _keyword = ''
 
   private _onChange = () => {
-    const { _index, row, _keyword } = this
-    const list = this.props.listProvider(_keyword)
+    const { _index, row, _keyword, props } = this
+    const { listProvider, nameProvider, onChange, key } = props
+
+    const list = listProvider(_keyword)
     const current = list[_index]
-    this.props.onChange?.(current)
-    row.value = `[${_index + 1}/${list.length}]: ${this.props.nameProvider(current) || '(null)'}`
+
+    onChange?.(current)
+
+    row.value = `[${_index + 1}/${list.length}]: ${nameProvider(current) || '(null)'}`
+
+    if (key) {
+      MV.singleton().storage[`${key}_index`] = _index
+      MV.singleton().storage[`${key}_keyword`] = _keyword
+    }
+  }
+
+  private _fillWithStorage = () => {
+    const {key} = this.props
+    if (key) {
+      this._index = (MV.singleton().storage[`${key}_index`] || 0) as number
+      this._keyword = `${MV.singleton().storage[`${key}_keyword`] || ''}`
+      this.search.value = this._keyword
+    }
   }
 
   private _onSearchChange = (e: Event) => {
     e.stopPropagation()
+
     this._index = 0
     this._keyword = this.search.value?.toLowerCase() || ''
     this._onChange()
@@ -40,6 +61,7 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
   private _onGameStart = () => {
     setTimeout(() => {
       this._index = 0
+      this._fillWithStorage()
       this._onChange()
     })
   }
@@ -62,7 +84,9 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
       MV.singleton().on('setupNewGame', this._onGameStart)
     }
 
-    const { listProvider, onLeft, onCenter, onRight } = this.props
+    this._fillWithStorage()
+
+    const { listProvider, onLeft, onCenter, onRight } = props
 
     this.row = new ScrollSelect({
       keymap: props.keymap || ScrollSelect.KeyMap34,

@@ -5,6 +5,7 @@ export default class ItemSelector extends FilterableScrollSelect<Game_Item> {
   constructor(props?: Pick<IFilterableScrollSelectProps<Game_Item>, 'onChange'>) {
     super({
       ...props,
+      key: 'ItemSelector',
       keymap: ScrollSelect.KeyMap34,
       listProvider: keyword => $dataItems?.filter(i => !!i && i.name?.toLowerCase().includes(keyword)) || [],
       nameProvider: item => item?.name,

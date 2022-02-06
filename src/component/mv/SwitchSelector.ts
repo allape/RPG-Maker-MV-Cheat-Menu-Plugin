@@ -10,6 +10,7 @@ export default class SwitchSelector extends FilterableScrollSelect<ISwitch> {
   constructor(props?: Pick<IFilterableScrollSelectProps<ISwitch>, 'onChange'>) {
     super({
       ...props,
+      key: 'SwitchSelector',
       keymap: ScrollSelect.KeyMap34,
       listProvider: keyword =>
         $dataSystem.switches.map((i, ii) => ({

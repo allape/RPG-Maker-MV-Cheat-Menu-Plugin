@@ -83,6 +83,13 @@ export default class GodMode extends Renderer {
 
   render(): HTMLElement {
     const container = document.createElement('div')
+
+    const notice = document.createElement('div')
+    notice.style.color = 'red'
+    notice.style.paddingBottom = '10px'
+    notice.innerHTML = 'May cause "Memory Leak", restart game to solve this'
+    container.append(notice)
+
     container.append(this.actor.render())
     container.append(this.switcher.render())
 

@@ -5,10 +5,17 @@ export type OnChoicesChange = (messages: string[]) => void
 
 export default class MV {
 
+  private static readonly CHEAT_NAME = 'AsCheater'
+
   /**
    * 全局对象: 是否显示作弊器
    */
   visible = false
+
+  /**
+   * 全局对象, 当前新游戏或者读取的游戏的保存数据
+   */
+  storage: Record<string, string | number | boolean | null | undefined> = {}
 
   private readonly _onNewMessageQueue: OnNewMessage[] = []
   private readonly _onChoicesChangeQueue: OnChoicesChange[] = []
@@ -30,6 +37,8 @@ export default class MV {
 
     DataManager._loadGame_proxy = DataManager.loadGame
     DataManager.loadGame = (saveFieldId) => {
+      const result = DataManager._loadGame_proxy(saveFieldId)
+      this.storage = $gameSystem[MV.CHEAT_NAME] || {}
       try {
         this._loadGameQueue.forEach(fn => {
           try {
@@ -41,7 +50,7 @@ export default class MV {
       } catch (e) {
         console.error('error in call load game queue:', e)
       }
-      return DataManager._loadGame_proxy(saveFieldId)
+      return result
     }
 
     DataManager._setupNewGame_proxy = DataManager.setupNewGame
@@ -73,6 +82,7 @@ export default class MV {
       } catch (e) {
         console.error('error in call save game queue:', e)
       }
+      $gameSystem[MV.CHEAT_NAME] = this.storage
       return DataManager._saveGame_proxy(saveFieldId)
     }
 
