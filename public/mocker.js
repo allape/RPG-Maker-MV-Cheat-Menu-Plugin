@@ -1,4 +1,6 @@
 /* eslint-disable */
+// noinspection ES6ConvertVarToLetConst
+
 var SoundManager = {
     playSystemSound: () => {},
 }

@@ -11,19 +11,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
   static MyName = 'Speed'
 
-  private static get speed(): number {
-    return window.__cheat_speed || 4
-  }
-  private static set speed(v: number) {
-    window.__cheat_speed = v
-  }
-
-  private static get speedLocked(): boolean {
-    return !!window.__cheat_speedLocked
-  }
-  private static set speedLocked(v: boolean) {
-    window.__cheat_speedLocked = v
-  }
+  private static readonly DEFAULT_SPEED = 4
 
   private readonly amount: AmountSelector
   private readonly currentAmount: AmountSelector
@@ -45,10 +33,10 @@ export default class Speed extends Renderer<HTMLDivElement> {
       // Speed.speed = $gamePlayer._moveSpeed
       Object.defineProperty($gamePlayer, '_moveSpeed', {
         configurable: true,
-        get: () => Speed.speed,
+        get: () => window.__cheat_speed || Speed.DEFAULT_SPEED,
         set: (value: number) => {
-          if (!Speed.speedLocked) {
-            Speed.speed = value
+          if (!window.__cheat_speedLocked) {
+            window.__cheat_speed = value
           }
         },
       })
@@ -57,6 +45,10 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
   constructor() {
     super()
+
+    if (window.__cheat_speed === undefined) {
+      window.__cheat_speed = $gamePlayer._moveSpeed || Speed.DEFAULT_SPEED
+    }
 
     this.amount = new AmountSelector({
       precision: 2,
@@ -73,12 +65,12 @@ export default class Speed extends Renderer<HTMLDivElement> {
       readOnly: true,
       keymap: ScrollSelect.KeyMap56,
       onLess: () => {
-        Speed.speed -= this.amount.value
+        window.__cheat_speed -= this.amount.value
         this._onSpeedChange()
         return true
       },
       onMore: () => {
-        Speed.speed += this.amount.value
+        window.__cheat_speed += this.amount.value
         this._onSpeedChange()
         return true
       },
@@ -86,12 +78,12 @@ export default class Speed extends Renderer<HTMLDivElement> {
 
     this.speedLocker = new Switch({
       label: 'Lock Speed',
-      default: Speed.speedLocked,
+      default: window.__cheat_speedLocked,
       keymap: Speed.KeyMap.speedLock,
       onHTML: 'locked',
       offHTML: 'unlocked',
       onChange: value => {
-        Speed.speedLocked = value
+        window.__cheat_speedLocked = value
         this.speedLocker.value = value
         SoundManager.playSystemSound(value ? 1 : 2)
         if (value) {

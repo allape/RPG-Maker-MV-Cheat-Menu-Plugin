@@ -46,8 +46,6 @@ export default class App extends Renderer<HTMLDivElement> {
     KEY_MAPS.Digit8,
     KEY_MAPS.Digit9,
     KEY_MAPS.Digit0,
-    KEY_MAPS.Minus,
-    KEY_MAPS.Equal,
   ]
 
   static Modules: IModule[] = [

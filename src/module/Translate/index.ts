@@ -17,7 +17,7 @@ export type TranslateMapper = Record<string, string>
 
 export const _cache: Record<string, Record<string, string>> = {}
 
-abstract class TranslateCore  extends Renderer<HTMLDivElement> {
+abstract class TranslateCore extends Renderer<HTMLDivElement> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected static stringifyError(e: any): string {
