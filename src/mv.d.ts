@@ -144,6 +144,7 @@ declare global {
   }
 
   class Game_Weapon extends Game_Item {}
+
   class Game_Armor extends Game_Item {}
 
   class Data_System {
@@ -167,6 +168,10 @@ declare global {
 
   class SoundManager {
     static playSystemSound(soundIndex?: number): void
+  }
+
+  class SceneManager {
+    static updateScene: () => void
   }
 }
 

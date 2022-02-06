@@ -73,31 +73,32 @@ export default class AmountSelector extends Renderer<HTMLDivElement> {
 
   constructor(props?: IAmountSelectorProps) {
     super()
-    this.props = props || {}
 
-    this.props.precision = (this.props.precision || 0) < 0 ? 0 : this.props.precision
-    this.props.keymap = this.props.keymap || AmountSelector.KeyMap
+    this.props = props = props || {}
 
-    this.props.increaseFn = this.props.increaseFn || AmountSelector.defaultIncreaseFn
-    this.props.decreaseFn = this.props.decreaseFn || AmountSelector.defaultDecreaseFn
+    props.precision = (props.precision || 0) < 0 ? 0 : props.precision
+    props.keymap = props.keymap || AmountSelector.KeyMap
+    props.keymap = props.keymap || AmountSelector.KeyMap
+    props.increaseFn = props.increaseFn || AmountSelector.defaultIncreaseFn
+    props.decreaseFn = props.decreaseFn || AmountSelector.defaultDecreaseFn
 
-    this.input.value = this.props.default || ''
+    this.input.value = (props.default === undefined ? '' : props.default)
 
     const inputDom = this.input.render() as HTMLInputElement
     inputDom.addEventListener('change', this._onChange)
     inputDom.classList.add('input')
     inputDom.type = 'number'
     inputDom.style.textAlign = 'center'
-    if (this.props.readOnly) {
-      inputDom.readOnly = this.props.readOnly
+    if (props.readOnly) {
+      inputDom.readOnly = props.readOnly
       inputDom.style.borderColor = 'transparent'
     }
 
     this.row = new ScrollSelect({
-      keymap: this.props.keymap,
+      keymap: props.keymap,
       leftText: '-',
       rightText: '+',
-      ...this.props.scrollSelectorProps,
+      ...props.scrollSelectorProps,
       center: inputDom,
       onLeft: this._onLess,
       onRight: this._onMore,

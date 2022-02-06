@@ -3,13 +3,13 @@ import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
 import Switch from '../component/Switch'
 
-export default class Speed extends Renderer<HTMLDivElement> {
+export default class MoveSpeed extends Renderer<HTMLDivElement> {
 
   static KeyMap = {
     speedLock: KEY_MAPS.Digit7,
   }
 
-  static MyName = 'Speed'
+  static MyName = 'Move Speed'
 
   private static readonly DEFAULT_SPEED = 4
 
@@ -33,7 +33,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
       // Speed.speed = $gamePlayer._moveSpeed
       Object.defineProperty($gamePlayer, '_moveSpeed', {
         configurable: true,
-        get: () => window.__cheat_speed || Speed.DEFAULT_SPEED,
+        get: () => window.__cheat_speed || MoveSpeed.DEFAULT_SPEED,
         set: (value: number) => {
           if (!window.__cheat_speedLocked) {
             window.__cheat_speed = value
@@ -47,7 +47,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
     super()
 
     if (window.__cheat_speed === undefined) {
-      window.__cheat_speed = $gamePlayer._moveSpeed || Speed.DEFAULT_SPEED
+      window.__cheat_speed = $gamePlayer._moveSpeed || MoveSpeed.DEFAULT_SPEED
     }
 
     this.amount = new AmountSelector({
@@ -79,7 +79,7 @@ export default class Speed extends Renderer<HTMLDivElement> {
     this.speedLocker = new Switch({
       label: 'Lock Speed',
       default: window.__cheat_speedLocked,
-      keymap: Speed.KeyMap.speedLock,
+      keymap: MoveSpeed.KeyMap.speedLock,
       onHTML: 'locked',
       offHTML: 'unlocked',
       onChange: value => {

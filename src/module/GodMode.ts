@@ -87,7 +87,7 @@ export default class GodMode extends Renderer {
     const notice = document.createElement('div')
     notice.style.color = 'red'
     notice.style.paddingBottom = '10px'
-    notice.innerHTML = 'May cause "Memory Leak", restart game to solve this'
+    notice.innerHTML = 'This function may cause "Memory Leak", restart game to solve this problem for now.'
     container.append(notice)
 
     container.append(this.actor.render())

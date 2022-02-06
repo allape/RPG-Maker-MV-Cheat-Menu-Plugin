@@ -5,7 +5,7 @@ import MV from './core/mv'
 import {space2line} from './core/dom'
 import Items from './module/Items'
 import Gold from './module/Gold'
-import Speed from './module/Speed'
+import MoveSpeed from './module/MoveSpeed'
 import Variables from './module/Variables'
 import PartyHP from './module/PartyHP'
 import PartyMP from './module/PartyMP'
@@ -19,6 +19,7 @@ import GiveExp from './module/GiveExp'
 import Switches from './module/Switches'
 import Teleport from './module/Teleport'
 import Translate from './module/Translate'
+import SpeedHack from './module/SpeedHack'
 
 // eslint-disable-next-line
 export type RenderClass<T extends Renderer = any> = T
@@ -55,7 +56,7 @@ export default class App extends Renderer<HTMLDivElement> {
       module: GodMode as RenderClass,
     },
     {
-      module: Speed as RenderClass,
+      module: MoveSpeed as RenderClass,
     },
     {
       module: Gold as RenderClass,
@@ -68,6 +69,12 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Stat as RenderClass,
+    },
+    {
+      module: Translate as RenderClass,
+    },
+    {
+      module: SpeedHack as RenderClass,
     },
     {
       module: EnemyHP as RenderClass,
@@ -83,9 +90,6 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Teleport as RenderClass,
-    },
-    {
-      module: Translate as RenderClass,
     },
     {
       module: NoClip as RenderClass,
@@ -187,7 +191,7 @@ export default class App extends Renderer<HTMLDivElement> {
   }
 
   private _shiftShortcuts = () => {
-    const maxFactor = Math.floor(App.Modules.length / App.ModulesKeymaps.length)
+    const maxFactor = Math.floor(App.Modules.length / App.ModulesKeymaps.length) - 1
     this._moduleIndexFactor = this._moduleIndexFactor >= maxFactor ? 0 : (this._moduleIndexFactor + 1)
     this._showHome()
   }
