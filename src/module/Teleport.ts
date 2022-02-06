@@ -8,6 +8,10 @@ import MV from '../core/mv'
 export default class Teleport extends Renderer<HTMLDivElement> {
   static MyName = 'Teleport'
 
+  private static readonly X_STORAGE_KEY = 'Teleport_x'
+
+  private static readonly Y_STORAGE_KEY = 'Teleport_y'
+
   private static readonly axisLabelBuilder = (text: string): HTMLElement => {
     const span = document.createElement('span')
     span.style.paddingRight = '10px'
@@ -18,7 +22,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
   private static readonly AxisDefaultAmountSelectorProps: IAmountSelectorProps = {
     min: Number.MIN_SAFE_INTEGER,
     max: Number.MAX_SAFE_INTEGER,
-    default: 1,
+    default: 0,
     precision: 0,
     increaseFn: v => v + 1,
     decreaseFn: v => v - 1,
@@ -65,6 +69,10 @@ export default class Teleport extends Renderer<HTMLDivElement> {
         $gamePlayer.setPosition(x, y)
         SoundManager.playSystemSound(1)
         this._triggerOnChange()
+
+        const storage = MV.singleton().storage
+        storage[Teleport.X_STORAGE_KEY] = x
+        storage[Teleport.Y_STORAGE_KEY] = y
       }
     },
   })
@@ -72,11 +80,20 @@ export default class Teleport extends Renderer<HTMLDivElement> {
   private readonly _intervalId: number
 
   private readonly _onGameStart = () => {
+    this._fillWithStorage()
     this._triggerOnChange()
+  }
+
+  private _fillWithStorage = () => {
+    const storage = MV.singleton().storage
+    this.xSelector.value = (storage[Teleport.X_STORAGE_KEY] || 0) as number
+    this.ySelector.value = (storage[Teleport.Y_STORAGE_KEY] || 0) as number
   }
 
   constructor() {
     super()
+
+    this._fillWithStorage()
 
     this._intervalId = setInterval(() => {
       this._triggerOnChange()

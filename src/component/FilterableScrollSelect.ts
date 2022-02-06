@@ -36,16 +36,18 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
     row.value = `[${_index + 1}/${list.length}]: ${nameProvider(current) || '(null)'}`
 
     if (key) {
-      MV.singleton().storage[`${key}_index`] = _index
-      MV.singleton().storage[`${key}_keyword`] = _keyword
+      const storage = MV.singleton().storage
+      storage[`${key}_index`] = _index
+      storage[`${key}_keyword`] = _keyword
     }
   }
 
   private _fillWithStorage = () => {
     const {key} = this.props
     if (key) {
-      this._index = (MV.singleton().storage[`${key}_index`] || 0) as number
-      this._keyword = `${MV.singleton().storage[`${key}_keyword`] || ''}`
+      const storage = MV.singleton().storage
+      this._index = (storage[`${key}_index`] || 0) as number
+      this._keyword = `${storage[`${key}_keyword`] || ''}`
       this.search.value = this._keyword
     }
   }
