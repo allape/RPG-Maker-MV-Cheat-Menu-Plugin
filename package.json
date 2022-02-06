@@ -8,7 +8,7 @@
     "prepare:webpack": "copyfiles -u 1 src/**/*.scss src/**/*.sass src/**/*.css build/",
     "build:ts": "npm run prepare:clean && tsc",
     "build:webpack": "npm run prepare:webpack && webpack",
-    "build:plugin": "npm run build:ts && npm run build:webpack && npm run postbuild",
+    "build:plugin": "npm run build:ts && npm run build:webpack",
     "build:go": "cd patcher && ./build.sh",
     "build": "npm run build:plugin && npm run build:go",
     "postbuild": "node postbuild.js"
