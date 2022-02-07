@@ -82,7 +82,7 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
   private readonly _onRight = (e?: Event) => {
     if (this.props.onRight) {
       if (!this.props.onRight(e)) {
-        SoundManager.playSystemSound(2)
+        SoundManager.playSystemSound(0)
       }
     }
   }

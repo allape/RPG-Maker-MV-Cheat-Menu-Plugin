@@ -55,7 +55,7 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
       keymap: XPBaseModule.KeyMap.aliveTo0,
       onChange: () => {
         props.onAliveTo0()
-        SoundManager.playSystemSound(2)
+        SoundManager.playSystemSound(0)
       },
     })
 
@@ -95,7 +95,7 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
       keymap: XPBaseModule.KeyMap.allTo0,
       onChange: () => {
         props.onAllTo0()
-        SoundManager.playSystemSound(2)
+        SoundManager.playSystemSound(0)
       },
     })
 

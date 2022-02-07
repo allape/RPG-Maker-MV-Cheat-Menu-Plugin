@@ -25,7 +25,7 @@ export default class Switches extends Renderer<HTMLDivElement> {
       if (current) {
         const nextValue = !$gameSwitches.value(current.index)
         $gameSwitches.setValue(current.index, nextValue)
-        SoundManager.playSystemSound(nextValue ? 1 : 2)
+        SoundManager.playSystemSound(nextValue ? 1 : 0)
         this._triggerOnChange()
       }
     },

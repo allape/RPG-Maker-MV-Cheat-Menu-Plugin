@@ -85,7 +85,7 @@ export default class MoveSpeed extends Renderer<HTMLDivElement> {
       onChange: value => {
         window.__cheat_speedLocked = value
         this.speedLocker.value = value
-        SoundManager.playSystemSound(value ? 1 : 2)
+        SoundManager.playSystemSound(value ? 1 : 0)
         if (value) {
           this._inject(true)
         }

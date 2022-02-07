@@ -11,7 +11,7 @@ export default class NoClip extends Renderer<HTMLDivElement> {
     default: $gameParty._through,
     onChange: () => {
       $gameParty._through = !$gameParty._through
-      SoundManager.playSystemSound($gameParty._through ? 1 : 2)
+      SoundManager.playSystemSound($gameParty._through ? 1 : 0)
       this._onChange()
     },
   })

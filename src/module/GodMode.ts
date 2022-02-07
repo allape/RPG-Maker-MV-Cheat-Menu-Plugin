@@ -36,7 +36,7 @@ export default class GodMode extends Renderer {
       clearInterval(actor._godModeIntervalId)
     }
 
-    SoundManager.playSystemSound(actor._godMode ? 1 : 2)
+    SoundManager.playSystemSound(actor._godMode ? 1 : 0)
   }
 
   private readonly _onGameStart = () => {
