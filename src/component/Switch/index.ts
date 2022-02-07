@@ -1,6 +1,7 @@
 import './index.scss'
 import {IKeyMap, Renderer} from '../../core/renderer'
 import MV from '../../core/mv'
+import {createKeyMapLabel} from '../../core/dom'
 
 export interface ISwitchProps {
   keymap?: IKeyMap
@@ -98,9 +99,8 @@ export default class Switch extends Renderer<HTMLDivElement> {
     statusWrapper.append(status)
 
     if (keymap) {
-      const keystroke = document.createElement('span')
+      const keystroke = createKeyMapLabel(keymap)
       keystroke.classList.add('keystroke')
-      keystroke.innerHTML = `[${keymap.key}]`
       statusWrapper.append(keystroke)
     }
 

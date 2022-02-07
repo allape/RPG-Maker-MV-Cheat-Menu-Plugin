@@ -43,8 +43,8 @@ export default class Variables extends FSSWithAA<IVariable> {
     value.rows = 5
 
     this.currentAmountSelector = new ScrollSelect({
-      leftText: '-',
-      rightText: '+',
+      leftText: AmountSelector.DEFAULT_LESS_ARROW,
+      rightText: AmountSelector.DEFAULT_MORE_ARROW,
       center: value,
       keymap: ScrollSelect.KeyMap78,
       valueProvider: value => {

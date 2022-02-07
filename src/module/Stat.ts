@@ -24,11 +24,12 @@ export default class Stat extends DualFSSWithAA<Game_Actor, IStat> {
     precision: 0,
     min: 1,
     max: 9999,
+    keymap: ScrollSelect.KeyMap78,
   })
   protected readonly currentAmountSelector = new AmountSelector({
     precision: 0,
     readOnly: true,
-    keymap: ScrollSelect.KeyMap78,
+    keymap: ScrollSelect.KeyMap90,
     onLess: () => {
       const actor = this.first
       const stat = this.second

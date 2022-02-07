@@ -41,6 +41,10 @@ export function createKeyMapLabel(key: string | IKeyMap, name = '', namePosition
         label,
       )
     }
+  } else {
+    wrapper.append(
+      label,
+    )
   }
 
   return wrapper

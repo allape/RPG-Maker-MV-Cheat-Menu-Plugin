@@ -27,6 +27,9 @@ export default class AmountSelector extends Renderer<HTMLDivElement> {
 
   static KeyMap = ScrollSelect.KeyMap56
 
+  static readonly DEFAULT_LESS_ARROW = '－'
+  static readonly DEFAULT_MORE_ARROW = '＋'
+
   static defaultIncreaseFn = v => v * 10
   static defaultDecreaseFn = v => v / 10
 
@@ -96,8 +99,8 @@ export default class AmountSelector extends Renderer<HTMLDivElement> {
 
     this.row = new ScrollSelect({
       keymap: props.keymap,
-      leftText: '-',
-      rightText: '+',
+      leftText: AmountSelector.DEFAULT_LESS_ARROW,
+      rightText: AmountSelector.DEFAULT_MORE_ARROW,
       ...props.scrollSelectorProps,
       center: inputDom,
       onLeft: this._onLess,

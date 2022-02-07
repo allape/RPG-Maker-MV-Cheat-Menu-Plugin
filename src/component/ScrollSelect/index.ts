@@ -1,6 +1,7 @@
 import './index.scss'
 import {IKeyMap, KEY_MAPS, KeyMaps, Renderer} from '../../core/renderer'
 import MV from '../../core/mv'
+import {createKeyMapLabel} from '../../core/dom'
 
 export interface IScrollSelectKeyMap extends KeyMaps {
   left?: IKeyMap
@@ -11,8 +12,8 @@ export interface IScrollSelectKeyMap extends KeyMaps {
 export interface IScrollSelectProps {
   keymap?: IScrollSelectKeyMap
   valueProvider?: (value: string) => void
-  leftText?: HTMLElement | string
-  rightText?: HTMLElement | string
+  leftText?: string
+  rightText?: string
   centerPrefix?: HTMLElement | string
   center?: HTMLElement | string
   centerSuffix?: HTMLElement | string
@@ -42,6 +43,9 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
     left: KEY_MAPS.Digit9,
     right: KEY_MAPS.Digit0,
   }
+
+  static readonly DEFAULT_LEFT_ARROW = '←'
+  static readonly DEFAULT_RIGHT_ARROW = '→'
 
   private readonly props: IScrollSelectProps
 
@@ -125,7 +129,12 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
     row.classList.add('row-select-wrapper')
 
     left.classList.add('button')
-    left.innerHTML = `${keymap.left ? `[${keymap.left.key}] ` : ''}${leftText || '<'}`
+    left.append(
+      keymap.left ?
+        createKeyMapLabel(keymap.left, leftText || ScrollSelect.DEFAULT_LEFT_ARROW)
+        :
+        (leftText || ScrollSelect.DEFAULT_LEFT_ARROW)
+    )
     left.addEventListener('click', this._onLeft)
     row.append(left)
 
@@ -143,7 +152,12 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
     row.append(text)
 
     right.classList.add('button')
-    right.innerHTML = `${rightText || '>'}${keymap.right ? ` [${keymap.right.key}]` : ''}`
+    right.append(
+      keymap.right ?
+        createKeyMapLabel(keymap.right, rightText || ScrollSelect.DEFAULT_RIGHT_ARROW, 'left')
+        :
+        (rightText || ScrollSelect.DEFAULT_RIGHT_ARROW)
+    )
     right.addEventListener('click', this._onRight)
     row.append(right)
 

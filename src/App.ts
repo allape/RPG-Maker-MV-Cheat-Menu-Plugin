@@ -249,7 +249,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navBack = this.navBackButton
     navBack.classList.add('nav-button')
-    navBack.append(createKeyMapLabel(App.KeyMap.back, '←', 'left'))
+    navBack.append(createKeyMapLabel(App.KeyMap.back, '↩', 'left'))
     navBack.addEventListener('click', this._showHome)
     nav.append(navBack)
 
@@ -298,7 +298,8 @@ export default class App extends Renderer<HTMLDivElement> {
 
       const mItemContainer = document.createElement('div')
       mItemContainer.classList.add('cheater-item-wrapper')
-      mItemContainer.innerHTML = space2line(`${m.module.MyName}${m.keymap ? ` [${m.keymap.key}]` : ' <br>'}`)
+      mItemContainer.innerHTML = space2line(`${m.module.MyName}`) +
+        (m.keymap ? `<div>${createKeyMapLabel(m.keymap).outerHTML}</div>` : '<br>')
       mItemContainer.setAttribute('data-index', `${i}`)
       mItemContainer.addEventListener('click', () => {
         this._buildModule(m)
