@@ -8,6 +8,8 @@
 
 ### Screenshots
 ![Index](screenshots/home.png)
+![Index](screenshots/speed hack.png)
+![Index](screenshots/party hp.png)
 
 ### Features
 - Keyboard and Mouse both supported 
@@ -36,6 +38,8 @@
   - Switches: Toggle boolean variables
   - Weapons
   - Armors
+  - Clear States
+  - Game Save: for emergency only
 
 ### Installation
 - Download [release zip](https://github.com/allape/RPG-Maker-MV-Cheat-Menu-Plugin/releases)
