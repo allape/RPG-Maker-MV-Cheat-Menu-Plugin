@@ -33,6 +33,8 @@ declare global {
 
   const $gameMessage: Game_Message
 
+  const $dataStates: Game_State[]
+
   const $dataSystem: Data_System
 
   const $dataWeapons: Game_Weapon[]
@@ -47,12 +49,18 @@ declare global {
 
   }
 
+  class Game_State {
+    id: number
+  }
+
   class Game_Actor {
     _name: string
     _hp: number
     _mp: number
     _tp: number
     _paramPlus: number[]
+    _states: Array<Game_State | null | undefined>
+    _stateSteps: Record<string, Game_State>
 
     // max hp
     mhp: number
@@ -71,6 +79,7 @@ declare global {
     addParam: (statIndex: number, amount: number) => void
     currentExp: () => number
     gainExp: (exp: number) => void
+    clearStates: () => void
 
     // injected
 

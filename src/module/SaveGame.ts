@@ -37,12 +37,24 @@ export default class SaveGame extends Renderer<HTMLDivElement> {
     },
   })
 
+  private readonly _loadStorage = () => {
+    const saved = MV.singleton().storage[SaveGame.STORAGE_KEY]
+    if (saved) {
+      this.saveIdSelector.value = saved as number
+    }
+  }
+
   constructor() {
     super()
+
+    this._loadStorage()
+    MV.singleton().on('loadGame', this._loadStorage)
   }
 
   dispose() {
     super.dispose()
+
+    MV.singleton().off('loadGame', this._loadStorage)
 
     this.saveIdSelector.dispose()
     this.save.dispose()
@@ -53,6 +65,7 @@ export default class SaveGame extends Renderer<HTMLDivElement> {
 
     container.append(
       createText('Used for emergency game saving.'),
+      createText('Using ID which is out of game-predefined-range may cause an unexpected ERROR.', 'warning'),
       this.saveIdSelector.render(),
       this.save.render(),
     )

@@ -21,6 +21,7 @@ import Teleport from './module/Teleport'
 import Translate from './module/Translate'
 import SpeedHack from './module/SpeedHack'
 import SaveGame from './module/SaveGame'
+import ClearStates from './module/ClearStates'
 
 // eslint-disable-next-line
 export type RenderClass<T extends Renderer = any> = T
@@ -106,6 +107,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Armors as RenderClass,
+    },
+    {
+      module: ClearStates as RenderClass,
     },
     {
       module: SaveGame as RenderClass,
