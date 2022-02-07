@@ -16,7 +16,7 @@ export interface IPBasedModuleProps {
 /**
  * *P = HP or MP or TP, or something like this
  */
-export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
+export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
 
   static KeyMap = {
     aliveTo0: KEY_MAPS.Digit3,
@@ -49,9 +49,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     super()
 
     this.aliveTo0 = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to 0`,
-      keymap: XPBasedModule.KeyMap.aliveTo0,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `Alive ${props.name} to 0`,
+      keymap: XPBaseModule.KeyMap.aliveTo0,
       onChange: () => {
         props.onAliveTo0()
         SoundManager.playSystemSound(2)
@@ -59,9 +59,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.aliveTo1 = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to 1`,
-      keymap: XPBasedModule.KeyMap.aliveTo1,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `Alive ${props.name} to 1`,
+      keymap: XPBaseModule.KeyMap.aliveTo1,
       onChange: () => {
         props.onAliveTo1()
         SoundManager.playSystemSound(1)
@@ -69,9 +69,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.alive2Half = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to HALF`,
-      keymap: XPBasedModule.KeyMap.alive2Half,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `Alive ${props.name} to HALF`,
+      keymap: XPBaseModule.KeyMap.alive2Half,
       onChange: () => {
         props.onAlive2Half()
         SoundManager.playSystemSound(1)
@@ -79,9 +79,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.alive2Max = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to MAX`,
-      keymap: XPBasedModule.KeyMap.alive2Max,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `Alive ${props.name} to MAX`,
+      keymap: XPBaseModule.KeyMap.alive2Max,
       onChange: () => {
         props.onAlive2Max()
         SoundManager.playSystemSound(1)
@@ -89,9 +89,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.allTo0 = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to 0`,
-      keymap: XPBasedModule.KeyMap.allTo0,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `All ${props.name} to 0`,
+      keymap: XPBaseModule.KeyMap.allTo0,
       onChange: () => {
         props.onAllTo0()
         SoundManager.playSystemSound(2)
@@ -99,9 +99,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.allTo1 = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to 1`,
-      keymap: XPBasedModule.KeyMap.allTo1,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `All ${props.name} to 1`,
+      keymap: XPBaseModule.KeyMap.allTo1,
       onChange: () => {
         props.onAllTo1()
         SoundManager.playSystemSound(1)
@@ -109,9 +109,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.all2Half = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to HALF`,
-      keymap: XPBasedModule.KeyMap.all2Half,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `All ${props.name} to HALF`,
+      keymap: XPBaseModule.KeyMap.all2Half,
       onChange: () => {
         props.onAll2Half()
         SoundManager.playSystemSound(1)
@@ -119,9 +119,9 @@ export default abstract class XPBasedModule extends Renderer<HTMLDivElement> {
     })
 
     this.all2Max = new Switch({
-      ...XPBasedModule.DefaultSwitchProps,
-      label: `${props.name} to MAX`,
-      keymap: XPBasedModule.KeyMap.all2Max,
+      ...XPBaseModule.DefaultSwitchProps,
+      label: `All ${props.name} to MAX`,
+      keymap: XPBaseModule.KeyMap.all2Max,
       onChange: () => {
         props.onAll2Max()
         SoundManager.playSystemSound(1)

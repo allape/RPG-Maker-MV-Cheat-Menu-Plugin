@@ -1,7 +1,7 @@
 import MV from '../core/mv'
-import XPBasedModule from '../component/mv/XPBasedModule'
+import XPBaseModule from '../component/mv/XPBaseModule'
 
-export default class PartyHP extends XPBasedModule {
+export default class PartyHP extends XPBaseModule {
 
   static MyName = 'Party HP'
 
