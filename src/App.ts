@@ -20,6 +20,7 @@ import Switches from './module/Switches'
 import Teleport from './module/Teleport'
 import Translate from './module/Translate'
 import SpeedHack from './module/SpeedHack'
+import SaveGame from './module/SaveGame'
 
 // eslint-disable-next-line
 export type RenderClass<T extends Renderer = any> = T
@@ -105,6 +106,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: Armors as RenderClass,
+    },
+    {
+      module: SaveGame as RenderClass,
     },
   ]
 
@@ -196,7 +200,9 @@ export default class App extends Renderer<HTMLDivElement> {
   }
 
   private _shiftShortcuts = () => {
-    const maxFactor = Math.floor(App.Modules.length / App.ModulesKeymaps.length) - 1
+    const ml = App.Modules.length
+    const mkl = App.ModulesKeymaps.length
+    const maxFactor =  Math.floor(ml / mkl) - (ml % mkl === 0 ? 1 : 0)
     this._moduleIndexFactor = this._moduleIndexFactor >= maxFactor ? 0 : (this._moduleIndexFactor + 1)
     this._showHome()
   }
