@@ -65,6 +65,8 @@
 
 ### Dev
 
+#### Building on Windows requires changing `./build.sh` to `build.sh` in `build:go` of `package.json` scripts
+
 #### nodejs
 ```shell
 # install dependencies
