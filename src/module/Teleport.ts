@@ -28,15 +28,16 @@ export default class Teleport extends Renderer<HTMLDivElement> {
     decreaseFn: v => v - 1,
   }
 
-  private readonly _triggerOnChange = () => {
+  private readonly _getCurrentPosition = () => {
     const map = $dataMapInfos[$gameMap.mapId()]
     if (map && this.teleport) {
-      this.teleport.text = `${map.name || '(null)'} (${$gameMap.mapId()}: [${$gamePlayer.x}, ${$gamePlayer.y}])`
+      const newText = `${map.name || '(null)'} (${$gameMap.mapId()}: [${$gamePlayer.x}, ${$gamePlayer.y}])`
+      if (this.teleport.text !== newText) this.teleport.text = newText
     }
   }
 
   private readonly mapSelector = new MapSelector({
-    onChange: this._triggerOnChange,
+    onChange: this._getCurrentPosition,
   })
 
   private readonly xSelector = new AmountSelector({
@@ -57,6 +58,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
 
   private readonly teleport = new Switch({
     keymap: KEY_MAPS.Digit9,
+    selectable: true,
     default: true,
     onHTML: Teleport.MyName,
     onChange: () => {
@@ -68,7 +70,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
         $gamePlayer.reserveTransfer(mapId, x, y, $gamePlayer.direction(), 0)
         $gamePlayer.setPosition(x, y)
         SoundManager.playSystemSound(1)
-        this._triggerOnChange()
+        this._getCurrentPosition()
 
         const storage = MV.singleton().storage
         storage[Teleport.X_STORAGE_KEY] = x
@@ -81,7 +83,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
 
   private readonly _onGameStart = () => {
     this._fillWithStorage()
-    this._triggerOnChange()
+    this._getCurrentPosition()
   }
 
   private _fillWithStorage = () => {
@@ -96,7 +98,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
     this._fillWithStorage()
 
     this._intervalId = setInterval(() => {
-      this._triggerOnChange()
+      this._getCurrentPosition()
     }, 500) as unknown as number
 
     MV.singleton().on('setupNewGame', this._onGameStart)
@@ -111,6 +113,8 @@ export default class Teleport extends Renderer<HTMLDivElement> {
     this.ySelector.dispose()
     this.teleport.dispose()
 
+    clearInterval(this._intervalId)
+
     MV.singleton().off('setupNewGame', this._onGameStart)
     MV.singleton().off('loadGame', this._onGameStart)
   }
@@ -122,7 +126,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
     container.append(this.ySelector.render())
     container.append(this.teleport.render())
 
-    this._triggerOnChange()
+    this._getCurrentPosition()
 
     return container
   }

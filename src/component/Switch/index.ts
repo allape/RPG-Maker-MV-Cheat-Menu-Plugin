@@ -12,6 +12,8 @@ export interface ISwitchProps {
   offStyle?: string
 
   label?: string
+  // label selectable
+  selectable?: boolean
   default?: boolean
   onChange?: (value: boolean, e?: Event) => void
 }
@@ -30,6 +32,9 @@ export default class Switch extends Renderer<HTMLDivElement> {
 
   private _value = false
 
+  get text(): string {
+    return this.label.title
+  }
   set text(v: string) {
     this.label.innerHTML = `${v}: `
     this.label.title = v
@@ -84,12 +89,15 @@ export default class Switch extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const {label, status, props: {keymap}} = this
+    const {label, status, props: {keymap, selectable}} = this
 
     const container = document.createElement('div')
     container.classList.add('switch-wrapper')
 
     label.classList.add('label')
+    if (selectable) {
+      label.classList.add('selectable')
+    }
     container.append(label)
 
     const statusWrapper = document.createElement('div')

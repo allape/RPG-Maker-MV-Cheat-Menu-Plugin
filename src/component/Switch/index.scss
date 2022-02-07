@@ -7,6 +7,9 @@
     flex: 1;
     user-select: none;
     cursor: default;
+    &.selectable {
+      user-select: text;
+    }
   }
   .status {
     cursor: pointer;
