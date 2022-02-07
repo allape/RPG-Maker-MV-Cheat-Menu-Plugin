@@ -259,6 +259,11 @@ export default class App extends Renderer<HTMLDivElement> {
     navShift.addEventListener('click', this._shiftShortcuts)
     nav.append(navShift)
 
+    const navTitle = this.navTextContainer
+    navTitle.classList.add('nav-title')
+    navTitle.innerHTML = ''
+    nav.append(navTitle)
+
     const navPrev = this.navPrevButton
     navPrev.classList.add('nav-button')
     navPrev.append(createKeyMapLabel(App.KeyMap.prev, 'Prev', 'left'))
@@ -270,11 +275,6 @@ export default class App extends Renderer<HTMLDivElement> {
     navNext.append(createKeyMapLabel(App.KeyMap.next, 'Next'))
     navNext.addEventListener('click', this._nextModule)
     nav.append(navNext)
-
-    const navTitle = this.navTextContainer
-    navTitle.classList.add('nav-title')
-    navTitle.innerHTML = ''
-    nav.append(navTitle)
 
     const navClose = document.createElement('div')
     navClose.classList.add('nav-button')

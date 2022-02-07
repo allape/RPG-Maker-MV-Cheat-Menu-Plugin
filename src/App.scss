@@ -20,6 +20,9 @@
       max-height: 100vh;
       overflow: unset;
     }
+    .cheater-nav {
+      border-bottom-color: white;
+    }
   }
   .cheater-nav {
     height: 40px;
@@ -27,7 +30,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid transparent;
     .nav-button {
       padding: 10px;
       cursor: pointer;
