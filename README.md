@@ -12,7 +12,7 @@
 ### Features
 - Keyboard and Mouse both supported 
 - Modules
-  - God Mode: `whoisyourdaddy`
+  - God Mode
   - Move Speed
   - Gold
   - Items
@@ -38,24 +38,26 @@
   - Armors
 
 ### Installation
-- Download release zip
+- Download [release zip](https://github.com/allape/RPG-Maker-MV-Cheat-Menu-Plugin/releases)
 - Traditional method
   - Download Cheat Plugin patch at [GitHub](https://github.com/emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin)
   - Unzip these zips
-  - Copy everything in release zip into `Cheat_Menu/`, and allow overriding existing files
+  - Copy everything inside release zip into `Cheat_Menu/`, and allow overriding existing files
   - Copy all files inside `Cheat_Menu/` into game folder
   - Run `MVPluginPatcher.exe`
-- New method, with JavaScript interpreter
+- New method with JavaScript interpreter
   - Unzip release zip
   - Copy all files into game folder
   - Run `patcher.exe`
-- Start Game, wait for 1 second at least, then load an existing save or start a new game, then press `1` to display cheat menu
+- Start Game, wait for 1 second at least, then load an existing save or start a new game 
+  - Press `1` to open/hide cheat menu
+  - Click top-left corner to open cheat menu
 
 ### FAQ
 - After double-clicking `MVPluginPatcher.exe`, there is a black window keeps showing
   - It means this exe failed to patch the game with cheats
 - There is no `www/js/plugins` or `js/plugins` in game folder
-    - use [EnigmaVBUnpacker](https://f95zone.to/threads/rpg-maker-mv-unpacker.417/post-3577739) to unpack game
+    - Use [EnigmaVBUnpacker](https://f95zone.to/threads/rpg-maker-mv-unpacker.417/post-3577739) to unpack game
 
 ### Dev
 
@@ -78,5 +80,5 @@ go get
 #### Styles inspection, and styles only, [index.html](public/index.html)
 
 #### Copy files after built, details in [postbuild.js](postbuild.js)
-- create a file, `copycat.json`, at project root dir
-- key is a relative path to project root dir, value is an absolute path which is destination
+- Create a file, `copycat.json`, at project root dir
+- Key is a relative path to project root dir, value is an absolute path which is destination

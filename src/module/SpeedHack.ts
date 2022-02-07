@@ -61,7 +61,12 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
     const container = document.createElement('div')
 
     const label = document.createElement('div')
-    label.innerHTML = '<b>This is how many more render count per second base on the original fps. <br>This may cause frame drop. <br>Leaving this module will stop speed-hacking.</b>'
+    label.innerHTML = '<b>' +
+      '<span style="color: red;">This function may cause game misbehave.</span><br>' +
+      '<span style="color: gold;">This function may cause frame drop.</span><br>' +
+      '<span style="color: gold;">Leaving this module will stop speed-hacking.</span><br><br>' +
+      'This is how many more render count per second base on the original fps.' +
+      '</b>'
     container.append(label)
 
     container.append(this.countSelector.render())

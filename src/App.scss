@@ -7,9 +7,15 @@
   color: white;
   transition: .3s;
   transform: translateX(calc(-100% + 55px));
+  opacity: .1;
+  &:hover {
+    opacity: 1;
+  }
   &.shown {
+    opacity: 1;
     transform: translateX(0);
     .as-cheater-container {
+      width: calc(100% - 20px);
       padding: 10px;
       max-height: 100vh;
       overflow: unset;
