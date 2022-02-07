@@ -7,9 +7,9 @@
 ### Executable `patcher` is not supported in macOS yet
 
 ### Screenshots
-![Index](screenshots/home.png)
-![Index](screenshots/speed hack.png)
-![Index](screenshots/party hp.png)
+![Index](screenshots/home.png)  
+![SpeedHack](screenshots/speed-hack.png)  
+![PartyHP](screenshots/party-hp.png)  
 
 ### Features
 - Keyboard and Mouse both supported 
