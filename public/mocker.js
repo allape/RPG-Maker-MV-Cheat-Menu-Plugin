@@ -11,10 +11,14 @@ class Game_Message {
 
 var $dataSystem = {
     switches: [],
+    terms: {
+        params: [],
+    },
 }
 var $dataItems = []
 var $gameParty = []
 var $dataArmors = []
+var $dataWeapons = []
 var $gameMap = {
     mapId: () => 1,
 }

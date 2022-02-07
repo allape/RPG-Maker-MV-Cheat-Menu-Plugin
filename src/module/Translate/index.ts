@@ -24,6 +24,8 @@ abstract class TranslateCore extends Renderer<HTMLDivElement> {
     return e ? ('message' in e ? e.message : e) : 'unknown error'
   }
 
+  private static readonly STORAGE_KEY = 'Translate_permission_network'
+
   protected translatorServerBaseURL = 'https://translate.mentality.rip'
   protected sourceLanguage = 'ja'
   protected targetLanguage = 'en'
@@ -31,6 +33,12 @@ abstract class TranslateCore extends Renderer<HTMLDivElement> {
   protected _loading = false
   protected _languages: ILanguage[] = []
 
+  protected get permitted(): boolean {
+    return !!MV.singleton().storage[Translate.STORAGE_KEY]
+  }
+  protected set permitted(p: boolean) {
+    MV.singleton().storage[Translate.STORAGE_KEY] = p
+  }
 
   protected getCurrentLanguageCache (): Record<string, string> {
     const key = `${this.sourceLanguage}>${this.targetLanguage}`
@@ -40,7 +48,7 @@ abstract class TranslateCore extends Renderer<HTMLDivElement> {
 
   protected async fetchLanguages(): Promise<ILanguage[]> {
     try {
-      if (!window.__permission_network) return []
+      if (!this.permitted) return []
       this._loading = true
       const res = await fetch(`${this.translatorServerBaseURL}/languages`)
       return await res.json()
@@ -53,7 +61,7 @@ abstract class TranslateCore extends Renderer<HTMLDivElement> {
   }
 
   protected async translate(source: string): Promise<HTMLString> {
-    if (!window.__permission_network) return source
+    if (!this.permitted) return source
     if (!source || !source.trim()) return source
     const cache = this.getCurrentLanguageCache()
     if (cache[source]) {
@@ -274,8 +282,8 @@ export default class Translate extends TranslateCore {
   render(): HTMLDivElement {
     if (!('fetch' in window)) {
       alert('This game does NOT support network operations')
-    } if (window.__permission_network || confirm('This function requires NETWORK to operate, BE AWARE WITH YOUR PRIVACY, continue?')) {
-      window.__permission_network = true
+    } if (this.permitted || confirm('This function requires NETWORK to operate, BE AWARE WITH YOUR PRIVACY, continue?')) {
+      this.permitted = true
       this.init().then()
       return this.buildComponent()
     }

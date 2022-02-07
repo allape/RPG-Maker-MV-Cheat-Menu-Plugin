@@ -8,7 +8,6 @@ export {}
 declare global {
   interface Window {
     __hookedMV: MV
-    __permission_network?: boolean
     __cheat_speed?: number
     __cheat_speedLocked?: boolean
   }
@@ -177,6 +176,13 @@ declare global {
 
   class SoundManager {
     static playSystemSound(soundIndex?: number): void
+  }
+
+  class AudioManager {
+    static _playBgm_proxy: typeof AudioManager.playBgm
+    static _playBgs_proxy: typeof AudioManager.playBgs
+    static playBgm(bgm: any, pos?: number): void
+    static playBgs(bgs: any, pos?: number): void
   }
 
   class SceneManager {

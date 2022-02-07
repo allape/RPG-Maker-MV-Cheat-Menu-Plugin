@@ -1,8 +1,9 @@
 import App from './App'
-import MV from './core/mv'
+import MV, {errorEnhancement} from './core/mv'
 
 setTimeout(() => {
   try {
+    errorEnhancement()
     console.log(MV.singleton())
   } finally {
     document.body.append(new App().render())

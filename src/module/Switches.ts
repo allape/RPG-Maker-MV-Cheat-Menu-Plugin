@@ -1,9 +1,13 @@
-import {Renderer} from '../core/renderer'
+import {KEY_MAPS, Renderer} from '../core/renderer'
 import Switch from '../component/Switch'
 import SwitchSelector from '../component/mv/SwitchSelector'
 
 export default class Switches extends Renderer<HTMLDivElement> {
   static MyName = 'Switches'
+
+  static KeyMap = {
+    toggle: KEY_MAPS.Digit5,
+  }
 
   private readonly _triggerOnChange = () => {
     const current = this.switchSelector?.value
@@ -20,6 +24,7 @@ export default class Switches extends Renderer<HTMLDivElement> {
     onHTML: 'true',
     offHTML: 'false',
     label: 'Current Value',
+    keymap: Switches.KeyMap.toggle,
     onChange: () => {
       const current = this.switchSelector?.value
       if (current) {

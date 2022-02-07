@@ -3,6 +3,29 @@ import {LoadGame, SaveGame, SetupNewGame} from '../mv'
 export type OnNewMessage = (messages: string) => void
 export type OnChoicesChange = (messages: string[]) => void
 
+/**
+ * used for handle some errors because of cheat menu
+ */
+export function errorEnhancement() {
+  AudioManager._playBgm_proxy = AudioManager.playBgm
+  AudioManager.playBgm = (bgm, pos) => {
+    try {
+      AudioManager._playBgm_proxy(bgm, pos)
+    } catch (e) {
+      console.error('error occurred while calling AudioManager.playBgm')
+    }
+  }
+
+  AudioManager._playBgs_proxy = AudioManager.playBgs
+  AudioManager.playBgs = (bgm, pos) => {
+    try {
+      AudioManager._playBgs_proxy(bgm, pos)
+    } catch (e) {
+      console.error('error occurred while calling AudioManager.playBgs')
+    }
+  }
+}
+
 export default class MV {
 
   private static readonly CHEAT_NAME = 'AsCheater'

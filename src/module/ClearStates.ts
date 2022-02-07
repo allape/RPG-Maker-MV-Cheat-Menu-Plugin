@@ -1,4 +1,4 @@
-import {Renderer} from '../core/renderer'
+import {KEY_MAPS, Renderer} from '../core/renderer'
 import Switch from '../component/Switch'
 import ActorSelector from '../component/mv/ActorSelector'
 import {br, hr} from '../core/dom'
@@ -6,10 +6,16 @@ import {br, hr} from '../core/dom'
 export default class ClearStates extends Renderer<HTMLDivElement> {
   static MyName = 'Clear States'
 
+  static KeyMap = {
+    partyClearAll: KEY_MAPS.Digit5,
+    clearAll: KEY_MAPS.Digit6,
+  }
+
   private readonly clearAll = new Switch({
     label: 'Clear ALL States of PARTY',
     default: true,
     onHTML: 'Clear',
+    keymap: ClearStates.KeyMap.partyClearAll,
     onChange: () => {
       $gameParty.allMembers().forEach(member => {
         if (member && member._states?.length) {
@@ -26,6 +32,7 @@ export default class ClearStates extends Renderer<HTMLDivElement> {
     label: 'Clear ALL States',
     default: true,
     onHTML: 'Clear',
+    keymap: ClearStates.KeyMap.clearAll,
     onChange: () => {
       const member = this.actorSelector.value
       if (member && member._states?.length) {
