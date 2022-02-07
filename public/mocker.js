@@ -4,6 +4,10 @@
 var SoundManager = {
     playSystemSound: () => {},
 }
+var AudioManager = {
+    playBgm: () => {},
+    playBgs: () => {},
+}
 var DataManager = {}
 class Game_Message {
     add() {}
