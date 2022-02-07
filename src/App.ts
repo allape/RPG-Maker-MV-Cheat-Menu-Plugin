@@ -2,7 +2,7 @@ import './App.scss'
 import {IKeyMap, KEY_MAPS, Renderer} from './core/renderer'
 import GodMode from './module/GodMode'
 import MV from './core/mv'
-import {space2line} from './core/dom'
+import {createKeyMapLabel, space2line} from './core/dom'
 import Items from './module/Items'
 import Gold from './module/Gold'
 import MoveSpeed from './module/MoveSpeed'
@@ -137,7 +137,7 @@ export default class App extends Renderer<HTMLDivElement> {
     this.navShiftButton.style.display = 'block'
     this.navPrevButton.style.display = 'none'
     this.navNextButton.style.display = 'none'
-    this.navTextContainer.innerHTML = ''
+    this.navTextContainer.innerHTML = 'Cheat Menu'
 
     this.container.innerHTML = ''
     this.container.append(this._buildHome())
@@ -249,25 +249,25 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navBack = this.navBackButton
     navBack.classList.add('nav-button')
-    navBack.innerHTML = `← [${App.KeyMap.back.key}]`
+    navBack.append(createKeyMapLabel(App.KeyMap.back, '←', 'left'))
     navBack.addEventListener('click', this._showHome)
     nav.append(navBack)
 
     const navShift = this.navShiftButton
     navShift.classList.add('nav-button')
-    navShift.innerHTML = `[${App.KeyMap.back.key}] Shift Shortcuts`
+    navShift.append(createKeyMapLabel(App.KeyMap.back, 'Shift Shortcuts'))
     navShift.addEventListener('click', this._shiftShortcuts)
     nav.append(navShift)
 
     const navPrev = this.navPrevButton
     navPrev.classList.add('nav-button')
-    navPrev.innerHTML = `Prev [${App.KeyMap.prev.key}]`
+    navPrev.append(createKeyMapLabel(App.KeyMap.prev, 'Prev', 'left'))
     navPrev.addEventListener('click', this._prevModule)
     nav.append(navPrev)
 
     const navNext = this.navNextButton
     navNext.classList.add('nav-button')
-    navNext.innerHTML = `[${App.KeyMap.next.key}] Next`
+    navNext.append(createKeyMapLabel(App.KeyMap.next, 'Next'))
     navNext.addEventListener('click', this._nextModule)
     nav.append(navNext)
 
@@ -278,7 +278,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navClose = document.createElement('div')
     navClose.classList.add('nav-button')
-    navClose.innerHTML = `[${App.KeyMap.toggle.key}] ✕`
+    navClose.append(createKeyMapLabel(App.KeyMap.toggle, '✕'))
     navClose.addEventListener('click', this._onToggle)
     nav.append(navClose)
 

@@ -6,7 +6,7 @@
   background: rgba(0, 0, 0, .5);
   color: white;
   transition: .3s;
-  transform: translateX(calc(-100% + 55px));
+  transform: translateX(calc(-100% + 60px));
   opacity: .1;
   &:hover {
     opacity: 1;
@@ -33,17 +33,23 @@
       cursor: pointer;
       user-select: none;
       color: rgba(255, 255, 255, .8);
+      &:not(:last-of-type) {
+        border-right: 1px solid white;
+      }
       &:hover {
         color: rgba(255, 255, 255, 1);
       }
     }
     .nav-title {
       flex: 1;
-      text-align: center;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding-right: 10px;
+      border-right: 1px solid white;
     }
   }
   .as-cheater-container {
