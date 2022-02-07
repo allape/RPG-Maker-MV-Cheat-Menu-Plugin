@@ -1,5 +1,6 @@
 import {KEY_MAPS, Renderer} from '../../core/renderer'
 import Switch, {ISwitchProps} from '../Switch'
+import {hr} from '../../core/dom'
 
 export interface IPBasedModuleProps {
   name: string
@@ -151,7 +152,7 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
     container.append(this.alive2Half.render())
     container.append(this.alive2Max.render())
 
-    container.append(document.createElement('hr'))
+    container.append(hr())
 
     container.append(this.allTo0.render())
     container.append(this.allTo1.render())

@@ -2,6 +2,7 @@ import {KEY_MAPS, Renderer} from '../core/renderer'
 import ActorSelector from '../component/mv/ActorSelector'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
+import {br, createText} from '../core/dom'
 
 export default class GodMode extends Renderer {
 
@@ -84,11 +85,10 @@ export default class GodMode extends Renderer {
   render(): HTMLElement {
     const container = document.createElement('div')
 
-    const notice = document.createElement('div')
-    notice.style.color = 'red'
-    notice.style.paddingBottom = '10px'
-    notice.innerHTML = '<span style="color: gold;">This function may cause "Memory Leak", restart game to solve this problem for now.</span>'
-    container.append(notice)
+    container.append(
+      createText('This function may cause "Memory Leak", restart game to solve this problem for now.', 'warning'),
+      br(),
+    )
 
     container.append(this.actor.render())
     container.append(this.switcher.render())

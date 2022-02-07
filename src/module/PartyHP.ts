@@ -1,5 +1,6 @@
 import MV from '../core/mv'
 import XPBaseModule from '../component/mv/XPBaseModule'
+import {createText} from '../core/dom'
 
 export default class PartyHP extends XPBaseModule {
 
@@ -35,4 +36,11 @@ export default class PartyHP extends XPBaseModule {
     })
   }
 
+  render(): HTMLDivElement {
+    const parent = super.render()
+    parent.append(
+      createText('Bringing the dead to life may cause some problems in some games.', 'warning'),
+    )
+    return parent
+  }
 }
