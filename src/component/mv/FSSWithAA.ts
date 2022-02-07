@@ -55,15 +55,15 @@ export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const {container, scrollSelector, amountSelector, currentAmountSelector} = this
-
-    container.append(scrollSelector.render())
-    container.append(amountSelector.render())
-    container.append(currentAmountSelector.render())
+    this.container.append(
+      this.scrollSelector.render(),
+      this.amountSelector.render(),
+      this.currentAmountSelector.render(),
+    )
 
     this._triggerValueChange()
 
-    return container
+    return this.container
   }
 
 }

@@ -120,14 +120,16 @@ export default class Teleport extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
-    container.append(this.mapSelector.render())
-    container.append(this.xSelector.render())
-    container.append(this.ySelector.render())
-    container.append(this.teleport.render())
+    const ctr = document.createElement('div')
+    ctr.append(
+      this.mapSelector.render(),
+      this.xSelector.render(),
+      this.ySelector.render(),
+      this.teleport.render(),
+    )
 
     this._getCurrentPosition()
 
-    return container
+    return ctr
   }
 }

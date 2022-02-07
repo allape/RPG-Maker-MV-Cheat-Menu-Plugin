@@ -67,9 +67,8 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
       createText('Leaving this module will stop speed-hacking.', 'warning'),
       br(),
       createText('This is how many more render count per second base on the original fps.'),
+      this.countSelector.render(),
     )
-
-    container.append(this.countSelector.render())
 
     return container
   }

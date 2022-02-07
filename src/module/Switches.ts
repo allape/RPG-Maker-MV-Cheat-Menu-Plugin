@@ -49,9 +49,11 @@ export default class Switches extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
-    container.append(this.switchSelector.render())
-    container.append(this.switch.render())
-    return container
+    const ctr = document.createElement('div')
+    ctr.append(
+      this.switchSelector.render(),
+      this.switch.render(),
+    )
+    return ctr
   }
 }

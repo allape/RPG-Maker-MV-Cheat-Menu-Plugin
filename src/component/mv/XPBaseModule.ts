@@ -145,21 +145,21 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const ctr = document.createElement('div')
 
-    container.append(this.aliveTo0.render())
-    container.append(this.aliveTo1.render())
-    container.append(this.alive2Half.render())
-    container.append(this.alive2Max.render())
+    ctr.append(
+      this.aliveTo0.render(),
+      this.aliveTo1.render(),
+      this.alive2Half.render(),
+      this.alive2Max.render(),
+      hr(),
+      this.allTo0.render(),
+      this.allTo1.render(),
+      this.all2Half.render(),
+      this.all2Max.render(),
+    )
 
-    container.append(hr())
-
-    container.append(this.allTo0.render())
-    container.append(this.allTo1.render())
-    container.append(this.all2Half.render())
-    container.append(this.all2Max.render())
-
-    return container
+    return ctr
   }
 
 }
