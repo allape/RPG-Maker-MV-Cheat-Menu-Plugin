@@ -33,6 +33,10 @@
   .messages-container {
     border-top: 1px solid white;
     padding: 5px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     .message-row {
       padding: 5px 0;
       .source-message {
