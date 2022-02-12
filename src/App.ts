@@ -259,7 +259,7 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navShift = this.navShiftButton
     navShift.classList.add('nav-button')
-    navShift.append(createKeyMapLabel(App.KeyMap.back, '⟳', 'Shift Shortcuts'))
+    navShift.append(createKeyMapLabel(App.KeyMap.back, '⟳', 'Shift Shortcuts', { namePosition: 'left' }))
     navShift.addEventListener('click', this._shiftShortcuts)
     nav.append(navShift)
 

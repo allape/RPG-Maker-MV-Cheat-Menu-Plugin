@@ -12,7 +12,8 @@
 ![PartyHP](screenshots/party-hp.png)  
 
 ### Features
-- Keyboard and Mouse both supported 
+- Keyboard and Mouse both supported
+- Hovering icon button to display description if description is available
 - Modules
   - God Mode
   - Move Speed

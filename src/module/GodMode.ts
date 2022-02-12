@@ -3,6 +3,7 @@ import ActorSelector from '../component/mv/ActorSelector'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
 import {br, createText} from '../core/dom'
+import setGuaranteedInterval, {clearGuaranteedInterval} from '../util/guaranteed-interval'
 
 export default class GodMode extends Renderer {
 
@@ -11,6 +12,8 @@ export default class GodMode extends Renderer {
   }
 
   static MyName = 'God Mode'
+
+  private static readonly GuaranteedIntervalKey = 'Cheat:GodMode:GuaranteedIntervalKey'
 
   private readonly actor: ActorSelector
   private readonly switcher: Switch
@@ -27,13 +30,13 @@ export default class GodMode extends Renderer {
     MV.injectGod(actor)
 
     if (actor._godMode) {
-      actor._godModeIntervalId = setInterval(() => {
+      actor._godModeIntervalId = setGuaranteedInterval(GodMode.GuaranteedIntervalKey, () => {
         actor.gainHp(actor.mhp)
         actor.gainMp(actor.mmp)
         actor.gainTp(actor.maxTp())
-      }, 100) as unknown as number
+      }, 100)
     } else {
-      clearInterval(actor._godModeIntervalId)
+      clearGuaranteedInterval(GodMode.GuaranteedIntervalKey)
     }
 
     SoundManager.playSystemSound(actor._godMode ? 1 : 0)
@@ -42,6 +45,7 @@ export default class GodMode extends Renderer {
   private readonly _onGameStart = () => {
     if (this.switcher) {
       this.switcher.value = !!this.current?._godMode
+      this._whoIsYourDaddy(this.switcher.value)
     }
   }
 
@@ -55,6 +59,7 @@ export default class GodMode extends Renderer {
         }
       },
     })
+
     this.switcher = new Switch({
       label: 'Current Status',
       default: !!this.current?._godMode,
@@ -78,6 +83,8 @@ export default class GodMode extends Renderer {
     this.actor.dispose()
     this.switcher.dispose()
 
+    clearGuaranteedInterval(GodMode.GuaranteedIntervalKey)
+
     MV.singleton().off('loadGame', this._onGameStart)
     MV.singleton().off('saveGame', this._onGameStart)
   }
@@ -86,7 +93,7 @@ export default class GodMode extends Renderer {
     const container = document.createElement('div')
 
     container.append(
-      createText('This function may cause "Memory Leak", restart game to solve this problem for now.', 'warning'),
+      createText('If game becomes laggy after enabling this function, try to turn on and turn off god mode to clear something wrong.', 'warning'),
       br(),
     )
 

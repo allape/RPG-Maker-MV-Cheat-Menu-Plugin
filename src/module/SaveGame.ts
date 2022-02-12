@@ -65,7 +65,7 @@ export default class SaveGame extends Renderer<HTMLDivElement> {
 
     container.append(
       createText('Used for emergency game saving, and emergency ONLY.'),
-      createText('Using ID which is out of game-predefined-range may cause an unexpected ERROR.', 'warning'),
+      createText('Using ID which is out of game-predefined-saving-id-range may cause unexpected ERRORS.', 'warning'),
       this.saveIdSelector.render(),
       this.save.render(),
     )

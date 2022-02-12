@@ -10,6 +10,7 @@ declare global {
     __hookedMV: MV
     __cheat_speed?: number
     __cheat_speedLocked?: boolean
+    __guaranteed_intervals?: Record<string, number[]>
   }
 
   const nw: any
