@@ -7,8 +7,12 @@ fs.copyFileSync('./plugins_patch.txt', './dist/plugins_patch.txt')
 fs.copyFileSync('./plugins_patch.go.txt', './dist/plugins_patch.go.txt')
 
 fs.copyFileSync('./dist/www/js/plugins/AsCheater.js', './public/AsCheater.js')
-fs.copyFileSync('./dist/www/js/plugins/AsCheater.js.map', './public/AsCheater.js.map')
-fs.rmSync('./dist/www/js/plugins/AsCheater.js.map', { force: true })
+
+const sourceMapPath = './dist/www/js/plugins/AsCheater.js.map'
+if (fs.existsSync(sourceMapPath)) {
+  fs.copyFileSync(sourceMapPath, './public/AsCheater.js.map')
+  fs.rmSync(sourceMapPath, { force: true })
+}
 
 const copycat = path.join(__dirname, 'copycat.json')
 if (fs.existsSync(copycat)) {

@@ -5,12 +5,11 @@
   "private": true,
   "scripts": {
     "prepare:clean": "npx rimraf build/ dist/",
-    "prepare:webpack": "copyfiles -u 1 src/**/*.scss src/**/*.sass src/**/*.css build/",
-    "build:ts": "npm run prepare:clean && tsc",
-    "build:webpack": "npm run prepare:webpack && webpack",
-    "build:plugin": "npm run build:ts && npm run build:webpack",
+    "build:ts": "npm run prepare:clean && npx tsc",
+    "build:webpack": "npm run build:ts && npx webpack",
+    "build:plugin": "npm run build:webpack && npm run postbuild",
     "build:go": "cd patcher && ./build.sh",
-    "build": "npm run build:plugin && npm run build:go",
+    "build": "npm run build:webpack && npm run build:go",
     "postbuild": "node postbuild.js"
   },
   "keywords": [
@@ -29,14 +28,14 @@
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "babel-loader": "^8.2.3",
-    "copyfiles": "^2.4.1",
     "css-loader": "^6.5.1",
+    "css-minimizer-webpack-plugin": "^3.4.1",
     "eslint": "^8.7.0",
-    "glob": "^7.2.0",
     "rimraf": "^3.0.2",
     "sass": "^1.45.2",
     "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.1",
     "typescript": "^4.4.4",
     "webpack": "^5.68.0",
     "webpack-cli": "^4.9.1"
