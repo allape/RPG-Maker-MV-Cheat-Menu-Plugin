@@ -61,6 +61,10 @@
   - Press `1` to open/hide cheat menu
   - Click top-left corner to open cheat menu
 
+### Uninstallation, for now. `patcher` will support uninstallation in the future
+- Open `www/js/plugins/AsCheater.js` or `js/plugins/AsCheater.js` with text editor, remove every character, then save.
+- Re-installation requires the full steps in `Installation` without patching
+
 ### FAQ
 - After double-clicking `MVPluginPatcher.exe`, there is a black window keeps showing
   - It means this exe failed to patch the game with cheats
