@@ -5,6 +5,7 @@ import ScrollSelect from '../../component/ScrollSelect'
 import MV from '../../core/mv'
 import 'whatwg-fetch'
 import './index.scss'
+import {createText} from '../../core/dom'
 
 export interface ILanguage {
   code: string
@@ -287,7 +288,7 @@ export default class Translate extends TranslateCore {
       this.init().then()
       return this.buildComponent()
     }
-    return document.createElement('div')
+    return createText('Network permission is not granted.', 'warning')
   }
 
 }
