@@ -14,8 +14,13 @@ export function createText(text: string, type: '' | 'warning' | 'fatal' = ''): H
   return div
 }
 
-export function createKeyMapLabel(key: string | IKeyMap, name = '', namePosition: 'right' | 'left' = 'right'): HTMLSpanElement {
+export interface IKeyMapLabelOptions {
+  namePosition?: 'right' | 'left'
+}
+
+export function createKeyMapLabel(key: string | IKeyMap, name = '', description?: string, options?: IKeyMapLabelOptions): HTMLSpanElement {
   const wrapper = document.createElement('span')
+  wrapper.title = description
 
   const label = document.createElement('span')
   const keyText = document.createElement('span')
@@ -28,17 +33,17 @@ export function createKeyMapLabel(key: string | IKeyMap, name = '', namePosition
   )
 
   if (name) {
-    if (namePosition === 'right') {
-      label.style.paddingRight = '10px'
-      wrapper.append(
-        label,
-        `${name}`,
-      )
-    } else if (namePosition === 'left') {
+    if (options?.namePosition === 'left') {
       label.style.paddingLeft = '10px'
       wrapper.append(
         `${name}`,
         label,
+      )
+    } else {
+      label.style.paddingRight = '10px'
+      wrapper.append(
+        label,
+        `${name}`,
       )
     }
   } else {

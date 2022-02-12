@@ -154,7 +154,12 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
     right.classList.add('button')
     right.append(
       keymap.right ?
-        createKeyMapLabel(keymap.right, rightText || ScrollSelect.DEFAULT_RIGHT_ARROW, 'left')
+        createKeyMapLabel(
+          keymap.right,
+          rightText || ScrollSelect.DEFAULT_RIGHT_ARROW,
+          '',
+          { namePosition: 'left' },
+        )
         :
         (rightText || ScrollSelect.DEFAULT_RIGHT_ARROW)
     )

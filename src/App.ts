@@ -253,13 +253,13 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navBack = this.navBackButton
     navBack.classList.add('nav-button')
-    navBack.append(createKeyMapLabel(App.KeyMap.back, '↩', 'left'))
+    navBack.append(createKeyMapLabel(App.KeyMap.back, '↩', 'Back Home', { namePosition: 'left' }))
     navBack.addEventListener('click', this._showHome)
     nav.append(navBack)
 
     const navShift = this.navShiftButton
     navShift.classList.add('nav-button')
-    navShift.append(createKeyMapLabel(App.KeyMap.back, 'Shift Shortcuts'))
+    navShift.append(createKeyMapLabel(App.KeyMap.back, '⟳', 'Shift Shortcuts'))
     navShift.addEventListener('click', this._shiftShortcuts)
     nav.append(navShift)
 
@@ -270,19 +270,19 @@ export default class App extends Renderer<HTMLDivElement> {
 
     const navPrev = this.navPrevButton
     navPrev.classList.add('nav-button')
-    navPrev.append(createKeyMapLabel(App.KeyMap.prev, 'Prev', 'left'))
+    navPrev.append(createKeyMapLabel(App.KeyMap.prev, '←', 'Previous Module', { namePosition: 'left' }))
     navPrev.addEventListener('click', this._prevModule)
     nav.append(navPrev)
 
     const navNext = this.navNextButton
     navNext.classList.add('nav-button')
-    navNext.append(createKeyMapLabel(App.KeyMap.next, 'Next'))
+    navNext.append(createKeyMapLabel(App.KeyMap.next, '→', 'Next Module'))
     navNext.addEventListener('click', this._nextModule)
     nav.append(navNext)
 
     const navClose = document.createElement('div')
     navClose.classList.add('nav-button')
-    navClose.append(createKeyMapLabel(App.KeyMap.toggle, '✕'))
+    navClose.append(createKeyMapLabel(App.KeyMap.toggle, '✕', 'Close or Open'))
     navClose.addEventListener('click', this._onToggle)
     nav.append(navClose)
 
