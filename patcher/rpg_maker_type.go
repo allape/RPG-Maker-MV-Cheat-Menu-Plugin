@@ -31,7 +31,7 @@ func InjectPatchPlugin(pluginsDotJs string, patcherName string, shouldBackupPlug
 	}
 	program, err := parser.ParseFile(nil, "", string(pluginsDotJsContent), 0)
 	if err != nil {
-		return panicEngineType("failed to patch programmatically, please patch this game manually...😅")
+		return panicEngineType("failed to patch programmatically, please patch this game manually...")
 	}
 	for _, declaration := range program.DeclarationList {
 		if vd, ok := declaration.(*ast.VariableDeclaration); ok {
@@ -45,7 +45,7 @@ func InjectPatchPlugin(pluginsDotJs string, patcherName string, shouldBackupPlug
 									if property.Key == "name" {
 										if pluginName, ok := property.Value.(*ast.StringLiteral); ok {
 											if pluginName.Value == patcherName {
-												return panicEngineType("because this Game has been patched 😊")
+												return panicEngineType("because this Game has been patched")
 											}
 										}
 									}
@@ -128,7 +128,7 @@ func InjectPatchPlugin(pluginsDotJs string, patcherName string, shouldBackupPlug
 							if err != nil {
 								return panicEngineType(fmt.Sprintf("failed to write into %s", pluginsDotJs))
 							}
-							_, _ = Cyan.Printf("%s patched!\n", patcherName)
+							_, _ = Cyan.Printf("\"%s\" successfully patched, enjoy!\n", patcherName)
 							return true
 						} else {
 							return panicEngineType("unable to find a place to patch...")

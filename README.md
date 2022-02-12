@@ -13,6 +13,9 @@
 
 ### Features
 - Keyboard and Mouse both supported
+  - All shortcuts are displayed inside `[]`
+    - For example, `[1]` means to hit `number 1` (not the `1` on number pad) to display
+  - `Copy`, `Text Selection`, `Search`, etc all require mouse to operate
 - Hovering icon button to display description if description is available
 - Modules
   - God Mode

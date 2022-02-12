@@ -54,6 +54,8 @@ func promptTypes() {
 		return
 	}
 
+	println()
+
 	// Skip Auto
 	for i := 1; i < typeCount; i++ {
 		engineType := RPGMakerEngineTypes[i]
@@ -94,7 +96,7 @@ func main() {
 
 	promptTypes()
 
-	_, _ = Cyan.Printf("Done, press \"Enter\" to exit...\n")
+	_, _ = Green.Printf("\nDone, press \"Enter\" to exit...\n")
 	_, _ = bufio.NewReader(os.Stdin).ReadString('\n')
 	os.Exit(0)
 }
