@@ -6,14 +6,16 @@ import MV from './core/mv'
 export {}
 
 declare global {
+  const nw: any
+  const BUILD_LEGACY: boolean | undefined
+
   interface Window {
+    KEY_CODE_TO_CHAR: Record<number, string>
     __hookedMV: MV
     __cheat_speed?: number
     __cheat_speedLocked?: boolean
     __guaranteed_intervals?: Record<string, number[]>
   }
-
-  const nw: any
 
   const $gameActors: Game_Actors
 

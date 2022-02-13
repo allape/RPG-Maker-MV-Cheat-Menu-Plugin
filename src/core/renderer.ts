@@ -28,17 +28,11 @@ export abstract class Renderer<T extends HTMLElement = HTMLElement> {
 
 }
 
+/**
+ * after adding some keys into this,
+ * remember {@link window.KEY_CODE_TO_CHAR} needs to be polyfill-ed
+ */
 export const KEY_MAPS = {
-  // ...(new Array(10).fill(1).reduce((p, _, index) => {
-  //   const code = `Digit${index}`
-  //   return {
-  //     ...p,
-  //     [code]: {
-  //       key: `${index}`,
-  //       code,
-  //     },
-  //   }
-  // }, {})),
   Backquote: {
     key: '`',
     code: 'Backquote',

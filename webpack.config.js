@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require('path')
-
+const { DefinePlugin }  = require('webpack')
 const TerserPlugin  = require('terser-webpack-plugin')
-
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+
+const BUILD_LEGACY = !!process.env.BUILD_LEGACY
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.ts',
+  entry: BUILD_LEGACY ? './src/legacy-index.ts' : './src/index.ts',
   // devtool: 'source-map',
-  target: ['web', 'es5'],
+  target: BUILD_LEGACY ? ['web', 'es5'] : undefined,
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
+  plugins: [
+    new DefinePlugin({
+      BUILD_LEGACY,
+    }),
+  ],
   module: {
     rules: [
       {
@@ -31,13 +41,18 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: `$BUILD_LEGACY: ${BUILD_LEGACY};`,
+            },
+          },
         ],
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json'],
   },
   optimization: {
     minimize: true,

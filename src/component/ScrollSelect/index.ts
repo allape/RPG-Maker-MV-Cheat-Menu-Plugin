@@ -87,7 +87,7 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
     }
   }
 
-  private _onKeydown = (e: KeyboardEvent) => {
+  private readonly _onKeydown = (e: KeyboardEvent) => {
     if (MV.singleton().visible) {
       const {left, center, right} = this.props.keymap
       if (left && e.code === left.code) {

@@ -3,7 +3,6 @@ import FilterableScrollSelect from '../../component/FilterableScrollSelect'
 import Input from '../../component/Input'
 import ScrollSelect from '../../component/ScrollSelect'
 import MV from '../../core/mv'
-import 'whatwg-fetch'
 import './index.scss'
 import {createText} from '../../core/dom'
 

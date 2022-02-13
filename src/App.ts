@@ -53,7 +53,7 @@ export default class App extends Renderer<HTMLDivElement> {
     KEY_MAPS.Minus,
   ]
 
-  static Modules: IModule[] = [
+  private static readonly Modules: IModule[] = [
     {
       module: GodMode as RenderClass,
     },
@@ -131,7 +131,7 @@ export default class App extends Renderer<HTMLDivElement> {
    */
   private _moduleIndexFactor = 0
 
-  private _showHome = () => {
+  private readonly _showHome = () => {
     if (this._currentModule) {
       this._currentModule.dispose()
       this._currentModule = undefined
@@ -149,7 +149,7 @@ export default class App extends Renderer<HTMLDivElement> {
     SoundManager.playSystemSound(0)
   }
 
-  private _prevModule = () => {
+  private readonly _prevModule = () => {
     if (this._currentModule) {
       let currentIndex = App.Modules.findIndex(i => i.module === (this._currentModule as unknown as typeof Function).constructor)
       currentIndex = (currentIndex <= 0 ? App.Modules.length : currentIndex) - 1
@@ -157,7 +157,7 @@ export default class App extends Renderer<HTMLDivElement> {
     }
   }
 
-  private _nextModule = () => {
+  private readonly _nextModule = () => {
     if (this._currentModule) {
       let currentIndex = App.Modules.findIndex(i => i.module === (this._currentModule as unknown as typeof Function).constructor)
       currentIndex = (currentIndex >= App.Modules.length - 1 ? -1 : currentIndex) + 1
@@ -165,7 +165,7 @@ export default class App extends Renderer<HTMLDivElement> {
     }
   }
 
-  private _buildModule = (module: IModule) => {
+  private readonly _buildModule = (module: IModule) => {
     if (MV.singleton().visible) {
       const {module: m, width} = module
 
@@ -189,7 +189,7 @@ export default class App extends Renderer<HTMLDivElement> {
     }
   }
 
-  private _onToggle = () => {
+  private readonly _onToggle = () => {
     const mv = MV.singleton()
     mv.visible = !mv.visible
 
@@ -203,7 +203,7 @@ export default class App extends Renderer<HTMLDivElement> {
     SoundManager.playSystemSound(mv.visible ? 1 : 0)
   }
 
-  private _shiftShortcuts = () => {
+  private readonly _shiftShortcuts = () => {
     const ml = App.Modules.length
     const mkl = App.ModulesKeymaps.length
     const maxFactor =  Math.floor(ml / mkl) - (ml % mkl === 0 ? 1 : 0)
@@ -211,7 +211,7 @@ export default class App extends Renderer<HTMLDivElement> {
     this._showHome()
   }
 
-  private _onKeydown = (e: KeyboardEvent) => {
+  private readonly _onKeydown = (e: KeyboardEvent) => {
     if (MV.singleton().visible) {
       if (this._currentModule) {
         // not at home, then show home

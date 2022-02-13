@@ -1,6 +1,6 @@
 {
   "name": "rpg-maker-mv-cheater",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Refined cheat plugin for RPG Maker MV/MZ",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "build:ts": "npm run prepare:clean && npx tsc",
     "build:webpack": "npm run build:ts && npx webpack",
     "build:plugin": "npm run build:webpack && npm run postbuild",
+    "build:plugin:legacy": "npx cross-env BUILD_LEGACY=true npm run build:webpack && npm run postbuild",
     "build:go": "cd patcher && ./build.sh",
     "build": "npm run build:webpack && npm run build:go",
     "postbuild": "node postbuild.js"
@@ -28,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.4.1",
     "eslint": "^8.7.0",
@@ -42,6 +44,7 @@
   },
   "dependencies": {
     "core-js": "^3.21.0",
+    "element-polyfill": "^1.1.0",
     "regenerator-runtime": "^0.13.9",
     "whatwg-fetch": "^3.6.2"
   }
