@@ -31,7 +31,7 @@ module.exports = {
           options: {
             presets: [
               '@babel/preset-typescript',
-              '@babel/preset-env',
+              ...(BUILD_LEGACY ? ['@babel/preset-env'] : []),
             ],
           },
         },
