@@ -68,7 +68,7 @@
       align-items: flex-start;
       flex-wrap: wrap;
       border: 1px solid white;
-      max-width: 500px;
+      max-width: calc(500px - 2px);
       .cheater-item-wrapper {
         flex: 1;
         min-width: 60px;
