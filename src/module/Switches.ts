@@ -1,6 +1,7 @@
 import {KEY_MAPS, Renderer} from '../core/renderer'
 import Switch from '../component/Switch'
 import SwitchSelector from '../component/mv/SwitchSelector'
+import {div} from '../core/dom'
 
 export default class Switches extends Renderer<HTMLDivElement> {
   static MyName = 'Switches'
@@ -54,7 +55,7 @@ export default class Switches extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const ctr = document.createElement('div')
+    const ctr = div()
     ctr.append(
       this.switchSelector.render(),
       this.switch.render(),

@@ -1,5 +1,6 @@
 import {KEY_MAPS, Renderer} from '../core/renderer'
 import Switch from '../component/Switch'
+import {div} from '../core/dom'
 
 export default class NoClip extends Renderer<HTMLDivElement> {
 
@@ -39,7 +40,7 @@ export default class NoClip extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const container = div()
     container.append(this.switch.render())
     return container
   }

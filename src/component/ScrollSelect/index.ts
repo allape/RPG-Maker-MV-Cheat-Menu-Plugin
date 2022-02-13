@@ -1,7 +1,7 @@
 import './index.scss'
 import {IKeyMap, KEY_MAPS, KeyMaps, Renderer} from '../../core/renderer'
 import MV from '../../core/mv'
-import {createKeyMapLabel} from '../../core/dom'
+import {createKeyMapLabel, div} from '../../core/dom'
 
 export interface IScrollSelectKeyMap extends KeyMaps {
   left?: IKeyMap
@@ -49,10 +49,10 @@ export default class ScrollSelect extends Renderer<HTMLDivElement> {
 
   private readonly props: IScrollSelectProps
 
-  private readonly row = document.createElement('div')
-  private readonly left = document.createElement('div')
-  private readonly text = document.createElement('div')
-  private readonly right = document.createElement('div')
+  private readonly row = div()
+  private readonly left = div()
+  private readonly text = div()
+  private readonly right = div()
 
   set value(v: string) {
     if (this.props.valueProvider) {

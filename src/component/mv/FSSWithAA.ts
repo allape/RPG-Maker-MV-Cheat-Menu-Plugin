@@ -2,6 +2,7 @@ import {Renderer} from '../../core/renderer'
 import AmountSelector from '../AmountSelector'
 import FilterableScrollSelect from '../FilterableScrollSelect'
 import ScrollSelect from '../ScrollSelect'
+import {div} from '../../core/dom'
 
 export interface IProps {
   // disable an interval to reload current amount value
@@ -14,7 +15,7 @@ export interface IProps {
  */
 export default abstract class FSSWithAA<T> extends Renderer<HTMLDivElement> {
 
-  protected readonly container = document.createElement('div')
+  protected readonly container = div()
 
   protected abstract readonly scrollSelector: FilterableScrollSelect<T>
   protected abstract readonly amountSelector: AmountSelector | ScrollSelect

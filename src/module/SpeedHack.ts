@@ -2,7 +2,7 @@ import {Renderer} from '../core/renderer'
 import AmountSelector from '../component/AmountSelector'
 import ScrollSelect from '../component/ScrollSelect'
 import MV from '../core/mv'
-import {br, createText} from '../core/dom'
+import {br, createText, div} from '../core/dom'
 
 export default class SpeedHack extends Renderer<HTMLDivElement> {
   static MyName = 'Speed Hack'
@@ -59,7 +59,7 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const container = div()
 
     container.append(
       createText('This function may cause game misbehave.', 'fatal'),

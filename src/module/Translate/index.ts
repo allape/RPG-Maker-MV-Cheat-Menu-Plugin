@@ -4,7 +4,7 @@ import Input from '../../component/Input'
 import ScrollSelect from '../../component/ScrollSelect'
 import MV from '../../core/mv'
 import './index.scss'
-import {createText} from '../../core/dom'
+import {createText, div} from '../../core/dom'
 
 export interface ILanguage {
   code: string
@@ -100,14 +100,14 @@ abstract class TranslateCore extends Renderer<HTMLDivElement> {
 export default class Translate extends TranslateCore {
 
   private static readonly makeAMessageRow = (): [HTMLElement, HTMLElement, HTMLElement] => {
-    const messageRow = document.createElement('div')
+    const messageRow = div()
     messageRow.classList.add('message-row')
 
-    const sourceMessage = document.createElement('div')
+    const sourceMessage = div()
     sourceMessage.classList.add('source-message')
     messageRow.append(sourceMessage)
 
-    const translatedMessage = document.createElement('div')
+    const translatedMessage = div()
     translatedMessage.classList.add('translated-message')
     messageRow.append(translatedMessage)
 
@@ -144,8 +144,8 @@ export default class Translate extends TranslateCore {
     },
   })
 
-  private readonly messagesContainer = document.createElement('div')
-  private readonly choicesContainer = document.createElement('div')
+  private readonly messagesContainer = div()
+  private readonly choicesContainer = div()
 
   private _onKeydown = (e: KeyboardEvent) => {
     if (MV.singleton().visible) {
@@ -223,14 +223,14 @@ export default class Translate extends TranslateCore {
   private buildComponent(): HTMLDivElement {
     const { urlInput, retry, sls, tls } = this
 
-    const container = document.createElement('div')
+    const container = div()
     container.classList.add('module-translate-wrapper')
 
-    const urlRow = document.createElement('div')
+    const urlRow = div()
     urlRow.classList.add('url-row-wrapper')
     container.append(urlRow)
 
-    const inputCol = document.createElement('div')
+    const inputCol = div()
     inputCol.classList.add('input-col')
     urlRow.append(inputCol)
 
@@ -246,16 +246,16 @@ export default class Translate extends TranslateCore {
     retry.addEventListener('click', this.reload)
     urlRow.append(retry)
 
-    const languageSelectorRow = document.createElement('div')
+    const languageSelectorRow = div()
     languageSelectorRow.classList.add('language-selector-row')
     container.append(languageSelectorRow)
 
-    const slsWrapper = document.createElement('div')
+    const slsWrapper = div()
     slsWrapper.classList.add('language-selector')
     slsWrapper.append(sls.render())
     languageSelectorRow.append(slsWrapper)
 
-    const tlsWrapper = document.createElement('div')
+    const tlsWrapper = div()
     tlsWrapper.classList.add('language-selector')
     tlsWrapper.append(tls.render())
     languageSelectorRow.append(tlsWrapper)

@@ -3,7 +3,7 @@ import AmountSelector from '../component/AmountSelector'
 import ScrollSelect from '../component/ScrollSelect'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
-import {createText} from '../core/dom'
+import {createText, div} from '../core/dom'
 
 export default class SaveGame extends Renderer<HTMLDivElement> {
   static MyName = 'Save Game'
@@ -61,7 +61,7 @@ export default class SaveGame extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const container = div()
 
     container.append(
       createText('Used for emergency game saving, and emergency ONLY.'),

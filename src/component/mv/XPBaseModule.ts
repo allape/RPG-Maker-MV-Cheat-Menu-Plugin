@@ -1,6 +1,6 @@
 import {KEY_MAPS, Renderer} from '../../core/renderer'
 import Switch, {ISwitchProps} from '../Switch'
-import {hr} from '../../core/dom'
+import {div, hr} from '../../core/dom'
 
 export interface IPBasedModuleProps {
   name: string
@@ -145,7 +145,7 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const ctr = document.createElement('div')
+    const ctr = div()
 
     ctr.append(
       this.aliveTo0.render(),

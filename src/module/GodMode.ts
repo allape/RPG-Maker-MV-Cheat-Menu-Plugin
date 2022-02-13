@@ -2,7 +2,7 @@ import {KEY_MAPS, Renderer} from '../core/renderer'
 import ActorSelector from '../component/mv/ActorSelector'
 import MV from '../core/mv'
 import Switch from '../component/Switch'
-import {br, createText} from '../core/dom'
+import {br, createText, div} from '../core/dom'
 import setGuaranteedInterval, {clearGuaranteedInterval} from '../util/guaranteed-interval'
 
 export default class GodMode extends Renderer {
@@ -90,7 +90,7 @@ export default class GodMode extends Renderer {
   }
 
   render(): HTMLElement {
-    const container = document.createElement('div')
+    const container = div()
 
     container.append(
       createText('If game becomes laggy after enabling this function, try to turn on and turn off god mode to clear something wrong.', 'warning'),

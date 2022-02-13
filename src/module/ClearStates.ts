@@ -1,7 +1,7 @@
 import {KEY_MAPS, Renderer} from '../core/renderer'
 import Switch from '../component/Switch'
 import ActorSelector from '../component/mv/ActorSelector'
-import {br, hr} from '../core/dom'
+import {br, div, hr} from '../core/dom'
 
 export default class ClearStates extends Renderer<HTMLDivElement> {
   static MyName = 'Clear States'
@@ -51,7 +51,7 @@ export default class ClearStates extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const container = div()
 
     container.append(
       this.clearAll.render(),

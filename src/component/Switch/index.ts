@@ -1,7 +1,7 @@
 import './index.scss'
 import {IKeyMap, Renderer} from '../../core/renderer'
 import MV from '../../core/mv'
-import {createKeyMapLabel} from '../../core/dom'
+import {createKeyMapLabel, div, span} from '../../core/dom'
 
 export interface ISwitchProps {
   keymap?: IKeyMap
@@ -27,8 +27,8 @@ export default class Switch extends Renderer<HTMLDivElement> {
 
   private readonly props: ISwitchProps
 
-  private readonly label = document.createElement('div')
-  private readonly status = document.createElement('span')
+  private readonly label = div()
+  private readonly status = span()
 
   private _value = false
 
@@ -91,7 +91,7 @@ export default class Switch extends Renderer<HTMLDivElement> {
   render(): HTMLDivElement {
     const {label, status, props: {keymap, selectable}} = this
 
-    const container = document.createElement('div')
+    const container = div()
     container.classList.add('switch-wrapper')
 
     label.classList.add('label')
@@ -100,7 +100,7 @@ export default class Switch extends Renderer<HTMLDivElement> {
     }
     container.append(label)
 
-    const statusWrapper = document.createElement('div')
+    const statusWrapper = div()
     statusWrapper.classList.add('status')
 
     status.classList.add('current-status')

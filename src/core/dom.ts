@@ -5,13 +5,13 @@ export function space2line(text: string): string {
 }
 
 export function createText(text: string, type: '' | 'warning' | 'fatal' = ''): HTMLDivElement {
-  const div = document.createElement('div')
+  const container = div()
   switch (type) {
-  case 'warning': div.style.color = 'gold'; break
-  case 'fatal': div.style.color = 'red'; break
+  case 'warning': container.style.color = 'gold'; break
+  case 'fatal': container.style.color = 'red'; break
   }
-  div.innerHTML = text
-  return div
+  container.innerHTML = text
+  return container
 }
 
 export interface IKeyMapLabelOptions {
@@ -19,11 +19,11 @@ export interface IKeyMapLabelOptions {
 }
 
 export function createKeyMapLabel(key: string | IKeyMap, name = '', description?: string, options?: IKeyMapLabelOptions): HTMLSpanElement {
-  const wrapper = document.createElement('span')
+  const wrapper = span()
   wrapper.title = description
 
-  const label = document.createElement('span')
-  const keyText = document.createElement('span')
+  const label = span()
+  const keyText = span()
   keyText.innerHTML = typeof key === 'string' ? key : key.key
   keyText.style.padding = '0 2px'
   label.append(
@@ -56,13 +56,21 @@ export function createKeyMapLabel(key: string | IKeyMap, name = '', description?
 }
 
 export function br(): HTMLElement {
-  const div = document.createElement('div')
-  div.style.height = '10px'
-  return div
+  const container = div()
+  container.style.height = '10px'
+  return container
 }
 
 export function hr(): HTMLElement {
-  const div = document.createElement('div')
-  div.style.borderTop = '1px solid white'
-  return div
+  const container = div()
+  container.style.borderTop = '1px solid white'
+  return container
+}
+
+export function div(): HTMLDivElement {
+  return document.createElement('div')
+}
+
+export function span(): HTMLSpanElement {
+  return document.createElement('span')
 }

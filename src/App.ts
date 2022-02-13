@@ -2,7 +2,7 @@ import './App.scss'
 import {IKeyMap, KEY_MAPS, Renderer} from './core/renderer'
 import GodMode from './module/GodMode'
 import MV from './core/mv'
-import {createKeyMapLabel, space2line} from './core/dom'
+import {createKeyMapLabel, div, space2line} from './core/dom'
 import Items from './module/Items'
 import Gold from './module/Gold'
 import MoveSpeed from './module/MoveSpeed'
@@ -116,13 +116,13 @@ export default class App extends Renderer<HTMLDivElement> {
     },
   ]
 
-  private readonly wrapper = document.createElement('div')
-  private readonly navBackButton = document.createElement('div')
-  private readonly navShiftButton = document.createElement('div')
-  private readonly navPrevButton = document.createElement('div')
-  private readonly navNextButton = document.createElement('div')
-  private readonly navTextContainer = document.createElement('div')
-  private readonly container = document.createElement('div')
+  private readonly wrapper = div()
+  private readonly navBackButton = div()
+  private readonly navShiftButton = div()
+  private readonly navPrevButton = div()
+  private readonly navNextButton = div()
+  private readonly navTextContainer = div()
+  private readonly container = div()
 
   private _currentModule?: Renderer = undefined
 
@@ -180,7 +180,7 @@ export default class App extends Renderer<HTMLDivElement> {
       this.navTextContainer.innerHTML = m.MyName
 
       this._currentModule = new m()
-      const moduleWrapper = document.createElement('div')
+      const moduleWrapper = div()
       moduleWrapper.style.width = width || '500px'
       moduleWrapper.append(this._currentModule.render())
       
@@ -280,7 +280,7 @@ export default class App extends Renderer<HTMLDivElement> {
     navNext.addEventListener('click', this._nextModule)
     nav.append(navNext)
 
-    const navClose = document.createElement('div')
+    const navClose = div()
     navClose.classList.add('nav-button')
     navClose.append(createKeyMapLabel(App.KeyMap.toggle, '✕', 'Close or Open'))
     navClose.addEventListener('click', this._onToggle)
@@ -290,7 +290,7 @@ export default class App extends Renderer<HTMLDivElement> {
   }
 
   private _buildHome() {
-    const container = document.createElement('div')
+    const container = div()
     container.classList.add('cheater-items-wrapper')
 
     const keymapLength = App.ModulesKeymaps.length
@@ -300,7 +300,7 @@ export default class App extends Renderer<HTMLDivElement> {
       m.keymap = Math.floor(i / keymapLength) === this._moduleIndexFactor ?
         App.ModulesKeymaps[i % keymapLength] : undefined
 
-      const mItemContainer = document.createElement('div')
+      const mItemContainer = div()
       mItemContainer.classList.add('cheater-item-wrapper')
       mItemContainer.innerHTML = space2line(`${m.module.MyName}`) +
         (m.keymap ? `<div>${createKeyMapLabel(m.keymap).outerHTML}</div>` : '<br>')

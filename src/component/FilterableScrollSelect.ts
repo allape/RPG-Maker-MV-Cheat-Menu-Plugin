@@ -2,6 +2,7 @@ import MV from '../core/mv'
 import { Renderer } from '../core/renderer'
 import Input from './Input'
 import ScrollSelect, { IScrollSelectProps } from './ScrollSelect'
+import {div} from '../core/dom'
 
 export interface IFilterableScrollSelectProps<T> extends IScrollSelectProps {
   // used for cache keyword, the same key will produce the same cached keyword
@@ -119,7 +120,7 @@ export default class FilterableScrollSelect<T> extends Renderer<HTMLDivElement> 
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const container = div()
 
     if (!this.props.hideFilter) {
       const inputDom = this.search.render()

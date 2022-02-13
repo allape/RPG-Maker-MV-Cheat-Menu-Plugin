@@ -1,6 +1,7 @@
 import {Renderer} from '../core/renderer'
 import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
+import {div} from '../core/dom'
 
 export default class Gold extends Renderer<HTMLDivElement> {
 
@@ -55,7 +56,7 @@ export default class Gold extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const container = document.createElement('div')
+    const container = div()
     container.append(this.amount.render())
     container.append(this.currentAmount.render())
 

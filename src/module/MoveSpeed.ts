@@ -2,7 +2,7 @@ import {KEY_MAPS, Renderer} from '../core/renderer'
 import ScrollSelect from '../component/ScrollSelect'
 import AmountSelector from '../component/AmountSelector'
 import Switch from '../component/Switch'
-import {createText} from '../core/dom'
+import {createText, div} from '../core/dom'
 
 export default class MoveSpeed extends Renderer<HTMLDivElement> {
 
@@ -112,7 +112,7 @@ export default class MoveSpeed extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const ctr = document.createElement('div')
+    const ctr = div()
 
     ctr.append(
       createText('If speed number is frozen, "lock it then unlock it" will solve this.', 'warning'),

@@ -4,6 +4,7 @@ import AmountSelector, {IAmountSelectorProps} from '../component/AmountSelector'
 import ScrollSelect from '../component/ScrollSelect'
 import Switch from '../component/Switch'
 import MV from '../core/mv'
+import {div, span} from '../core/dom'
 
 export default class Teleport extends Renderer<HTMLDivElement> {
   static MyName = 'Teleport'
@@ -13,10 +14,10 @@ export default class Teleport extends Renderer<HTMLDivElement> {
   private static readonly Y_STORAGE_KEY = 'Teleport_y'
 
   private static readonly axisLabelBuilder = (text: string): HTMLElement => {
-    const span = document.createElement('span')
-    span.style.paddingRight = '10px'
-    span.innerHTML = text
-    return span
+    const s = span()
+    s.style.paddingRight = '10px'
+    s.innerHTML = text
+    return s
   }
 
   private static readonly AxisDefaultAmountSelectorProps: IAmountSelectorProps = {
@@ -120,7 +121,7 @@ export default class Teleport extends Renderer<HTMLDivElement> {
   }
 
   render(): HTMLDivElement {
-    const ctr = document.createElement('div')
+    const ctr = div()
     ctr.append(
       this.mapSelector.render(),
       this.xSelector.render(),
