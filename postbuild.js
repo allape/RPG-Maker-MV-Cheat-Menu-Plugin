@@ -5,8 +5,14 @@ const path = require('path')
 
 fs.copyFileSync('./plugins_patch.txt', './dist/plugins_patch.txt')
 fs.copyFileSync('./plugins_patch.go.txt', './dist/plugins_patch.go.txt')
+fs.copyFileSync('./plugins_patch.legacy.go.txt', './dist/plugins_patch.legacy.go.txt')
 
 fs.copyFileSync('./dist/www/js/plugins/AsCheater.js', './public/AsCheater.js')
+
+const legacyAsCheater = './dist/www/js/plugins/AsCheater_legacy.js'
+if (fs.existsSync(legacyAsCheater)) {
+  fs.copyFileSync(legacyAsCheater, './public/AsCheater_legacy.js')
+}
 
 const sourceMapPath = './dist/www/js/plugins/AsCheater.js.map'
 if (fs.existsSync(sourceMapPath)) {

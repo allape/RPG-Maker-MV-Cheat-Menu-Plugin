@@ -5,12 +5,13 @@
   "private": true,
   "scripts": {
     "prepare:clean": "npx rimraf build/ dist/",
-    "build:ts": "npm run prepare:clean && npx tsc",
+    "build:ts": "npx tsc",
     "build:webpack": "npm run build:ts && npx webpack",
-    "build:plugin": "npm run build:webpack && npm run postbuild",
-    "build:plugin:legacy": "npx cross-env BUILD_LEGACY=true npm run build:webpack && npm run postbuild",
+    "build:webpack:legacy": "npm run build:ts && npx cross-env BUILD_LEGACY=true npx webpack",
+    "build:plugin": "npm run prepare:clean && npm run build:webpack && npm run postbuild",
+    "build:plugin:legacy": "npm run prepare:clean && npm run build:webpack:legacy && npm run postbuild",
     "build:go": "cd patcher && ./build.sh",
-    "build": "npm run build:webpack && npm run build:go",
+    "build": "npm run prepare:clean && npm run build:webpack && npm run build:webpack:legacy && npm run build:go",
     "postbuild": "node postbuild.js"
   },
   "keywords": [

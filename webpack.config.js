@@ -62,7 +62,7 @@ module.exports = {
     ],
   },
   output: {
-    filename: 'AsCheater.js',
+    filename: `AsCheater${BUILD_LEGACY ? '_legacy' : ''}.js`,
     path: path.resolve(__dirname, 'dist/www/js/plugins'),
   },
 }

@@ -6,7 +6,7 @@ package-lock.json
 
 dist
 build
-public/AsCheater.js*
+public/AsCheater*.js*
 src/**/*.js
 
 copycat.json

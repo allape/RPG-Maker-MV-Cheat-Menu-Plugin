@@ -70,6 +70,11 @@
   - It means this exe failed to patch the game with cheats
 - There is no `www/js/plugins` or `js/plugins` in game folder
     - Use [EnigmaVBUnpacker](https://f95zone.to/threads/rpg-maker-mv-unpacker.417/post-3577739) to unpack game
+- If `Cheat Menu` is not working, or game prompt an ERROR on starting
+  - Restore `www/js/plugins.js` or `js/plugins.js` with `plugins.js.bak` using a text editor. Or reinstall the game
+  - Replace the content in `plugins_patch.go.txt` to `AsCheater_legacy`
+    - Or delete `plugins_patch.go.txt`, then rename `plugins_patch.legacy.go.txt` to `plugins_patch.go.txt`
+  - Follow the `Installation` to patch plugin
 
 ### Dev
 
