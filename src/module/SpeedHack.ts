@@ -9,7 +9,7 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
 
   private static readonly STORAGE_KEY = 'SpeedHack_count'
 
-  private _timerId = -1
+  private static _timerId = -1
 
   private readonly countSelector = new AmountSelector({
     default: 0,
@@ -21,24 +21,23 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
     decreaseFn: v => v - 50,
     onChange: v => {
       MV.singleton().storage[SpeedHack.STORAGE_KEY] = v
-      this._update()
+      SpeedHack._update(v)
     },
   })
 
-  private readonly _update = () => {
+  private static readonly _update = (count: number) => {
     clearTimeout(this._timerId)
-    const count = this.countSelector.value
     if (count > 0) {
       this._timerId = setTimeout(() => {
         SceneManager.updateScene()
-        this._update()
+        SpeedHack._update(count)
       }, 1000 / count) as unknown as number
     }
   }
 
   private readonly _onGameStart = () => {
     this.countSelector.value = (MV.singleton().storage[SpeedHack.STORAGE_KEY] || 0) as number
-    this._update()
+    SpeedHack._update(this.countSelector.value)
   }
 
   constructor() {
@@ -54,8 +53,6 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
     MV.singleton().off('loadGame', this._onGameStart)
 
     this.countSelector.dispose()
-
-    clearTimeout(this._timerId)
   }
 
   render(): HTMLDivElement {
@@ -64,7 +61,6 @@ export default class SpeedHack extends Renderer<HTMLDivElement> {
     container.append(
       createText('This function may cause game misbehave.', 'fatal'),
       createText('This function may cause frame drop.', 'warning'),
-      createText('Leaving this module will stop speed-hacking.', 'warning'),
       br(),
       createText('This is how many more render count per second base on the original fps.'),
       this.countSelector.render(),
