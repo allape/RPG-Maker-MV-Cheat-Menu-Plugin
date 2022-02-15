@@ -251,6 +251,22 @@ export default class App extends Renderer<HTMLDivElement> {
     const nav = document.createElement('nav')
     nav.classList.add('cheater-nav')
 
+    const hover2DisplayWrapper = document.createElement('div')
+    hover2DisplayWrapper.classList.add('nav-button', 'hover-to-display-button')
+    hover2DisplayWrapper.title = 'Hover to display Cheat Menu'
+    nav.append(hover2DisplayWrapper)
+    const hover2Display = document.createElement('input')
+    hover2Display.type = 'checkbox'
+    hover2DisplayWrapper.append(hover2Display)
+    hover2DisplayWrapper.addEventListener('click', () => {
+      hover2Display.checked = !hover2Display.checked
+      if (hover2Display.checked) {
+        this.wrapper.classList.add('hover-to-display')
+      } else {
+        this.wrapper.classList.remove('hover-to-display')
+      }
+    })
+
     const navBack = this.navBackButton
     navBack.classList.add('nav-button')
     navBack.append(createKeyMapLabel(App.KeyMap.back, '↩', 'Back Home', { namePosition: 'left' }))
