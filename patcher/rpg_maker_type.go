@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"path"
 
@@ -177,7 +178,30 @@ var RPGMakerEngineTypes = []RPGMakerEngineType{
 			if err != nil {
 				return panicEngineType("this is NOT a RPG Maker MZ game")
 			}
-			return InjectPatchPlugin(pluginsJsPath, pluginName, shouldBackupPluginJs)
+			injected := InjectPatchPlugin(pluginsJsPath, pluginName, shouldBackupPluginJs)
+			if injected {
+				// copy plugin cheat file, because in default, cheat plugin is inside www/js/plugins
+				pluginJsPath := path.Join(pwd, "www/js/plugins", pluginName+".js")
+				targetPluginJsPath := path.Join(pwd, "js/plugins", pluginName+".js")
+				if reader, err := os.Open(pluginJsPath); err == nil {
+					defer func() {
+						_ = reader.Close()
+					}()
+					if writer, err := os.Create(targetPluginJsPath); err == nil {
+						defer func() {
+							_ = writer.Close()
+						}()
+						if _, err = io.Copy(writer, reader); err != nil {
+							_, _ = RedUnderline.Printf("failed to copy \"%s\" to \"%s\"\n", pluginJsPath, targetPluginJsPath)
+						}
+					} else {
+						_, _ = RedUnderline.Printf("failed to create \"%s\"\n", targetPluginJsPath)
+					}
+				} else {
+					_, _ = RedUnderline.Printf("failed to open \"%s\"\n", pluginJsPath)
+				}
+			}
+			return injected
 		},
 	},
 }
