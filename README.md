@@ -78,6 +78,8 @@
 
 ### Dev
 
+#### `tsc`-ing before `webpack` is for type check
+
 #### Building on Windows requires changing `./build.sh` to `build.sh` in `build:go` of `package.json` scripts
 
 #### nodejs

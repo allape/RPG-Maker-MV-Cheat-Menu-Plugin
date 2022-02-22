@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require('path')
+
 const { DefinePlugin }  = require('webpack')
 const TerserPlugin  = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
@@ -11,7 +12,7 @@ module.exports = {
   mode: 'production',
   entry: BUILD_LEGACY ? './src/legacy-index.ts' : './src/index.ts',
   // devtool: 'source-map',
-  target: BUILD_LEGACY ? ['web', 'es5'] : undefined,
+  target: ['web', 'es5'],
   performance: {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
@@ -32,6 +33,12 @@ module.exports = {
             presets: [
               '@babel/preset-typescript',
               ...(BUILD_LEGACY ? ['@babel/preset-env'] : []),
+            ],
+            plugins: [
+              '@babel/plugin-proposal-optional-chaining',
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-transform-classes',
+              '@babel/plugin-transform-arrow-functions',
             ],
           },
         },
