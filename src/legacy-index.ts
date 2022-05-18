@@ -30,6 +30,7 @@ import 'whatwg-fetch'
         {
           configurable: true,
           get: function () {
+            // noinspection JSDeprecatedSymbols
             return window.KEY_CODE_TO_CHAR[this.keyCode] || this.keyCode
           }
         }

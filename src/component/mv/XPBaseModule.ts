@@ -35,7 +35,6 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
     onHTML: 'Activate',
   }
 
-
   private readonly aliveTo0: Switch
   private readonly aliveTo1: Switch
   private readonly alive2Half: Switch
@@ -153,10 +152,10 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
       this.alive2Half.render(),
       this.alive2Max.render(),
       hr(),
-      this.allTo0.render(),
-      this.allTo1.render(),
-      this.all2Half.render(),
       this.all2Max.render(),
+      this.all2Half.render(),
+      this.allTo1.render(),
+      this.allTo0.render(),
     )
 
     return ctr

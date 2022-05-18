@@ -72,8 +72,6 @@ func promptTypes() {
 }
 
 func main() {
-	InitColorfulOutput()
-
 	_, _ = Cyan.Printf("Initializing patcher...\n")
 
 	pwd, err := os.Getwd()

@@ -93,7 +93,7 @@ export default class GodMode extends Renderer {
     const container = div()
 
     container.append(
-      createText('If game becomes laggy after enabling this function, try to turn on and turn off god mode to clear something wrong.', 'warning'),
+      createText('If game becomes slow after enabling this function, try to turn on and turn off god mode to clear something wrong.', 'warning'),
       br(),
     )
 
