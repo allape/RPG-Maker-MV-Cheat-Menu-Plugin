@@ -20,7 +20,7 @@ export default class Stat extends DualFSSWithAA<Game_Actor, IStat> {
     onChange: this._triggerValueChange,
   })
   protected readonly amountSelector = new AmountSelector({
-    default: 100,
+    default: 1000,
     precision: 0,
     min: 1,
     max: 9999,

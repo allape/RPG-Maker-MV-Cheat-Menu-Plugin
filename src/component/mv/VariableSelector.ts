@@ -15,9 +15,9 @@ export default class VariableSelector extends FilterableScrollSelect<IVariable> 
       listProvider: keyword => ($dataSystem.variables || []).map((name, index) => ({
         name,
         index,
-      })).filter(i => i.name?.toLowerCase().includes(keyword)),
+      })).filter(i => i.name?.toLowerCase().includes(keyword) || (`${$gameVariables.value(i.index) ?? ''}` === keyword)),
       nameProvider: item => item?.name,
-      placeholder: 'Search Variable by Name',
+      placeholder: 'Search Variable implicitly by Name or explicitly by Value',
     })
   }
 }
