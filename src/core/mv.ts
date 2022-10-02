@@ -24,6 +24,15 @@ export function errorEnhancement() {
       console.error('error occurred while calling AudioManager.playBgs')
     }
   }
+
+  SoundManager._playSystemSound_proxy = SoundManager.playSystemSound
+  SoundManager.playSystemSound = (pos) => {
+    try {
+      SoundManager._playSystemSound_proxy(pos)
+    } catch (e) {
+      console.error('error occurred while calling SoundManager.playSystemSound')
+    }
+  }
 }
 
 export default class MV {

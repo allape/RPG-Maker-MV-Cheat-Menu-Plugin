@@ -179,6 +179,7 @@ declare global {
 
   class SoundManager {
     static playSystemSound(soundIndex?: number): void
+    static _playSystemSound_proxy(soundIndex?: number): void
   }
 
   class AudioManager {
