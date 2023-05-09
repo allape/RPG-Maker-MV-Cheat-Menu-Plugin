@@ -20,10 +20,10 @@ export interface IPBasedModuleProps {
 export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
 
   static KeyMap = {
-    aliveTo0: KEY_MAPS.Digit3,
-    aliveTo1: KEY_MAPS.Digit4,
-    alive2Half: KEY_MAPS.Digit5,
-    alive2Max: KEY_MAPS.Digit6,
+    aliveTo0: KEY_MAPS.Digit6,
+    aliveTo1: KEY_MAPS.Digit5,
+    alive2Half: KEY_MAPS.Digit4,
+    alive2Max: KEY_MAPS.Digit3,
     allTo0: KEY_MAPS.Digit7,
     allTo1: KEY_MAPS.Digit8,
     all2Half: KEY_MAPS.Digit9,
@@ -147,10 +147,10 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
     const ctr = div()
 
     ctr.append(
-      this.aliveTo0.render(),
-      this.aliveTo1.render(),
-      this.alive2Half.render(),
       this.alive2Max.render(),
+      this.alive2Half.render(),
+      this.aliveTo1.render(),
+      this.aliveTo0.render(),
       hr(),
       this.all2Max.render(),
       this.all2Half.render(),
