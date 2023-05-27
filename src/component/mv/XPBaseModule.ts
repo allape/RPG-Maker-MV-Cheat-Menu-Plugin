@@ -152,10 +152,10 @@ export default abstract class XPBaseModule extends Renderer<HTMLDivElement> {
       this.aliveTo1.render(),
       this.aliveTo0.render(),
       hr(),
-      this.all2Max.render(),
-      this.all2Half.render(),
-      this.allTo1.render(),
       this.allTo0.render(),
+      this.allTo1.render(),
+      this.all2Half.render(),
+      this.all2Max.render(),
     )
 
     return ctr
