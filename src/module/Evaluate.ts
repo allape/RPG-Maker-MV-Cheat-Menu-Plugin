@@ -36,7 +36,8 @@ export default class Evaluate extends Renderer<HTMLDivElement> {
 
   dispose() {
     super.dispose()
-
+    this.script.dispose()
+    this.evaluate.dispose()
   }
 
   render(): HTMLDivElement {
