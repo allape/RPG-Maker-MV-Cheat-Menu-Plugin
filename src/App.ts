@@ -1,27 +1,28 @@
 import './App.scss'
-import {IKeyMap, KEY_MAPS, Renderer} from './core/renderer'
-import GodMode from './module/GodMode'
+import { createKeyMapLabel, div, space2line } from './core/dom'
 import MV from './core/mv'
-import {createKeyMapLabel, div, space2line} from './core/dom'
-import Items from './module/Items'
+import { IKeyMap, KEY_MAPS, Renderer } from './core/renderer'
+import Armors from './module/Armors'
+import ClearStates from './module/ClearStates'
+import EnemyHP from './module/EnemyHP'
+import Evaluate from './module/Evaluate'
+import GiveExp from './module/GiveExp'
+import GodMode from './module/GodMode'
 import Gold from './module/Gold'
+import Items from './module/Items'
 import MoveSpeed from './module/MoveSpeed'
-import Variables from './module/Variables'
+import NoClip from './module/NoClip'
 import PartyHP from './module/PartyHP'
 import PartyMP from './module/PartyMP'
 import PartyTP from './module/PartyTP'
-import EnemyHP from './module/EnemyHP'
+import SaveGame from './module/SaveGame'
+import SpeedHack from './module/SpeedHack'
 import Stat from './module/Stat'
-import Weapons from './module/Weapons'
-import Armors from './module/Armors'
-import NoClip from './module/NoClip'
-import GiveExp from './module/GiveExp'
 import Switches from './module/Switches'
 import Teleport from './module/Teleport'
 import Translate from './module/Translate'
-import SpeedHack from './module/SpeedHack'
-import SaveGame from './module/SaveGame'
-import ClearStates from './module/ClearStates'
+import Variables from './module/Variables'
+import Weapons from './module/Weapons'
 
 // eslint-disable-next-line
 export type RenderClass<T extends Renderer = any> = T
@@ -113,6 +114,9 @@ export default class App extends Renderer<HTMLDivElement> {
     },
     {
       module: SaveGame as RenderClass,
+    },
+    {
+      module: Evaluate as RenderClass,
     },
   ]
 

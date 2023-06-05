@@ -5,7 +5,7 @@ const path = require('path')
 
 fs.copyFileSync('./plugins_patch.txt', './dist/plugins_patch.txt')
 fs.copyFileSync('./plugins_patch.go.txt', './dist/plugins_patch.go.txt')
-fs.copyFileSync('./plugins_patch.legacy.go.txt', './dist/plugins_patch.legacy.go.txt')
+// fs.copyFileSync('./plugins_patch.legacy.go.txt', './dist/plugins_patch.legacy.go.txt')
 
 fs.copyFileSync('./dist/www/js/plugins/AsCheater.js', './public/AsCheater.js')
 
