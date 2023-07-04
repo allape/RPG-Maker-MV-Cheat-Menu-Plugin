@@ -14,6 +14,7 @@ export default class Variables extends FSSWithAA<IVariable> {
 
   protected readonly scrollSelector = new VariableSelector({
     onChange: this._triggerValueChange,
+    keymap: ScrollSelect.KeyMap78,
   })
 
   protected readonly amountSelector = new AmountSelector({
@@ -46,7 +47,7 @@ export default class Variables extends FSSWithAA<IVariable> {
       leftText: AmountSelector.DEFAULT_LESS_ARROW,
       rightText: AmountSelector.DEFAULT_MORE_ARROW,
       center: value,
-      keymap: ScrollSelect.KeyMap78,
+      keymap: ScrollSelect.KeyMap34,
       valueProvider: value => {
         this.currentAmountValue.value = value
       },

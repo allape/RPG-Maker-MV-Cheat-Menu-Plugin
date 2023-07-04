@@ -7,11 +7,11 @@ export interface IVariable {
 }
 
 export default class VariableSelector extends FilterableScrollSelect<IVariable> {
-  constructor(props?: Pick<IFilterableScrollSelectProps<IVariable>, 'onChange'>) {
+  constructor(props?: Pick<IFilterableScrollSelectProps<IVariable>, 'onChange' | 'keymap'>) {
     super({
+      keymap: ScrollSelect.KeyMap34,
       ...props,
       key: 'VariableSelector',
-      keymap: ScrollSelect.KeyMap34,
       listProvider: keyword => ($dataSystem.variables || []).map((name, index) => ({
         name,
         index,
