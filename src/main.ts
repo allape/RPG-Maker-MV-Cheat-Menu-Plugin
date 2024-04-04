@@ -1,10 +1,20 @@
 import App from './App.svelte';
+import { errorEnhancement } from './core/mv';
 
-const root = document.createElement('div');
-window.document.body.appendChild(root);
+try {
+	errorEnhancement();
+} catch(e) {
+	console.error(e);
+}
 
-const app = new App({
-	target: root
-});
+setTimeout(() => {
+	const root = document.createElement('div');
+	window.document.body.appendChild(root);
 
-export default app;
+	const app = new App({
+		target: root
+	});
+
+	// @ts-ignore
+	window.__AsCheaterApp = app;
+}, 3000);

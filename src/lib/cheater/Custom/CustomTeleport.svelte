@@ -17,13 +17,13 @@
 
 	$: {
 		if (mapId === -1) {
-			mapId = MV.get$gameMap().mapId();
-			x = MV.get$gamePlayer().x;
-			y = MV.get$gamePlayer().y;
+			mapId = MV.get$gameMap()?.mapId() || 0;
+			x = MV.get$gamePlayer()?.x || 0;
+			y = MV.get$gamePlayer()?.y || 0;
 		}
 	}
 
-	let maps = MV.get$dataMapInfos();
+	let maps = MV.get$dataMapInfos() || [];
 
 	const handleEvaluate = () => {
 		const gamePlayer = MV.get$gamePlayer();
@@ -59,7 +59,7 @@
 			<input placeholder="name" type="text" bind:value={name}>
 			<select bind:value={mapId}>
 				{#each maps as map, index}
-					<option value={index}>{index}: {map.name}</option>
+					<option value={index}>{index}: {map?.name || '-'}</option>
 				{/each}
 			</select>
 			<div class="xy">

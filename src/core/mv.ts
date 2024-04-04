@@ -528,7 +528,7 @@ export default class MV {
 		return $gameParty._gold;
 	}
 
-	static playSound(positive: boolean) {
+	static playSound(positive: boolean = false) {
 		SoundManager.playSystemSound(positive ? 1 : 2);
 	}
 
