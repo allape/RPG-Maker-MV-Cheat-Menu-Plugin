@@ -1,8 +1,10 @@
-import './app.scss';
 import App from './App.svelte';
 
+const root = document.createElement('div');
+window.document.body.appendChild(root);
+
 const app = new App({
-	target: document.getElementById('app')!
+	target: root
 });
 
 export default app;

@@ -134,6 +134,7 @@
     max-height: 100vh;
     flex-wrap: nowrap;
     overflow: hidden;
+    text-align: center;
 
     &:hover {
       //background-color: rgba(0, 0, 0, 0.8);
