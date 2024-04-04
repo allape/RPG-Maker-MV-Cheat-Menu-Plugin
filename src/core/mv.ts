@@ -490,6 +490,30 @@ export default class MV {
 		return $gameTroop;
 	}
 
+	static get$gamePlayer(): Game_Player {
+		try {
+			return $gamePlayer;
+		} catch (e) {
+			return { x: 0, y: 0 } as Game_Player;
+		}
+	}
+
+	static get$dataMapInfos() {
+		try {
+			return $dataMapInfos;
+		} catch (e) {
+			return [];
+		}
+	}
+
+	static get$gameMap(): Game_Map {
+		try {
+			return $gameMap;
+		} catch (e) {
+			return { mapId: () => 0 };
+		}
+	}
+
 	static opeStatAmount(actor: Game_Actor, statIndex: number, amount: number) {
 		if (actor._paramPlus[statIndex] !== undefined) {
 			actor.addParam(statIndex, amount);
@@ -502,6 +526,10 @@ export default class MV {
 
 	static getGold(): number {
 		return $gameParty._gold;
+	}
+
+	static playSound(positive: boolean) {
+		SoundManager.playSystemSound(positive ? 1 : 2);
 	}
 
 }

@@ -40,15 +40,19 @@
 			switch (to) {
 				case 'full':
 					actor[setFunc](MaxFunc[type](actor));
+					MV.playSound(true);
 					break;
 				case 'half':
 					actor[setFunc](actor[_type] / 2);
+					MV.playSound(false);
 					break;
 				case '1':
 					actor[setFunc](1);
+					MV.playSound(false);
 					break;
 				case '0': // ALERT: this may cause error
 					actor[setFunc](0);
+					MV.playSound(false);
 					break;
 			}
 		});

@@ -12,6 +12,7 @@
 
 	const handleEval = () => {
 		MV.gainGold(flush ? MV.getGold() : amount);
+		MV.playSound(flush || amount <= 0);
 	};
 </script>
 

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Evaluate from './Evaluate.svelte';
+	import Evaluate from '../Evaluate/Evaluate.svelte';
 
 	export let editing: boolean = false;
 
-	export let name: string = '';
-	export let funcString: string = '';
+	export let name: string = 'EVAL';
+	export let value: string = 'alert(`hello world`);';
 </script>
 
 <style lang="scss">
@@ -17,11 +17,11 @@
   }
 </style>
 
-<Evaluate funcString={funcString} disabled={editing}>
+<Evaluate funcString={value} disabled={editing}>
 	{#if editing}
 		<div class="wrapper">
 			<input placeholder="name" type="text" bind:value={name}>
-			<textarea rows="10" bind:value={funcString} placeholder="callable script" />
+			<textarea rows="10" bind:value={value} placeholder="callable script" />
 		</div>
 	{:else}
 		<span contenteditable="false" bind:innerHTML={name} />
