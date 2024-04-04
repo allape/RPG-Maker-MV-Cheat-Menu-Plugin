@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
+	export let disabled: boolean = false;
 	export let title: string | undefined = undefined;
 	export let func: (() => void) | undefined = undefined;
 	export let funcString: string | undefined = undefined;
@@ -9,8 +10,11 @@
 
 	onMount(() => {
 		const handleClick = () => {
+			if (disabled) {
+				return;
+			}
 			try {
-				(func || new Function(`() => ${funcString || 'undefined'}`))?.();
+				(func || new Function(`${funcString || 'return undefined;'}`))?.();
 			} catch (e) {
 				console.error('eval error:', e);
 				alert((e as Error)?.message || e);
