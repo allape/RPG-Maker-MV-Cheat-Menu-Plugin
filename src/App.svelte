@@ -233,7 +233,7 @@
 						<input type="checkbox" bind:checked={selectedCheaters[name]} />
 					{/if}
 					<div class="cheater" class:noClick={editing}>
-						<svelte:component this={RegisterCheaters[name]} />
+						<svelte:component this={RegisterCheaters[name]} {editing} />
 					</div>
 				</div>
 			{/if}

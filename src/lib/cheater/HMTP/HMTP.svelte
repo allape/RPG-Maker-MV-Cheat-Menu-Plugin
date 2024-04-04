@@ -55,6 +55,6 @@
 	};
 </script>
 
-<Evaluate func={handleEval} title={$$props.title}>
+<Evaluate func={handleEval} title={$$props.title} disabled={$$props.editing}>
 	<span style:color={Color[type]}><slot>HMTP</slot></span>
 </Evaluate>

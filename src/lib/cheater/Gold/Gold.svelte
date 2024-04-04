@@ -15,7 +15,7 @@
 	};
 </script>
 
-<Evaluate title={$$props.title} func={handleEval}>
+<Evaluate title={$$props.title} func={handleEval} disabled={$$props.editing}>
 	<span style:color={color}>
 		<slot>Gold</slot>
 	</span>
