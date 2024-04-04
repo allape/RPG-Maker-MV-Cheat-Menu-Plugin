@@ -2,8 +2,8 @@
 	import Gold from './Gold.svelte';
 </script>
 
-<Gold title="Make you go bankrupt" flush>
-	bank
+<Gold flush title="Make you go bankrupt">
+	bank-
 	<br>
 	rupt
 </Gold>

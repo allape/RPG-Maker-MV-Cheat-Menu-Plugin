@@ -37,6 +37,6 @@
   }
 </style>
 
-<div class="wrapper" bind:this={thiz} role="none" title="title">
+<div class="wrapper" bind:this={thiz} role="none" title={title}>
 	<slot>Eval</slot>
 </div>

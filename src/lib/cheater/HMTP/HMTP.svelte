@@ -7,17 +7,23 @@
 	const MaxFunc: Record<typeof type, (actor: GameActor) => number> = {
 		hp: (actor: GameActor) => actor.mhp,
 		mp: (actor: GameActor) => actor.mmp,
-		tp: (actor: GameActor) => actor.maxTp(),
+		tp: (actor: GameActor) => actor.maxTp()
+	};
+
+	const Color: Record<typeof type, string> = {
+		hp: 'green',
+		mp: '#747bff',
+		tp: 'cyan'
 	};
 
 	export let alive: boolean = true;
 	export let type: 'hp' | 'mp' | 'tp' = 'hp';
 	export let target: 'party' | 'enemy' = 'party';
-	export let to: 'full' | 'half' | '0' | '1' = 'full'
+	export let to: 'full' | 'half' | '0' | '1' = 'full';
 
-	$: _type = `_${type}` as keyof Pick<GameActor, '_hp' | '_mp' | '_tp'>
+	$: _type = `_${type}` as keyof Pick<GameActor, '_hp' | '_mp' | '_tp'>;
 	$: Type = type.charAt(0).toUpperCase() + type.slice(1);
-	$: setFunc = `set${Type}` as keyof Pick<GameActor, 'setHp' | 'setMp' | 'setTp'>
+	$: setFunc = `set${Type}` as keyof Pick<GameActor, 'setHp' | 'setMp' | 'setTp'>;
 
 	const handleEval = () => {
 		let actors: GameActor[] = [];
@@ -45,8 +51,10 @@
 					actor[setFunc](0);
 					break;
 			}
-		})
+		});
 	};
 </script>
 
-<Evaluate func={handleEval}><slot>HMTP</slot></Evaluate>
+<Evaluate func={handleEval} title={$$props.title}>
+	<span style:color={Color[type]}><slot>HMTP</slot></span>
+</Evaluate>

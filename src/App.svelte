@@ -8,7 +8,18 @@
 	import GoldPlus10K from './lib/cheater/Gold/GoldPlus10K.svelte';
 	import GoldPlus1K from './lib/cheater/Gold/GoldPlus1K.svelte';
 	import GoldPlus1M from './lib/cheater/Gold/GoldPlus1M.svelte';
-	import PartyFullHP from './lib/cheater/HP/PartyFullHP.svelte';
+	import Party0HP from './lib/cheater/HMTP/Party0HP.svelte';
+	import Party0MP from './lib/cheater/HMTP/Party0MP.svelte';
+	import Party0TP from './lib/cheater/HMTP/Party0TP.svelte';
+	import Party1HP from './lib/cheater/HMTP/Party1HP.svelte';
+	import Party1MP from './lib/cheater/HMTP/Party1MP.svelte';
+	import Party1TP from './lib/cheater/HMTP/Party1TP.svelte';
+	import PartyFullHP from './lib/cheater/HMTP/PartyFullHP.svelte';
+	import PartyFullMP from './lib/cheater/HMTP/PartyFullMP.svelte';
+	import PartyFullTP from './lib/cheater/HMTP/PartyFullTP.svelte';
+	import PartyHalfHP from './lib/cheater/HMTP/PartyHalfHP.svelte';
+	import PartyHalfMP from './lib/cheater/HMTP/PartyHalfMP.svelte';
+	import PartyHalfTP from './lib/cheater/HMTP/PartyHalfTP.svelte';
 	import { getJSON } from './utils/store';
 
 	const KeyPrefix = 'AsCheater';
@@ -24,7 +35,18 @@
 		GoldMinus10K,
 		GoldMinus100K,
 		GoldMinus1M,
-		PartyFullHP
+		PartyFullHP,
+		PartyHalfHP,
+		Party1HP,
+		Party0HP,
+		PartyFullMP,
+		PartyHalfMP,
+		Party1MP,
+		Party0MP,
+		PartyFullTP,
+		PartyHalfTP,
+		Party1TP,
+		Party0TP
 	};
 
 	type TypeOfRegisterCheaters = typeof RegisterCheaters;
@@ -50,14 +72,17 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     font-size: 12px;
     user-select: none;
     min-width: 40px;
+    max-height: 100vh;
+    flex-wrap: nowrap;
+    overflow: hidden;
 
     input {
       cursor: pointer;
@@ -74,6 +99,7 @@
         &:hover {
           border-color: white;
 					color: white;
+          background-color: rgba(0, 0, 0, 0.5);
         }
       }
     }
@@ -81,21 +107,27 @@
     .cheaters {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       width: 100%;
+      flex: 1;
+      flex-wrap: nowrap;
+      overflow-y: auto;
+      scrollbar-width: none;
 
       .cheaterWrapper {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: row;
+        flex-wrap: wrap;
         border: 1px solid gray;
 				color: gray;
 
         &:hover {
           border-color: white;
 					color: white;
+          background-color: rgba(0, 0, 0, 0.5);
         }
 
         .cheater {

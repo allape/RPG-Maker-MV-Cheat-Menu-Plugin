@@ -5,9 +5,18 @@
 	export let flush: boolean = false;
 	export let amount: number = 0;
 
+	let color: 'gold' | 'red' = 'gold';
+	if (flush) {
+		color = 'red';
+	}
+
 	const handleEval = () => {
 		MV.gainGold(flush ? MV.getGold() : amount);
 	};
 </script>
 
-<Evaluate title={$$props.title} func={handleEval}><slot>Gold</slot></Evaluate>
+<Evaluate title={$$props.title} func={handleEval}>
+	<span style:color={color}>
+		<slot>Gold</slot>
+	</span>
+</Evaluate>

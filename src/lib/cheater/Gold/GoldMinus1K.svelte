@@ -3,8 +3,8 @@
 	import Gold from './Gold.svelte';
 </script>
 
-<Gold amount={-1_000}>
+<Gold amount={-1_000} title="Giveaway 1K">
 	Gold
 	<br>
-	-1K
+	<span style:color="red">-1K</span>
 </Gold>
