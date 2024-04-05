@@ -536,4 +536,20 @@ export default class MV {
 		}
 	}
 
+	static get$dataSystem(): Data_System {
+		try {
+			return $dataSystem;
+		} catch (e) {
+			return { switches: [] } as unknown as Data_System;
+		}
+	}
+
+	static get$gameSwitches(): Game_Switches {
+		try {
+			return $gameSwitches;
+		} catch (e) {
+			return { value: () => false } as unknown as Game_Switches;
+		}
+	}
+
 }

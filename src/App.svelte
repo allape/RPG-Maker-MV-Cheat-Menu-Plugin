@@ -1,7 +1,9 @@
 <script lang="ts">
+	import './style.scss';
 	import { onMount } from 'svelte';
 	import MV from './core/mv';
 	import CustomEvaluate from './lib/cheater/Custom/CustomEvaluate.svelte';
+	import CustomSwitch from './lib/cheater/Custom/CustomSwitch.svelte';
 	import CustomTeleport from './lib/cheater/Custom/CustomTeleport.svelte';
 	import DevTools from './lib/cheater/DevTools/DevTools.svelte';
 	import Gold0 from './lib/cheater/Gold/Gold0.svelte';
@@ -94,6 +96,7 @@
 
 	const AvailableCustomCheaters = {
 		CustomTeleport,
+		CustomSwitch,
 		CustomEvaluate
 	};
 	type KeyOfAvailableCustomCheaters = keyof typeof AvailableCustomCheaters;
@@ -131,7 +134,7 @@
 	}
 
 	const handleAddCustomCheater = () => {
-		const id = `CustomCheater_${Date.now()}`;
+		const id = `${customCheaterType}_${Date.now()}`;
 		customCheaters = [
 			...customCheaters,
 			{
@@ -305,11 +308,12 @@
         }
 
         .checkboxWrapper {
-          width: calc(100% - 5px);
+          width: 100%;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-left: 5px;
+          flex-wrap: nowrap;
+          overflow: hidden;
         }
 
         .cheater {
@@ -322,7 +326,7 @@
           cursor: pointer;
 
           &.editing {
-            width: fit-content;
+            width: 100%;
             padding: 0;
           }
         }
@@ -331,7 +335,8 @@
   }
 </style>
 
-<div id="CheatMainFrame" class="wrapper" class:editing={editing}>
+<div role="none" id="CheatMainFrame" class="wrapper" class:editing={editing}
+		 on:click|stopPropagation={() => undefined}>
 	<div class="actions">
 		<div role="none" class="action" on:click={() => {
       editing = !editing;
@@ -377,7 +382,11 @@
 						{#if editing}
 							<div role="none" class="checkboxWrapper"
 									 on:click={() => selectedCheaters[cheater.id] = !selectedCheaters[cheater.id]}>
-								{cheater.id}
+								<button
+									on:click|capture|stopPropagation={() => customCheaters = customCheaters.filter((_, i) => i !== index)}>
+									-
+								</button>
+								<span>{cheater.id}</span>
 								<input type="checkbox" bind:checked={selectedCheaters[cheater.id]} />
 							</div>
 						{/if}
@@ -385,14 +394,6 @@
 							<svelte:component this={AvailableCustomCheaters[cheater.type]} bind:value={cheater.value}
 																bind:name={cheater.name} {editing} />
 						</div>
-						{#if editing}
-							<div class="actions">
-								<div role="none" class="action"
-										 on:click={() => customCheaters = customCheaters.filter((_, i) => i !== index)}>
-									-
-								</div>
-							</div>
-						{/if}
 					</div>
 				{/if}
 			{/each}

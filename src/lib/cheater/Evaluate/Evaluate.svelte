@@ -4,7 +4,6 @@
 	export let disabled: boolean = false;
 	export let title: string | undefined = undefined;
 	export let func: (() => void) | undefined = undefined;
-	export let funcString: string | undefined = undefined;
 
 	let thiz: HTMLDivElement | undefined;
 
@@ -14,7 +13,7 @@
 				return;
 			}
 			try {
-				(func || new Function(`${funcString || 'return undefined;'}`))?.();
+				func?.();
 			} catch (e) {
 				console.error('eval error:', e);
 				alert((e as Error)?.message || e);
