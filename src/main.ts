@@ -11,12 +11,10 @@ setTimeout(() => {
 	const root = document.createElement('div');
 	window.document.body.appendChild(root);
 
-	const app = new App({
+	// @ts-ignore
+	window.__AsCheaterApp = new App({
 		target: root
 	});
 
-	// @ts-ignore
-	window.__AsCheaterApp = app;
-
 	MV.playSound(true);
-}, 3000);
+}, 1000);
