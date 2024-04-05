@@ -3,7 +3,7 @@
 	import SearchableSelect from '../../ui/SearchableSelect.svelte';
 	import Custom from './Custom.svelte';
 
-	export let name: string = 'Change';
+	export let name: string = 'Togg';
 	export let value: string = '';
 	export let list: string[] = MV.get$dataSystem().switches.map((i, ii) => `${ii}: ${i}`);
 

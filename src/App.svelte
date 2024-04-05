@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import MV from './core/mv';
 	import CustomEvaluate from './lib/cheater/Custom/CustomEvaluate.svelte';
+	import CustomSave from './lib/cheater/Custom/CustomSave.svelte';
 	import CustomSwitch from './lib/cheater/Custom/CustomSwitch.svelte';
 	import CustomTeleport from './lib/cheater/Custom/CustomTeleport.svelte';
 	import DevTools from './lib/cheater/DevTools/DevTools.svelte';
@@ -97,6 +98,7 @@
 	const AvailableCustomCheaters = {
 		CustomTeleport,
 		CustomSwitch,
+		CustomSave,
 		CustomEvaluate
 	};
 	type KeyOfAvailableCustomCheaters = keyof typeof AvailableCustomCheaters;
