@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import { errorEnhancement } from './core/mv';
+import MV, { errorEnhancement } from './core/mv';
 
 try {
 	errorEnhancement();
@@ -17,4 +17,6 @@ setTimeout(() => {
 
 	// @ts-ignore
 	window.__AsCheaterApp = app;
+
+	MV.playSound(true);
 }, 3000);

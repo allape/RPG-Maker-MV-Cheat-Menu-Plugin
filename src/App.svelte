@@ -85,8 +85,8 @@
 	type TypeOfSelectedCheaters = Record<KeyOfRegisterCheaters, boolean>;
 	type PartialSelectedCheaters = Partial<TypeOfSelectedCheaters>;
 
-	const RegisterCheaterKeys: KeyOfRegisterCheaters[] = Object.keys(AllPresetCheaters) as KeyOfRegisterCheaters[];
-	const getDefaultSelectedCheaters = () => RegisterCheaterKeys.map((name) => ({ [name]: true })).reduce((acc, cur) => ({ ...acc, ...cur }), {}) as TypeOfSelectedCheaters;
+	const AllPresetCheaterKeys: KeyOfRegisterCheaters[] = Object.keys(AllPresetCheaters) as KeyOfRegisterCheaters[];
+	const getDefaultSelectedCheaters = () => AllPresetCheaterKeys.map((name) => ({ [name]: true })).reduce((acc, cur) => ({ ...acc, ...cur }), {}) as TypeOfSelectedCheaters;
 
 	// endregion
 
@@ -100,12 +100,19 @@
 
 	const AvailableCustomCheaterKeys = Object.keys(AvailableCustomCheaters) as KeyOfAvailableCustomCheaters[];
 
-	interface CustomCheaterConfig {
+	interface CustomCheaterConfig<
+		T extends KeyOfAvailableCustomCheaters = KeyOfAvailableCustomCheaters,
+		V = any,
+	> {
 		id: string;
-		type: KeyOfAvailableCustomCheaters;
+		type: T;
 		name?: string;
-		value?: unknown;
+		value?: V;
 	}
+
+	// type CustomCheaterConfig =
+	// 	| ICustomCheaterConfig<'CustomEvaluate', string>
+	// 	| ICustomCheaterConfig<'CustomTeleport', [number, number, number]>;
 
 	let customCheaters = getJSON<CustomCheaterConfig[]>(StoreKeyCustomCheaters, [], obj => obj instanceof Array);
 
@@ -114,7 +121,7 @@
 	// endregion
 
 	let editing: boolean = false;
-	let selectedCheaters = getJSON<PartialSelectedCheaters>(StoreKeySelectedCheaters, getDefaultSelectedCheaters());
+	let selectedCheaters = getJSON<PartialSelectedCheaters & Record<string, boolean>>(StoreKeySelectedCheaters, getDefaultSelectedCheaters());
 
 	$: {
 		if (!editing) {
@@ -338,6 +345,21 @@
 		</div>
 		{#if editing}
 			<div class="actions flat">
+				<div role="none" class="action" on:click={() => {
+					selectedCheaters = getDefaultSelectedCheaters();
+					customCheaters.forEach((cheater) => selectedCheaters[cheater.id] = true);
+					MV.playSound(true);
+				}}>
+					ALL
+				</div>
+				<div role="none" class="action" on:click={() => {
+					selectedCheaters = {};
+					MV.playSound();
+				}}>
+					NONE
+				</div>
+			</div>
+			<div class="actions flat">
 				<div class="action">
 					<select bind:value={customCheaterType}>
 						{#each AvailableCustomCheaterKeys as key}
@@ -380,24 +402,8 @@
 			{/each}
 		</div>
 	{/if}
-	<div class="actions flat">
-		{#if editing}
-			<div role="none" class="action" on:click={() => {
-        selectedCheaters = getDefaultSelectedCheaters();
-        MV.playSound(true);
-      }}>
-				ALL
-			</div>
-			<div role="none" class="action" on:click={() => {
-        selectedCheaters = {};
-        MV.playSound();
-      }}>
-				NONE
-			</div>
-		{/if}
-	</div>
 	<div class="cheaters">
-		{#each RegisterCheaterKeys as name}
+		{#each AllPresetCheaterKeys as name}
 			{#if selectedCheaters[name] || editing}
 				<div role="none" class="cheaterWrapper"
 						 on:click={() => editing?(selectedCheaters[name] = !selectedCheaters[name]):undefined}>

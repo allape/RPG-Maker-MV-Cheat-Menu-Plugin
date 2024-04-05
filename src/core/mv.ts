@@ -482,6 +482,28 @@ export default class MV {
 		}
 	}
 
+	static opeStatAmount(actor: Game_Actor, statIndex: number, amount: number) {
+		if (actor._paramPlus[statIndex] !== undefined) {
+			actor.addParam(statIndex, amount);
+		}
+	}
+
+	static gainGold(gold: number) {
+		$gameParty.gainGold(gold);
+	}
+
+	static getGold(): number {
+		return $gameParty._gold;
+	}
+
+	static playSound(positive: boolean = false) {
+		try {
+			SoundManager.playSystemSound(positive ? 1 : 2);
+		} catch (e) {
+			console.error('error to play sound:', e);
+		}
+	}
+
 	static get$gameParty() {
 		return $gameParty;
 	}
@@ -512,24 +534,6 @@ export default class MV {
 		} catch (e) {
 			return { mapId: () => 0 };
 		}
-	}
-
-	static opeStatAmount(actor: Game_Actor, statIndex: number, amount: number) {
-		if (actor._paramPlus[statIndex] !== undefined) {
-			actor.addParam(statIndex, amount);
-		}
-	}
-
-	static gainGold(gold: number) {
-		$gameParty.gainGold(gold);
-	}
-
-	static getGold(): number {
-		return $gameParty._gold;
-	}
-
-	static playSound(positive: boolean = false) {
-		SoundManager.playSystemSound(positive ? 1 : 2);
 	}
 
 }
