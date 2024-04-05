@@ -505,7 +505,11 @@ export default class MV {
 	}
 
 	static get$gameParty() {
-		return $gameParty;
+		try {
+			return $gameParty;
+		} catch (e) {
+			return { _items: [] } as unknown as Game_Party;
+		}
 	}
 
 	static get$gameTroop() {
@@ -557,6 +561,14 @@ export default class MV {
 			return $gameVariables;
 		} catch (e) {
 			return { value: () => false } as unknown as Game_Variables;
+		}
+	}
+
+	static get$dataItems() {
+		try {
+			return $dataItems;
+		} catch (e) {
+			return [];
 		}
 	}
 

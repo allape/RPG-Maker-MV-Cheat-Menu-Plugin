@@ -7,27 +7,25 @@
 	export let value: string = '';
 	export let list: string[] = MV.get$dataSystem().switches.map((i, ii) => `${ii}: ${i}`);
 
-	let to: HTMLInputElement | undefined = undefined;
+	let to: boolean = false;
 
 	const handleEval = () => {
 		const index = list.indexOf(value);
 		if (index === -1) {
 			return;
 		}
-		const changeTo = !!to?.checked;
-		MV.get$gameSwitches().setValue(index, changeTo);
-		MV.playSound(changeTo);
+		to = !to;
+		MV.get$gameSwitches().setValue(index, to);
+		MV.playSound(to);
 	};
 
-	$: {
-		if (to) {
-			to.checked = MV.get$gameSwitches().value(list.indexOf(value));
-		}
-	}
+	const handleChange = (e: CustomEvent<string>) => {
+		to = MV.get$gameSwitches().value(list.indexOf(e.detail));
+	};
 </script>
 
 <Custom func={handleEval} editing={$$props.editing} bind:name={name}>
-	<SearchableSelect placeholder="Search for switches" list={list} bind:value={value}>
-		<input bind:this={to} style:flex="unset" type="checkbox">
+	<SearchableSelect placeholder="Search for switches" list={list} bind:value={value} on:change={handleChange}>
+		<input bind:checked={to} style:flex="unset" type="checkbox">
 	</SearchableSelect>
 </Custom>

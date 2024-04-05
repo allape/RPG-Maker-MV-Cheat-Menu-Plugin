@@ -7,27 +7,25 @@
 	export let value: string = '';
 	export let list: string[] = MV.get$dataSystem().variables.map((i, ii) => `${ii}: ${i}`);
 
-	let data: HTMLInputElement | undefined = undefined;
+	let data: string = '';
 
 	const handleEval = () => {
 		const index = list.indexOf(value);
 		if (index === -1) {
 			return;
 		}
-		const changeTo = data?.value || '';
+		const changeTo = data || '';
 		const oldValue = MV.get$gameVariables().value(index);
-		MV.setVariable(index, typeof oldValue === 'number' ? parseInt(changeTo) || 0 : changeTo);
+		MV.setVariable(index, typeof oldValue === 'number' ? parseInt(changeTo || '0') || 0 : changeTo);
 		MV.playSound(true);
 	};
 
-	$: {
-		if (data) {
-			data.value = MV.get$gameVariables().value(list.indexOf(value));
-		}
-	}
+	const handleChange = (e: CustomEvent<string>) => {
+		data = MV.get$gameVariables().value(list.indexOf(e.detail)) || '';
+	};
 </script>
 
 <Custom func={handleEval} editing={$$props.editing} bind:name={name}>
-	<SearchableSelect placeholder="Search for variables" list={list} bind:value={value} />
-	<input bind:this={data} type="text" placeholder="Variable value" />
+	<SearchableSelect placeholder="Search for variables" list={list} bind:value={value} on:change={handleChange} />
+	<input bind:value={data} type="text" placeholder="Variable value" />
 </Custom>

@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import MV from './core/mv';
 	import CustomEvaluate from './lib/cheater/Custom/CustomEvaluate.svelte';
+	import CustomItem from './lib/cheater/Custom/CustomItem.svelte';
 	import CustomSave from './lib/cheater/Custom/CustomSave.svelte';
 	import CustomSwitch from './lib/cheater/Custom/CustomSwitch.svelte';
 	import CustomTeleport from './lib/cheater/Custom/CustomTeleport.svelte';
@@ -100,6 +101,7 @@
 		CustomTeleport,
 		CustomSwitch,
 		CustomSave,
+		CustomItem,
 		CustomVariable,
 		CustomEvaluate
 	};
@@ -156,6 +158,9 @@
 	onMount(() => {
 		let flashTimer: number = -1;
 		const handleKeyUp = (e: KeyboardEvent) => {
+			if (editing) {
+				return;
+			}
 			const n = parseInt(e.key);
 			if (Number.isNaN(n)) {
 				return;
