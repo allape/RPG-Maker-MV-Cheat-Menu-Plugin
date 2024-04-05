@@ -133,10 +133,24 @@
 	let editing: boolean = false;
 	let selectedCheaters = getJSON<PartialSelectedCheaters & Record<string, boolean>>(StoreKeySelectedCheaters, getDefaultSelectedCheaters());
 
+	type HotKeyConfigKeys = keyof Pick<KeyboardEvent, 'altKey' | 'ctrlKey' | 'shiftKey' | 'metaKey'>;
+	type HotKeyConfig = Record<HotKeyConfigKeys, boolean>;
+
+	const DefaultHotKeyConfig: HotKeyConfig = {
+		altKey: true,
+		ctrlKey: false,
+		shiftKey: false,
+		metaKey: false,
+	};
+	const KeysOfDefaultHotKeyConfig: HotKeyConfigKeys[] = Object.keys(DefaultHotKeyConfig) as HotKeyConfigKeys[];
+
+	let hotKeyConfig: HotKeyConfig = getJSON<HotKeyConfig>(StoreHotKeyConfig, { ...DefaultHotKeyConfig });
+
 	$: {
 		if (!editing) {
 			localStorage.setItem(StoreKeySelectedCheaters, JSON.stringify(selectedCheaters));
 			localStorage.setItem(StoreKeyCustomCheaters, JSON.stringify(customCheaters));
+			localStorage.setItem(StoreHotKeyConfig, JSON.stringify(hotKeyConfig));
 		}
 	}
 
@@ -156,23 +170,6 @@
 		};
 	};
 
-	type HotKeyConfigKeys = keyof Pick<KeyboardEvent, 'altKey' | 'ctrlKey' | 'shiftKey' | 'metaKey'>;
-	type HotKeyConfig = Record<HotKeyConfigKeys, boolean>;
-
-	const DefaultHotKeyConfig: HotKeyConfig = {
-		altKey: true,
-		ctrlKey: false,
-		shiftKey: false,
-		metaKey: false,
-	};
-	const KeysOfDefaultHotKeyConfig: HotKeyConfigKeys[] = Object.keys(DefaultHotKeyConfig) as HotKeyConfigKeys[];
-
-	let hotKeyConfig: HotKeyConfig = getJSON<HotKeyConfig>(StoreHotKeyConfig, DefaultHotKeyConfig);
-
-	$: {
-		localStorage.setItem(StoreHotKeyConfig, JSON.stringify(hotKeyConfig));
-	}
-
 	onMount(() => {
 		let flashTimer: number = -1;
 		const handleKeyUp = (e: KeyboardEvent) => {
@@ -191,7 +188,7 @@
 				return;
 			}
 			e.preventDefault();
-			
+
 			cheater.click();
 			clearTimeout(flashTimer);
 			cheater.parentElement?.classList.add('flash');
