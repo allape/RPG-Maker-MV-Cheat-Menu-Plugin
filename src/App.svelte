@@ -47,6 +47,7 @@
 	const KeyPrefix = 'AsCheater';
 	const StoreKeySelectedCheaters = `${KeyPrefix}_SelectedCheaters`;
 	const StoreKeyCustomCheaters = `${KeyPrefix}_CustomCheaters`;
+	const StoreHotKeyConfig = `${KeyPrefix}_HotKeyConfig`;
 
 	// region preset cheaters
 
@@ -155,6 +156,23 @@
 		};
 	};
 
+	type HotKeyConfigKeys = keyof Pick<KeyboardEvent, 'altKey' | 'ctrlKey' | 'shiftKey' | 'metaKey'>;
+	type HotKeyConfig = Record<HotKeyConfigKeys, boolean>;
+
+	const DefaultHotKeyConfig: HotKeyConfig = {
+		altKey: true,
+		ctrlKey: false,
+		shiftKey: false,
+		metaKey: false,
+	};
+	const KeysOfDefaultHotKeyConfig: HotKeyConfigKeys[] = Object.keys(DefaultHotKeyConfig) as HotKeyConfigKeys[];
+
+	let hotKeyConfig: HotKeyConfig = getJSON<HotKeyConfig>(StoreHotKeyConfig, DefaultHotKeyConfig);
+
+	$: {
+		localStorage.setItem(StoreHotKeyConfig, JSON.stringify(hotKeyConfig));
+	}
+
 	onMount(() => {
 		let flashTimer: number = -1;
 		const handleKeyUp = (e: KeyboardEvent) => {
@@ -165,10 +183,15 @@
 			if (Number.isNaN(n)) {
 				return;
 			}
+			if (KeysOfDefaultHotKeyConfig.find(key => hotKeyConfig[key] != e[key])) {
+				return;
+			}
 			const cheater = document.querySelectorAll(`#CheatMainFrame .cheater`)[n - 1] as HTMLDivElement;
 			if (!cheater) {
 				return;
 			}
+			e.preventDefault();
+			
 			cheater.click();
 			clearTimeout(flashTimer);
 			cheater.parentElement?.classList.add('flash');
@@ -274,6 +297,9 @@
         border: 1px solid gray;
         color: gray;
         opacity: 0.3;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
         &:hover {
           border-color: white;
@@ -348,12 +374,19 @@
 		 on:click|stopPropagation={() => undefined}>
 	<div class="actions">
 		<div role="none" class="action" on:click={() => {
-      editing = !editing;
-      MV.playSound(editing);
-    }}>
+			editing = !editing;
+			MV.playSound(editing);
+		}}>
 			{editing ? 'Apply' : 'Edit'}
 		</div>
 		{#if editing}
+			<div class="actions flat">
+				{#each KeysOfDefaultHotKeyConfig as key}
+					<div role="none" class="action" on:click={() => hotKeyConfig[key] = !hotKeyConfig[key]}>
+						{key}: <input type="checkbox" bind:checked={hotKeyConfig[key]} />
+					</div>
+				{/each}
+			</div>
 			<div class="actions flat">
 				<div role="none" class="action" on:click={() => {
 					selectedCheaters = getDefaultSelectedCheaters();
