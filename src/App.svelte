@@ -325,10 +325,6 @@
             width: fit-content;
             padding: 0;
           }
-
-          &.noClick {
-            pointer-events: none;
-          }
         }
       }
     }
@@ -410,7 +406,7 @@
 					{#if editing}
 						<input type="checkbox" bind:checked={selectedCheaters[name]} />
 					{/if}
-					<div class="cheater" class:noClick={editing}>
+					<div class="cheater">
 						<svelte:component this={AllPresetCheaters[name]} {editing} />
 					</div>
 				</div>
