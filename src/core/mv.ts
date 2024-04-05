@@ -540,7 +540,7 @@ export default class MV {
 		try {
 			return $dataSystem;
 		} catch (e) {
-			return { switches: [] } as unknown as Data_System;
+			return { switches: [], variables: [] } as unknown as Data_System;
 		}
 	}
 
@@ -549,6 +549,14 @@ export default class MV {
 			return $gameSwitches;
 		} catch (e) {
 			return { value: () => false } as unknown as Game_Switches;
+		}
+	}
+
+	static get$gameVariables() {
+		try {
+			return $gameVariables;
+		} catch (e) {
+			return { value: () => false } as unknown as Game_Variables;
 		}
 	}
 

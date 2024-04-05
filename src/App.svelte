@@ -6,6 +6,7 @@
 	import CustomSave from './lib/cheater/Custom/CustomSave.svelte';
 	import CustomSwitch from './lib/cheater/Custom/CustomSwitch.svelte';
 	import CustomTeleport from './lib/cheater/Custom/CustomTeleport.svelte';
+	import CustomVariable from './lib/cheater/Custom/CustomVariable.svelte';
 	import DevTools from './lib/cheater/DevTools/DevTools.svelte';
 	import Gold0 from './lib/cheater/Gold/Gold0.svelte';
 	import GoldMinus100K from './lib/cheater/Gold/GoldMinus100K.svelte';
@@ -99,6 +100,7 @@
 		CustomTeleport,
 		CustomSwitch,
 		CustomSave,
+		CustomVariable,
 		CustomEvaluate
 	};
 	type KeyOfAvailableCustomCheaters = keyof typeof AvailableCustomCheaters;
