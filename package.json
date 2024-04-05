@@ -6,14 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build:vite": "vite build",
-    "build:go": "cd patcher && start build.sh",
+    "build:go": "cd patcher && bash build.sh",
     "build": "npm run build:vite && npm run build:go",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "postbuild": "node postbuild.cjs"
+    "postbuild:vite": "node postbuild.cjs"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",

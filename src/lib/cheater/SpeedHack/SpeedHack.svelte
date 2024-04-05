@@ -2,7 +2,7 @@
 	import Evaluate from '../Evaluate/Evaluate.svelte';
 	import { TimerRef } from './timer';
 
-    export let editing: boolean = false;
+	export let editing: boolean = false;
 	export let frameCount: number = 0;
 
 	const handleEvaluate = () => {

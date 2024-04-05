@@ -3,7 +3,7 @@ import { errorEnhancement } from './core/mv';
 
 try {
 	errorEnhancement();
-} catch(e) {
+} catch (e) {
 	console.error(e);
 }
 

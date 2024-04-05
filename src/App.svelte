@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import MV from './core/mv';
 	import CustomEvaluate from './lib/cheater/Custom/CustomEvaluate.svelte';
 	import CustomTeleport from './lib/cheater/Custom/CustomTeleport.svelte';
+	import DevTools from './lib/cheater/DevTools/DevTools.svelte';
 	import Gold0 from './lib/cheater/Gold/Gold0.svelte';
 	import GoldMinus100K from './lib/cheater/Gold/GoldMinus100K.svelte';
 	import GoldMinus10K from './lib/cheater/Gold/GoldMinus10K.svelte';
@@ -31,13 +33,11 @@
 	import SaveAt4 from './lib/cheater/Save/SaveAt4.svelte';
 	import SaveAt5 from './lib/cheater/Save/SaveAt5.svelte';
 	import SpeedHack0 from './lib/cheater/SpeedHack/SpeedHack0.svelte';
-	import SpeedHack50 from './lib/cheater/SpeedHack/SpeedHack50.svelte';
 	import SpeedHack100 from './lib/cheater/SpeedHack/SpeedHack100.svelte';
 	import SpeedHack150 from './lib/cheater/SpeedHack/SpeedHack150.svelte';
 	import SpeedHack200 from './lib/cheater/SpeedHack/SpeedHack200.svelte';
-	import DevTools from './lib/cheater/DevTools/DevTools.svelte';
+	import SpeedHack50 from './lib/cheater/SpeedHack/SpeedHack50.svelte';
 	import { getJSON } from './utils/store';
-	import MV from './core/mv';
 
 	const KeyPrefix = 'AsCheater';
 	const StoreKeySelectedCheaters = `${KeyPrefix}_SelectedCheaters`;
@@ -74,12 +74,12 @@
 		SaveAt5,
 		SaveAt10,
 		SaveAt20,
-    SpeedHack0,
-    SpeedHack50,
-    SpeedHack100,
-    SpeedHack150,
-    SpeedHack200,
-    DevTools,
+		SpeedHack0,
+		SpeedHack50,
+		SpeedHack100,
+		SpeedHack150,
+		SpeedHack200,
+		DevTools
 	};
 	type KeyOfRegisterCheaters = keyof typeof AllPresetCheaters;
 	type TypeOfSelectedCheaters = Record<KeyOfRegisterCheaters, boolean>;
@@ -94,7 +94,7 @@
 
 	const AvailableCustomCheaters = {
 		CustomTeleport,
-		CustomEvaluate,
+		CustomEvaluate
 	};
 	type KeyOfAvailableCustomCheaters = keyof typeof AvailableCustomCheaters;
 
@@ -123,45 +123,45 @@
 		}
 	}
 
-  const handleAddCustomCheater = () => {
-    const id = `CustomCheater_${Date.now()}`;
-    customCheaters = [
-      ...customCheaters, 
-      {
-        id,
-        type: customCheaterType,
-        value: undefined
-      }
-    ];
-    selectedCheaters = {
-      ...selectedCheaters,
-      [id]: true,
-    };
-  };
+	const handleAddCustomCheater = () => {
+		const id = `CustomCheater_${Date.now()}`;
+		customCheaters = [
+			...customCheaters,
+			{
+				id,
+				type: customCheaterType,
+				value: undefined
+			}
+		];
+		selectedCheaters = {
+			...selectedCheaters,
+			[id]: true
+		};
+	};
 
-  onMount(() => {
-    let flashTimer: number = -1;
-    const handleKeyUp = (e: KeyboardEvent) => {
-      const n = parseInt(e.key);
-      if (Number.isNaN(n)) {
-        return;
-      }
-      const cheater = document.querySelectorAll(`#CheatMainFrame .cheater`)[n-1] as HTMLDivElement;
-      if (!cheater) {
-        return;
-      }
-      cheater.click();
-      clearTimeout(flashTimer);
-      cheater.parentElement?.classList.add('flash');
-      flashTimer = setTimeout(() => {
-        cheater.parentElement?.classList.remove('flash');
-      }, 100);
-    };
-    window.addEventListener('keyup', handleKeyUp, true);
-    return () => {
-      window.removeEventListener('keyup', handleKeyUp, true);
-    };
-  });
+	onMount(() => {
+		let flashTimer: number = -1;
+		const handleKeyUp = (e: KeyboardEvent) => {
+			const n = parseInt(e.key);
+			if (Number.isNaN(n)) {
+				return;
+			}
+			const cheater = document.querySelectorAll(`#CheatMainFrame .cheater`)[n - 1] as HTMLDivElement;
+			if (!cheater) {
+				return;
+			}
+			cheater.click();
+			clearTimeout(flashTimer);
+			cheater.parentElement?.classList.add('flash');
+			flashTimer = setTimeout(() => {
+				cheater.parentElement?.classList.remove('flash');
+			}, 100);
+		};
+		window.addEventListener('keyup', handleKeyUp, true);
+		return () => {
+			window.removeEventListener('keyup', handleKeyUp, true);
+		};
+	});
 </script>
 
 <style lang="scss">
@@ -275,6 +275,7 @@
       flex-wrap: nowrap;
       overflow-y: auto;
       scrollbar-width: none;
+
       ::-webkit-scrollbar {
         opacity: 0;
       }
@@ -354,26 +355,27 @@
 		<div class="cheaters">
 			{#each customCheaters as cheater, index (cheater.id)}
 				{#if selectedCheaters[cheater.id] || editing}
-          <div role="none" class="cheaterWrapper" style:padding="0">
-            {#if editing}
-              <div role="none" class="checkboxWrapper" on:click={() => selectedCheaters[cheater.id] = !selectedCheaters[cheater.id]}>
-                {cheater.id}
-                <input type="checkbox" bind:checked={selectedCheaters[cheater.id]} />
-              </div>
-            {/if}
-            <div class="cheater" class:editing={editing} id={cheater.id}>
-              <svelte:component this={AvailableCustomCheaters[cheater.type]} bind:value={cheater.value}
-                                bind:name={cheater.name} {editing} />
-            </div>
-            {#if editing}
-              <div class="actions">
-                <div role="none" class="action"
-                    on:click={() => customCheaters = customCheaters.filter((_, i) => i !== index)}>
-                  -
-                </div>
-              </div>
-            {/if}
-          </div>
+					<div role="none" class="cheaterWrapper" style:padding="0">
+						{#if editing}
+							<div role="none" class="checkboxWrapper"
+									 on:click={() => selectedCheaters[cheater.id] = !selectedCheaters[cheater.id]}>
+								{cheater.id}
+								<input type="checkbox" bind:checked={selectedCheaters[cheater.id]} />
+							</div>
+						{/if}
+						<div class="cheater" class:editing={editing} id={cheater.id}>
+							<svelte:component this={AvailableCustomCheaters[cheater.type]} bind:value={cheater.value}
+																bind:name={cheater.name} {editing} />
+						</div>
+						{#if editing}
+							<div class="actions">
+								<div role="none" class="action"
+										 on:click={() => customCheaters = customCheaters.filter((_, i) => i !== index)}>
+									-
+								</div>
+							</div>
+						{/if}
+					</div>
 				{/if}
 			{/each}
 		</div>

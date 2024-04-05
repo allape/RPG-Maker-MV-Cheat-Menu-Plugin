@@ -1,6 +1,5 @@
 <script>
-	import SpeedHack from "./SpeedHack.svelte";
-
+	import SpeedHack from './SpeedHack.svelte';
 </script>
 
 <SpeedHack frameCount={150} {...$$props}>

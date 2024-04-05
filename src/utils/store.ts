@@ -1,4 +1,3 @@
-
 export function getJSON<T = unknown>(key: string, defaultValue: T, validate?: (obj: unknown) => boolean): T {
 	if (typeof localStorage === 'undefined') {
 		return defaultValue;
