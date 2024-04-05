@@ -21,8 +21,8 @@ fs.mkdirSync('./dist/www/js/plugins', { recursive: true });
 fs.writeFileSync('./dist/www/js/plugins/AsCheater.js', mergedContent);
 
 fs.unlinkSync('./dist/index.html');
-fs.unlinkSync('./dist/app.js');
-fs.unlinkSync('./dist/app-legacy.js');
+fs.unlinkSync(polyfillFileName);
+fs.unlinkSync(appFileName);
 
 // dufs -A .
 const remoteFileURL = '';
