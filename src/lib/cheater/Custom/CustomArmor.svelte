@@ -1,5 +1,7 @@
 <script lang="ts">
 	import CustomItem from './CustomItem.svelte';
+
+	export let name: string = 'Armo';
 </script>
 
-<CustomItem title="Armor" {...$$props} />
+<CustomItem title="Armor" bind:name={name} {...$$props} />

@@ -3,6 +3,8 @@
 	import SearchableSelect from '../../ui/SearchableSelect.svelte';
 	import Custom from './Custom.svelte';
 
+	export let name: string = 'Item';
+
 	export let value: { name: string, amount: number } = { name: '', amount: 0 };
 	export let title: 'Item' | 'Weapon' | 'Armor' = 'Item';
 
@@ -28,11 +30,11 @@
 		list = MV[listField]().map((i, ii) => `${ii}: ${i?.name}`);
 	}
 
-	let name: string = '';
-	let amount: number = 0;
+	let itemName: string = value.name;
+	let amount: number = value.amount;
 
 	const handleEval = () => {
-		const index = list.indexOf(name);
+		const index = list.indexOf(itemName);
 		if (index === -1) {
 			return;
 		}
@@ -47,14 +49,14 @@
 
 	$: {
 		value = {
-			name,
+			name: itemName,
 			amount
 		};
 	}
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={$$props.name}>
-	<SearchableSelect placeholder="Search for {title.toLowerCase()}" list={list} bind:value={name}
+<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
+	<SearchableSelect placeholder="Search for {title.toLowerCase()}" list={list} bind:value={itemName}
 										on:change={handleChange} />
 	<input bind:value={amount} type="number" placeholder="amount" />
 </Custom>
