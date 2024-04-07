@@ -3,29 +3,58 @@
 	import SearchableSelect from '../../ui/SearchableSelect.svelte';
 	import Custom from './Custom.svelte';
 
-	export let name: string = 'Item';
-	export let value: string = '';
-	export let list: string[] = MV.get$dataItems().map((i, ii) => `${ii}: ${i?.name}`);
+	export let value: { name: string, amount: number } = { name: '', amount: 0 };
+	export let title: 'Item' | 'Weapon' | 'Armor' = 'Item';
 
+	let partyField: keyof Pick<ReturnType<typeof MV.get$gameParty>, '_items' | '_weapons' | '_armors'> = '_items';
+	let listField: keyof Pick<typeof MV, 'get$dataItems' | 'get$dataWeapons' | 'get$dataArmors'> = 'get$dataItems';
+	let list: string[] = MV[listField]().map((i, ii) => `${ii}: ${i?.name}`);
+
+	$: {
+		switch (title) {
+			case 'Weapon':
+				partyField = '_weapons';
+				listField = 'get$dataWeapons';
+				break;
+			case 'Armor':
+				partyField = '_armors';
+				listField = 'get$dataArmors';
+				break;
+			default:
+				partyField = '_items';
+				listField = 'get$dataItems';
+				break;
+		}
+		list = MV[listField]().map((i, ii) => `${ii}: ${i?.name}`);
+	}
+
+	let name: string = '';
 	let amount: number = 0;
 
 	const handleEval = () => {
-		const index = list.indexOf(value);
+		const index = list.indexOf(name);
 		if (index === -1) {
 			return;
 		}
-		const oldValue = MV.get$gameParty()._items[index] || 0;
-		MV.get$gameParty().gainItem(MV.get$dataItems()[index], amount - oldValue);
+		const oldValue = MV.get$gameParty()[partyField][index] || 0;
+		MV.get$gameParty().gainItem(MV[listField]()[index], amount - oldValue);
 		MV.playSound(true);
 	};
 
 	const handleChange = (e: CustomEvent<string>) => {
-		amount = MV.get$gameParty()._items[list.indexOf(e.detail)] || 0;
+		amount = MV.get$gameParty()[partyField][list.indexOf(e.detail)] || 0;
 	};
+
+	$: {
+		value = {
+			name,
+			amount
+		};
+	}
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
-	<SearchableSelect placeholder="Search for items" list={list} bind:value={value}
+<Custom func={handleEval} editing={$$props.editing} bind:name={$$props.name}>
+	<SearchableSelect placeholder="Search for {title.toLowerCase()}" list={list} bind:value={name}
 										on:change={handleChange} />
-	<input bind:value={amount} type="number" placeholder="Item amount" />
+	<input bind:value={amount} type="number" placeholder="amount" />
 </Custom>

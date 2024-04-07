@@ -2,12 +2,14 @@
 	import './style.scss';
 	import { onMount } from 'svelte';
 	import MV from './core/mv';
+	import CustomArmor from './lib/cheater/Custom/CustomArmor.svelte';
 	import CustomEvaluate from './lib/cheater/Custom/CustomEvaluate.svelte';
 	import CustomItem from './lib/cheater/Custom/CustomItem.svelte';
 	import CustomSave from './lib/cheater/Custom/CustomSave.svelte';
 	import CustomSwitch from './lib/cheater/Custom/CustomSwitch.svelte';
 	import CustomTeleport from './lib/cheater/Custom/CustomTeleport.svelte';
 	import CustomVariable from './lib/cheater/Custom/CustomVariable.svelte';
+	import CustomWeapon from './lib/cheater/Custom/CustomWeapon.svelte';
 	import DevTools from './lib/cheater/DevTools/DevTools.svelte';
 	import Gold0 from './lib/cheater/Gold/Gold0.svelte';
 	import GoldMinus100K from './lib/cheater/Gold/GoldMinus100K.svelte';
@@ -103,6 +105,8 @@
 		CustomSwitch,
 		CustomSave,
 		CustomItem,
+		CustomWeapon,
+		CustomArmor,
 		CustomVariable,
 		CustomEvaluate
 	};
@@ -112,6 +116,7 @@
 
 	interface CustomCheaterConfig<
 		T extends KeyOfAvailableCustomCheaters = KeyOfAvailableCustomCheaters,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		V = any,
 	> {
 		id: string;
@@ -140,7 +145,7 @@
 		altKey: true,
 		ctrlKey: false,
 		shiftKey: false,
-		metaKey: false,
+		metaKey: false
 	};
 	const KeysOfDefaultHotKeyConfig: HotKeyConfigKeys[] = Object.keys(DefaultHotKeyConfig) as HotKeyConfigKeys[];
 
@@ -294,9 +299,9 @@
         border: 1px solid gray;
         color: gray;
         opacity: 0.3;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover {
           border-color: white;

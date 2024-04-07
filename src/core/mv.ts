@@ -572,4 +572,20 @@ export default class MV {
 		}
 	}
 
+	static get$dataWeapons() {
+		try {
+			return $dataWeapons;
+		} catch (e) {
+			return [];
+		}
+	}
+
+	static get$dataArmors() {
+		try {
+			return $dataArmors;
+		} catch (e) {
+			return [];
+		}
+	}
+
 }
