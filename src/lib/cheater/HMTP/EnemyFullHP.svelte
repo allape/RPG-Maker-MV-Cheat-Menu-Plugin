@@ -3,7 +3,7 @@
 </script>
 
 <HMTP target="enemy" type="hp" to="full" title="Make all enemis HP full" {...$$props}>
-	Enemy
+	<span style:color="red">Enemy</span>
 	<br>
 	HP MAX
 </HMTP>

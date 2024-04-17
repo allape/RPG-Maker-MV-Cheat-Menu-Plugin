@@ -3,7 +3,7 @@
 </script>
 
 <HMTP target="enemy" type="hp" to="0" title="Make all enemys HP be 0" {...$$props}>
-	Enemy
+	<span style:color="red">Enemy</span>
 	<br>
 	HP <span style:color="red">0</span>
 </HMTP>
