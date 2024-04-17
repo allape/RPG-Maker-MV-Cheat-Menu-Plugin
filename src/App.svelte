@@ -20,6 +20,10 @@
 	import GoldPlus10K from './lib/cheater/Gold/GoldPlus10K.svelte';
 	import GoldPlus1K from './lib/cheater/Gold/GoldPlus1K.svelte';
 	import GoldPlus1M from './lib/cheater/Gold/GoldPlus1M.svelte';
+	import Enemy0HP from './lib/cheater/HMTP/Enemy0HP.svelte';
+	import Enemy1HP from './lib/cheater/HMTP/Enemy1HP.svelte';
+	import EnemyFullHP from './lib/cheater/HMTP/EnemyFullHP.svelte';
+	import EnemyHalfHP from './lib/cheater/HMTP/EnemyHalfHP.svelte';
 	import Party0HP from './lib/cheater/HMTP/Party0HP.svelte';
 	import Party0MP from './lib/cheater/HMTP/Party0MP.svelte';
 	import Party0TP from './lib/cheater/HMTP/Party0TP.svelte';
@@ -67,6 +71,10 @@
 		PartyHalfHP,
 		Party1HP,
 		Party0HP,
+		EnemyFullHP,
+		EnemyHalfHP,
+		Enemy1HP,
+		Enemy0HP,
 		PartyFullMP,
 		PartyHalfMP,
 		Party1MP,
