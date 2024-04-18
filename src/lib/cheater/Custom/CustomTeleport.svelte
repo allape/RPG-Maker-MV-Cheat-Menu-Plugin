@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import MV from '../../../core/mv';
 	import FlatRow from '../../ui/FlatRow.svelte';
 	import Custom from './Custom.svelte';
@@ -10,17 +11,9 @@
 	export let name: string = 'Move <br /> to p1';
 	export let value: [MapIndex, X, Y] = [-1, 0, 0];
 
-	$: mapId = value?.[0] === undefined ? -1 : value[0];
-	$: x = value?.[1] || 0;
-	$: y = value?.[2] || 0;
-
-	$: {
-		if (mapId === -1) {
-			mapId = MV.get$gameMap()?.mapId() || 0;
-			x = MV.get$gamePlayer()?.x || 0;
-			y = MV.get$gamePlayer()?.y || 0;
-		}
-	}
+	let mapId: MapIndex = 0;
+	let x: X = 0;
+	let y: Y = 0;
 
 	let maps = MV.get$dataMapInfos() || [];
 
@@ -29,6 +22,18 @@
 		gamePlayer.reserveTransfer(mapId, x, y, gamePlayer.direction(), 0);
 		gamePlayer.setPosition(x, y);
 	};
+
+	onMount(() => {
+		mapId = value?.[0] === undefined ? -1 : value[0];
+		x = value?.[1] || 0;
+		y = value?.[2] || 0;
+
+		if (mapId === -1) {
+			mapId = MV.get$gameMap()?.mapId() || 0;
+			x = MV.get$gamePlayer()?.x || 0;
+			y = MV.get$gamePlayer()?.y || 0;
+		}
+	});
 </script>
 
 <Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
