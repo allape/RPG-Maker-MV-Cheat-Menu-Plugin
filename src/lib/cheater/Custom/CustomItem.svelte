@@ -4,16 +4,15 @@
 	import Custom from './Custom.svelte';
 
 	export let name: string = 'Item';
-
 	export let value: { name: string, amount: number } = { name: '', amount: 0 };
-	export let title: 'Item' | 'Weapon' | 'Armor' = 'Item';
+	export let itemType: 'Item' | 'Weapon' | 'Armor' = 'Item';
 
 	let partyField: keyof Pick<ReturnType<typeof MV.get$gameParty>, '_items' | '_weapons' | '_armors'> = '_items';
 	let listField: keyof Pick<typeof MV, 'get$dataItems' | 'get$dataWeapons' | 'get$dataArmors'> = 'get$dataItems';
 	let list: string[] = MV[listField]().map((i, ii) => `${ii}: ${i?.name}`);
 
 	$: {
-		switch (title) {
+		switch (itemType) {
 			case 'Weapon':
 				partyField = '_weapons';
 				listField = 'get$dataWeapons';
@@ -55,8 +54,8 @@
 	}
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
-	<SearchableSelect placeholder="Search for {title.toLowerCase()}" list={list} bind:value={itemName}
+<Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
+	<SearchableSelect placeholder="Search for {itemType.toLowerCase()}" list={list} bind:value={itemName}
 										on:change={handleChange} />
 	<input bind:value={amount} type="number" placeholder="amount" />
 </Custom>

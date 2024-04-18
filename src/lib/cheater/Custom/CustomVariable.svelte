@@ -25,7 +25,7 @@
 	};
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
+<Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
 	<SearchableSelect placeholder="Search for variables" list={list} bind:value={value} on:change={handleChange} />
 	<input bind:value={data} type="text" placeholder="Variable value" />
 </Custom>

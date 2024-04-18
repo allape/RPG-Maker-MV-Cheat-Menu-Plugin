@@ -12,7 +12,7 @@
 	};
 </script>
 
-<Evaluate func={handleEval} disabled={$$props.editing}>
+<Evaluate func={handleEval} disabled={$$props.editing} title={$$props.title}>
 	Dev
 	<br>
 	Tools

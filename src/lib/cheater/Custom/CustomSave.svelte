@@ -7,7 +7,7 @@
 
 	export const handleEval = () => {
 		if (value) {
-			DataManager.saveGame(parseInt(value));
+			MV.getDataManager().saveGame(parseInt(value));
 			MV.playSound(true);
 		} else {
 			MV.playSound(false);
@@ -15,6 +15,6 @@
 	};
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
+<Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
 	<input placeholder="Save slot index" type="number" bind:value={value}>
 </Custom>

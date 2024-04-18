@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MV from '../../../core/mv';
 	import Evaluate from '../Evaluate/Evaluate.svelte';
 	import { TimerRef } from './timer';
 
@@ -11,13 +12,13 @@
 			return;
 		}
 		TimerRef.current = setTimeout(() => {
-			SceneManager.updateScene();
+			MV.getSceneManager().updateScene();
 			handleEvaluate();
 		}, 1000 / frameCount);
 	};
 </script>
 
-<Evaluate func={handleEvaluate} disabled={editing}>
+<Evaluate func={handleEvaluate} disabled={editing} title={$$props.title}>
 	<slot>
 		Speed
 		<br />

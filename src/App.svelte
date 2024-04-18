@@ -189,14 +189,26 @@
 			if (editing) {
 				return;
 			}
-			const n = parseInt(e.key);
+			let n = parseInt(e.key);
 			if (Number.isNaN(n)) {
-				return;
+				switch (e.key) {
+					case '-':
+						n = 11;
+						break;
+					case '=':
+						n = 12;
+						break;
+					default:
+						return;
+				}
 			}
 			if (KeysOfDefaultHotKeyConfig.find(key => hotKeyConfig[key] != e[key])) {
 				return;
 			}
-			const cheater = document.querySelectorAll(`#CheatMainFrame .cheater`)[n - 1] as HTMLDivElement;
+
+			const index = n === 0 ? 9 : n - 1;
+
+			const cheater = document.querySelectorAll(`#CheatMainFrame .cheater`)[index] as HTMLDivElement;
 			if (!cheater) {
 				return;
 			}
@@ -214,6 +226,35 @@
 			window.removeEventListener('keyup', handleKeyUp, true);
 		};
 	});
+
+	function makeModuleTitle(index: number, prefix: string = '', suffix: string = ''): string {
+		if (index > 11) {
+			return '';
+		}
+
+		if (index === 9) {
+			index = -1;
+		}
+
+		let keyName = `${index + 1}`;
+
+		if (index > 9) {
+			switch (index) {
+				case 10:
+					keyName = '-';
+					break;
+				case 11:
+					keyName = '=';
+					break;
+			}
+		}
+		return `${prefix}Press ` +
+			(hotKeyConfig.metaKey ? 'Meta + ' : '') +
+			(hotKeyConfig.ctrlKey ? 'Ctrl + ' : '') +
+			(hotKeyConfig.shiftKey ? 'Shift + ' : '') +
+			(hotKeyConfig.altKey ? 'Alt + ' : '') +
+			`${keyName} to active${suffix}`;
+	}
 </script>
 
 <style lang="scss">
@@ -443,7 +484,9 @@
 							</div>
 						{/if}
 						<div class="cheater" class:editing={editing} id={cheater.id}>
-							<svelte:component this={AvailableCustomCheaters[cheater.type]} bind:value={cheater.value}
+							<svelte:component this={AvailableCustomCheaters[cheater.type]}
+																title={makeModuleTitle(index)}
+																bind:value={cheater.value}
 																bind:name={cheater.name} {editing} />
 						</div>
 					</div>
@@ -452,7 +495,7 @@
 		</div>
 	{/if}
 	<div class="cheaters">
-		{#each AllPresetCheaterKeys as name}
+		{#each AllPresetCheaterKeys as name, index}
 			{#if selectedCheaters[name] || editing}
 				<div role="none" class="cheaterWrapper"
 						 on:click={() => editing?(selectedCheaters[name] = !selectedCheaters[name]):undefined}>
@@ -460,7 +503,8 @@
 						<input type="checkbox" bind:checked={selectedCheaters[name]} />
 					{/if}
 					<div class="cheater">
-						<svelte:component this={AllPresetCheaters[name]} {editing} />
+						<svelte:component this={AllPresetCheaters[name]} {editing}
+															title={makeModuleTitle(index + customCheaters.length)} />
 					</div>
 				</div>
 			{/if}

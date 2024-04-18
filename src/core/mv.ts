@@ -588,4 +588,11 @@ export default class MV {
 		}
 	}
 
+	static getDataManager(): typeof DataManager {
+		return DataManager;
+	}
+
+	static getSceneManager(): typeof SceneManager {
+		return SceneManager;
+	}
 }

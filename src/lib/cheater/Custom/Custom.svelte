@@ -2,8 +2,6 @@
 	import FlatRow from '../../ui/FlatRow.svelte';
 	import Evaluate from '../Evaluate/Evaluate.svelte';
 
-	export let editing: boolean = false;
-
 	export let name: string = '';
 	export let func: undefined | (() => void) = undefined;
 </script>
@@ -17,8 +15,8 @@
   }
 </style>
 
-<Evaluate func={func} disabled={editing}>
-	{#if editing}
+<Evaluate {func} disabled={$$props.editing} title={$$props.title}>
+	{#if $$props.editing}
 		<div class="wrapper">
 			<FlatRow>
 				<input placeholder="name" type="text" bind:value={name}>

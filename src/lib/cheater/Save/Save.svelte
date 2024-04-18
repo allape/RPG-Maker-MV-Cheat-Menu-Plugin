@@ -5,10 +5,10 @@
 	export let slotIndex: number = 1;
 
 	const handleEvaluate = () => {
-		DataManager.saveGame(slotIndex);
+		MV.getDataManager().saveGame(slotIndex);
 		MV.playSound(true);
 	};
 </script>
-<Evaluate func={handleEvaluate} disabled={$$props.editing}>
+<Evaluate func={handleEvaluate} disabled={$$props.editing} title={$$props.title}>
 	<slot>Save</slot>
 </Evaluate>

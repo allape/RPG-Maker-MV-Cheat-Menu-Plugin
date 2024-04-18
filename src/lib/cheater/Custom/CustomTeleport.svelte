@@ -31,7 +31,7 @@
 	};
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
+<Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
 	<select bind:value={mapId}>
 		{#each maps as map, index}
 			<option value={index}>{index}: {map?.name || '-'}</option>

@@ -24,7 +24,7 @@
 	};
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
+<Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
 	<SearchableSelect placeholder="Search for switches" list={list} bind:value={value} on:change={handleChange}>
 		<input bind:checked={to} style:flex="unset" type="checkbox">
 	</SearchableSelect>

@@ -9,6 +9,6 @@
 	};
 </script>
 
-<Custom func={handleEval} editing={$$props.editing} bind:name={name}>
+<Custom func={handleEval} bind:name={name} editing={$$props.editing} title={$$props.title}>
 	<textarea style:width="300px" rows="10" bind:value={value} placeholder="callable script" />
 </Custom>
