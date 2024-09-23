@@ -13,7 +13,9 @@ const mergedContent = `
 try{
 var module = {};
 ${polyfill.trim()}
-(function(){${app.trim()}})();
+(function(){
+${app.trim()};
+})();
 }catch(e){alert(e.message);}
 `;
 
