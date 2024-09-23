@@ -1,5 +1,6 @@
 import App from './App.svelte';
 import MV, { errorEnhancement } from './core/mv';
+import './style.scss';
 
 try {
 	errorEnhancement();
@@ -7,12 +8,15 @@ try {
 	console.error(e);
 }
 
+interface IGlobal {
+	__AsCheaterApp?: App;
+}
+
 setTimeout(() => {
 	const root = document.createElement('div');
 	window.document.body.appendChild(root);
 
-	// @ts-ignore
-	window.__AsCheaterApp = new App({
+	(window as IGlobal).__AsCheaterApp = new App({
 		target: root
 	});
 

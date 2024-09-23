@@ -7,7 +7,7 @@
         width: 100%;
 
         & > input, & > select {
-            flex: 1;
+            width: 100%;
         }
     }
 </style>

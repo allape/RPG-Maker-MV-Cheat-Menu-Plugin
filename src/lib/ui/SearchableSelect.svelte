@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import FlatRow from './FlatRow.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -9,25 +8,35 @@
 	export let keyword: string = '';
 	export let placeholder: string | undefined = undefined;
 
+	export let filter: ((keyword: string, val: string) => boolean) | undefined = undefined;
+
+	export let getter: ((val: string) => string) | undefined = undefined;
+	export let displayedValue = '';
+	export let displayValuePlaceholder: string = '';
+
 	let renderedList: string[] = [];
 
 	$: {
 		const lowedKeyword = keyword.toLowerCase();
-		renderedList = list.filter(item => item?.toLowerCase().includes(lowedKeyword));
+		renderedList = list.filter(item => item?.toLowerCase().includes(lowedKeyword) || filter?.(lowedKeyword, item));
 	}
 
 	const handleChange = (e: Event) => {
 		const target = e.target as HTMLSelectElement;
-		dispatch('change', target?.value);
+		const v = target?.value;
+		dispatch('change', v);
+		if (getter) {
+			displayedValue = getter(v);
+		}
 	};
 </script>
 
 <input placeholder={placeholder} type="text" bind:value={keyword} />
-<FlatRow>
-	<select bind:value={value} on:change={handleChange}>
-		{#each renderedList as item}
-			<option value={item}>{item}</option>
-		{/each}
-	</select>
-	<slot></slot>
-</FlatRow>
+<select bind:value={value} on:change={handleChange}>
+	{#each renderedList as item}
+		<option value={item}>{item}</option>
+	{/each}
+</select>
+{#if getter}
+	<input placeholder={displayValuePlaceholder} readonly type="text" value={displayedValue} />
+{/if}

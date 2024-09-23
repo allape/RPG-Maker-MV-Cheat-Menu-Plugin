@@ -1,9 +1,0 @@
-<script lang="ts">
-	import HMTP from './HMTP.svelte';
-</script>
-
-<HMTP target="enemy" type="hp" to="half" title="Make all enemies HP half; {$$props.title}" {...$$props}>
-	<span style:color="red">Enemy</span>
-	<br>
-	<span style:color="orange">HP / 2</span>
-</HMTP>
