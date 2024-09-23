@@ -99,8 +99,12 @@
 	}
 
 	function handleAddPreset() {
-		selectedPreset = { id: id(), name: 'Preset', triggers: [] };
-		config.presets.push(selectedPreset);
+		const preset: IPreset = { id: id(), name: 'Preset', triggers: [] };
+		config.presets = [
+			...config.presets,
+			preset
+		];
+		handleSelectPreset(preset);
 	}
 
 	function handleRemovePreset(index: number) {
