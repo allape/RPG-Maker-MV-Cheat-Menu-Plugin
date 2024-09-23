@@ -216,6 +216,15 @@
 			const trigger = selectedPreset?.triggers.find(t => t.hotKey === e.key);
 			if (trigger) {
 				handleEval(trigger.id);
+				const triggerEle = document.getElementById(trigger.id);
+				if (triggerEle) {
+					triggerEle.style.opacity = '1';
+					setTimeout(() => {
+						if (triggerEle) {
+							triggerEle.removeAttribute('style');
+						}
+					}, 100);
+				}
 			}
 		};
 
@@ -318,8 +327,10 @@
                 margin-bottom: 0;
               }
             }
+
             .savedPresetList {
               margin-top: 10px;
+
               .item {
                 opacity: 0.5;
 
@@ -432,8 +443,13 @@
           white-space: pre-wrap;
           user-select: none;
           text-align: center;
+          padding: 3px;
 
           &:hover {
+            opacity: 0.8;
+          }
+
+          &:active {
             opacity: 1;
           }
         }
@@ -551,7 +567,8 @@
 			<div class="triggers">
 				{#if selectedPreset}
 					{#each selectedPreset.triggers as trigger (trigger.id)}
-						<div role="none" class="trigger" on:click={() => handleEval(trigger.id)} contenteditable="false"
+						<div role="none" class="trigger" id={trigger.id} on:click={() => handleEval(trigger.id)}
+								 contenteditable="false"
 								 bind:innerHTML={trigger.name}
 								 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined} />
 						<div style:display="none">
