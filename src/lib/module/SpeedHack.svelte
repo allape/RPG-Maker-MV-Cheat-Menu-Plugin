@@ -5,7 +5,7 @@
 	import { TimerRef } from './timer';
 
 	export let id: string = '';
-	export let value: number = 1;
+	export let value: number = 0;
 
 	export function handleEval() {
 		clearTimeout(TimerRef.current);
@@ -23,6 +23,6 @@
 <DeepTrigger {id} func={handleEval} />
 
 <FormItemWithButton on:click={handleEval}>
-	<input type="range" min="1" max="5" step="1" bind:value={value}>
+	<input type="range" min="0" max="5" step="1" bind:value={value}>
 	<span slot="button">Hack</span>
 </FormItemWithButton>

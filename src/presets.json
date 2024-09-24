@@ -1,15 +1,12 @@
 [
   {
-    "id": "1727087777064_gbbaom2;",
     "name": "Must Win",
     "triggers": [
       {
-        "id": "1727096782725_lfkh8ie;",
         "name": "<span style=\"color:red;\">Enemy</span><br/> 1",
         "hotKey": "1",
         "actions": [
           {
-            "id": "1727096821783_3kmqctx;",
             "type": "HP|MP|TP",
             "value": {
               "actorType": "enemy",
@@ -22,12 +19,10 @@
         ]
       },
       {
-        "id": "1727087778014_40y68sp;",
         "name": "Cure <span style=\"color:green;\">All</span>",
         "hotKey": "2",
         "actions": [
           {
-            "id": "1727096652956_2mloih0;",
             "type": "HP|MP|TP",
             "value": {
               "actorType": "party",
@@ -38,7 +33,6 @@
             }
           },
           {
-            "id": "1727096659726_cpsvjdb;",
             "type": "HP|MP|TP",
             "value": {
               "actorType": "party",
@@ -51,50 +45,42 @@
         ]
       },
       {
-        "id": "1727096668271_zhn9wvo;",
         "name": "Save<br/> at 2",
         "hotKey": "3",
         "actions": [
           {
-            "id": "1727096689872_eu1qe8a;",
             "type": "Save",
             "value": "2"
           }
         ]
       },
       {
-        "id": "1727096692556_fdikvu3;",
         "name": "<span style=\"color:orange;\">Gold</span> <br/> 10K",
         "hotKey": "4",
         "actions": [
           {
-            "id": "1727096708774_mhe78im;",
             "type": "Gold",
             "value": 10000
           }
         ]
       },
       {
-        "id": "1727096715907_741tmk2;",
         "name": "Speed <br/> ~",
         "hotKey": "5",
         "actions": [
           {
-            "id": "1727096740252_qy0jnoz;",
             "type": "SpeedHack",
-            "value": 1
+            "value": 0
           }
         ]
       },
       {
-        "id": "1727096726393_95nm930;",
         "name": "Speed <br/> +",
         "hotKey": "6",
         "actions": [
           {
-            "id": "1727096743131_5nivny2;",
             "type": "SpeedHack",
-            "value": 2
+            "value": 1
           }
         ]
       }
