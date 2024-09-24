@@ -1,9 +1,9 @@
 [
   {
-    "name": "Must Win",
+    "name": "Winner",
     "triggers": [
       {
-        "name": "<span style=\"color:red;\">Enemy</span><br/> 1",
+        "name": "<span style=\"color:red;\">Enemy<br/> ONE</span>",
         "hotKey": "1",
         "actions": [
           {
@@ -19,7 +19,7 @@
         ]
       },
       {
-        "name": "Cure <span style=\"color:green;\">All</span>",
+        "name": "<span style=\"color:green;\">HP</span>/<span style=\"color:blue;\">MP</span> <span style=\"color:green;\">Full</span>",
         "hotKey": "2",
         "actions": [
           {
@@ -45,7 +45,7 @@
         ]
       },
       {
-        "name": "Save<br/> at 2",
+        "name": "<span style=\"color:black;\">Save<br/> at 2</span>",
         "hotKey": "3",
         "actions": [
           {
@@ -66,7 +66,7 @@
       },
       {
         "name": "Speed <br/> ~",
-        "hotKey": "5",
+        "hotKey": "0",
         "actions": [
           {
             "type": "SpeedHack",
@@ -76,11 +76,21 @@
       },
       {
         "name": "Speed <br/> +",
-        "hotKey": "6",
+        "hotKey": "-",
         "actions": [
           {
             "type": "SpeedHack",
             "value": 1
+          }
+        ]
+      },
+      {
+        "name": "Speed <br/> ++",
+        "hotKey": "=",
+        "actions": [
+          {
+            "type": "SpeedHack",
+            "value": 2
           }
         ]
       }

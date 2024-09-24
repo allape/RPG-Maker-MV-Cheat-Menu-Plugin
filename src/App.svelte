@@ -192,6 +192,7 @@
 			...config.presets,
 			cloned
 		];
+		handleSelectPreset(cloned);
 	}
 
 	// region Hooks
@@ -469,7 +470,7 @@
 			<div role="none" class="button" on:click={handleDone}>Done</div>
 			<div class="table">
 				<div class="section presetSection">
-					<div class="title">Presets</div>
+					<div class="title">Formulas</div>
 					<div class="list authorPresets">
 						{#each AuthorPresets as preset, index (index)}
 							<div class="item">
@@ -491,7 +492,7 @@
 								</div>
 							</div>
 						{:else}
-							<div class="none">Empty</div>
+							<div class="none" style="margin-bottom: 10px;">Empty</div>
 						{/each}
 					</div>
 					<div role="none" class="button" on:click={handleAddPreset}>+</div>

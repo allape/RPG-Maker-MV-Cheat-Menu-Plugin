@@ -3,11 +3,14 @@
 [ "$(id -u)" = 0 ] && echo "Please run without root perms" && exit
 
 echo "Searching for and patching RPGM Plugins.js"
-PATTERN='/];/i ,{"name":"Cheat_Menu","status":true,"description":"","parameters":{}}'
+
+PATTERN='/];/i ,{"name":"AsCheater","status":true,"description":"","parameters":{}}'
+
 if [ -f "www/js/plugins.js" ]; then
 	cp -v www/js/plugins.js www/js/plugins.js~ 2>/dev/null &&
 		sed -i "$PATTERN" www/js/plugins.js
 elif [ -f "js/plugins.js" ]; then
+  cp www/js/plugins/AsCheater.js js/plugins/
 	cp -v js/plugins.js js/plugins.js~ 2>/dev/null &&
 		sed -i "$PATTERN" js/plugins.js
 else
