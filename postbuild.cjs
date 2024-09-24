@@ -1,7 +1,6 @@
 const fs = require('fs');
 
-fs.copyFileSync('./plugins_patch.txt', './dist/plugins_patch.txt');
-fs.copyFileSync('./plugins_patch.go.txt', './dist/plugins_patch.go.txt');
+fs.copyFileSync('./patch.sh', './dist/patch.sh');
 
 const polyfillFileName = './dist/app-legacy.js';
 const appFileName = './dist/app.js';
@@ -17,7 +16,7 @@ ${polyfill.trim()}
 ${app.trim()};
 })();
 }catch(e){alert(e.message);}
-`;
+`.trim();
 
 fs.mkdirSync('./dist/www/js/plugins', { recursive: true });
 fs.writeFileSync('./dist/www/js/plugins/AsCheater.js', mergedContent);
@@ -33,5 +32,5 @@ if (remoteFileURL) {
 	fetch(remoteFileURL, {
 		method: 'put',
 		body: new Blob([mergedContent])
-	}).then();
+	}).then().catch();
 }
