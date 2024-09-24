@@ -35,7 +35,7 @@
 
 <button class="wrapper" on:click={handleClick} on:pointerleave={handleCancel} on:blur={handleCancel}>
 	{#if binding}
-		[Esc] to clear, Wait...
+		[Esc] to clear, wait...
 	{:else}
 		{#if key}
 			[{key}]
