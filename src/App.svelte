@@ -15,6 +15,7 @@
 	import PresetJSON from './presets.json';
 	import { id } from './utils/gen';
 	import { getJSON } from './utils/store';
+	import { getNodeVersion, getNWVersion } from './utils/version';
 
 	const KEY_CONFIG = 'v2-ascheater-config';
 
@@ -84,6 +85,8 @@
 		},
 		presets: []
 	};
+
+	export let fileSelector: HTMLInputElement;
 
 	let selectedPreset: IPreset | undefined;
 	let selectedTrigger: ITrigger | undefined;
@@ -179,20 +182,65 @@
 		window.dispatchEvent(new EvalEvent(id));
 	}
 
-	function handleAuthorPreset(preset: IPreset) {
-		const cloned: IPreset = JSON.parse(JSON.stringify(preset));
-		cloned.id = id();
-		cloned.triggers.forEach(trigger => {
+	function handleFlushPresetIDs(preset: IPreset): IPreset {
+		preset.id = id();
+		preset.triggers.forEach(trigger => {
 			trigger.id = id();
 			trigger.actions.forEach(action => {
 				action.id = id();
 			});
 		});
+
+		return preset;
+	}
+
+	function handleAuthorPreset(preset: IPreset) {
+		const cloned: IPreset = JSON.parse(JSON.stringify(preset));
+		handleFlushPresetIDs(cloned);
 		config.presets = [
 			...config.presets,
 			cloned
 		];
 		handleSelectPreset(cloned);
+	}
+
+	function handleImport() {
+		if (!fileSelector) {
+			return;
+		}
+		fileSelector.click();
+	}
+
+	function handlePresetFileChange(e: Event & { currentTarget: EventTarget & HTMLInputElement; }) {
+		const file = e.currentTarget.files?.[0];
+		if (!file) {
+			return;
+		}
+		const reader = new FileReader();
+		reader.onload = () => {
+			const preset = JSON.parse(reader.result as string) as IPreset;
+			handleFlushPresetIDs(preset);
+			config.presets = [
+				...config.presets,
+				preset
+			];
+			handleSelectPreset(preset);
+		};
+		reader.readAsText(file);
+	}
+
+	function handleExport() {
+		if (!selectedPreset) {
+			return;
+		}
+		const preset = JSON.stringify(selectedPreset);
+		const blob = new Blob([preset], { type: 'application/json' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `${selectedPreset.name}.json`;
+		a.click();
+		URL.revokeObjectURL(url);
 	}
 
 	// region Hooks
@@ -416,11 +464,25 @@
 
       .otherSettings {
         padding: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
 
         .setting {
+          flex: 1;
           display: flex;
           align-items: center;
+
+          button:not(:first-child) {
+            margin-left: 10px;
+          }
         }
+      }
+
+      .versions {
+        margin: -5px 0 10px;
+        padding: 0 10px;
+        text-align: right;
       }
     }
 
@@ -565,6 +627,15 @@
 					<input type="range" min="0" max={config.appearance.maxIdlingOpacityLevel} step="1"
 								 bind:value={config.appearance.idlingOpacityLevel}>
 				</div>
+				<div class="setting" style="justify-content: flex-end;">
+					<button on:click={handleImport}>Import</button>
+					<button disabled={!selectedPreset} on:click={handleExport}>Export</button>
+				</div>
+			</div>
+			<div class="versions">
+				{__APP_VERSION__},
+				NW v{getNWVersion()},
+				Node {getNodeVersion()}
 			</div>
 		</div>
 	{:else}
@@ -590,4 +661,6 @@
 			</div>
 		</div>
 	{/if}
+	<input bind:this={fileSelector} style="display: none;" type="file" accept="application/json"
+				 on:change={handlePresetFileChange}>
 </div>

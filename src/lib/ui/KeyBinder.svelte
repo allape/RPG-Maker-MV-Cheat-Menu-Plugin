@@ -30,10 +30,15 @@
     width: 100%;
     white-space: none;
     text-align: center;
+
+    &.binding {
+      cursor: wait;
+    }
   }
 </style>
 
-<button class="wrapper" on:click={handleClick} on:pointerleave={handleCancel} on:blur={handleCancel}>
+<button class="wrapper" class:binding={binding} on:click={handleClick} on:pointerleave={handleCancel}
+				on:blur={handleCancel}>
 	{#if binding}
 		[Esc] to clear, wait...
 	{:else}

@@ -57,6 +57,9 @@ export default [{
 	files: ['**/*.svelte'],
 
 	languageOptions: {
+		globals: {
+			__APP_VERSION__: true
+		},
 		parser: parser,
 		ecmaVersion: 5,
 		sourceType: 'script',
