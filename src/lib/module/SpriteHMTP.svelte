@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MV, { type GameActor } from '../../core/mv';
 	import DeepTrigger from '../ui/DeepTrigger.svelte';
-	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
+	import FlatRow from '../ui/FlatRow.svelte';
 	import HeroSelector from '../ui/SpriteSelector.svelte';
 
 	interface IValue {
@@ -80,22 +80,22 @@
 	<option value="party">Party</option>
 	<option value="enemy">Enemy</option>
 </select>
-<FormItemWithButton on:click={handleEval}>
-	<HeroSelector all alive type={value.actorType} bind:value={value.actorIndex} />
-	<span slot="button">Set Now</span>
-</FormItemWithButton>
-<select bind:value={value.type}>
-	<option value="hp">HP</option>
-	<option value="mp">MP</option>
-	<option value="tp">TP</option>
-</select>
-<select bind:value={value.valueType}>
-	<option value="full">Full</option>
-	<option value="half">Half</option>
-	<option value="1">1</option>
-	<option value="0">0</option>
-	<option value="custom">Custom</option>
-</select>
+<HeroSelector all alive type={value.actorType} bind:value={value.actorIndex} />
+<FlatRow>
+	<select bind:value={value.type}>
+		<option value="hp">HP</option>
+		<option value="mp">MP</option>
+		<option value="tp">TP</option>
+	</select>
+	<select bind:value={value.valueType}>
+		<option value="full">Full</option>
+		<option value="half">Half</option>
+		<option value="1">1</option>
+		<option value="0">0</option>
+		<option value="custom">Custom</option>
+	</select>
+</FlatRow>
 {#if value.valueType === 'custom'}
 	<input type="number" min="0" step="1" bind:value={value.customValue}>
 {/if}
+<button on:click={handleEval}>Set Now</button>

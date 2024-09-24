@@ -71,6 +71,10 @@
 		presets: IPreset[];
 	}
 
+	interface TriggerElement extends HTMLDivElement {
+		__asCheaterAnimationTimer: number;
+	}
+
 	export let editing = false;
 
 	export let config: IConfig = {
@@ -125,7 +129,7 @@
 			return;
 		}
 		let hotKey = '';
-		if (selectedPreset.triggers.length < 10) {
+		if (selectedPreset.triggers.length < 9) {
 			hotKey = `${selectedPreset.triggers.length + 1}`;
 		}
 		selectedTrigger = { id: id(), name: 'Trigger', hotKey, actions: [] };
@@ -213,24 +217,25 @@
 			if (!selectedPreset || editing) {
 				return;
 			}
-			const trigger = selectedPreset?.triggers.find(t => t.hotKey === e.key);
-			if (trigger) {
+			selectedPreset?.triggers.filter(t => t.hotKey === e.key).forEach(trigger => {
 				handleEval(trigger.id);
-				const triggerEle = document.getElementById(trigger.id);
+				const triggerEle = document.getElementById(trigger.id) as TriggerElement;
 				if (triggerEle) {
+					clearTimeout(triggerEle.__asCheaterAnimationTimer);
 					triggerEle.style.opacity = '1';
-					setTimeout(() => {
+					triggerEle.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+					triggerEle.__asCheaterAnimationTimer = setTimeout(() => {
 						if (triggerEle) {
 							triggerEle.removeAttribute('style');
 						}
-					}, 100);
+					}, 150);
 				}
-			}
+			});
 		};
 
-		window.addEventListener('keyup', handleKeyUp, true);
+		window.addEventListener('keydown', handleKeyUp, true);
 		return () => {
-			window.removeEventListener('keyup', handleKeyUp, true);
+			window.removeEventListener('keydown', handleKeyUp, true);
 		};
 	});
 
@@ -263,7 +268,7 @@
 
     .button {
       cursor: pointer;
-      opacity: 0.5;
+      opacity: 0.7;
       text-align: center;
       border: 1px solid white;
       user-select: none;
@@ -568,9 +573,12 @@
 				{#if selectedPreset}
 					{#each selectedPreset.triggers as trigger (trigger.id)}
 						<div role="none" class="trigger" id={trigger.id} on:click={() => handleEval(trigger.id)}
-								 contenteditable="false"
-								 bind:innerHTML={trigger.name}
-								 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined} />
+								 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined}>
+							{#if trigger.hotKey}
+								<span>[{trigger.hotKey}]</span>
+							{/if}
+							<span contenteditable="false" bind:innerHTML={trigger.name} />
+						</div>
 						<div style:display="none">
 							{#each trigger.actions as action (action.id)}
 								<svelte:component this={Functions[action.type]} id={trigger.id} bind:value={action.value} />

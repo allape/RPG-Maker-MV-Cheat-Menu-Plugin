@@ -25,6 +25,8 @@
 
 	export let current: IValue = value;
 
+	export let maps = MV.get$dataMapInfos() || [];
+
 	export const handleEval = () => {
 		const gamePlayer = MV.get$gamePlayer();
 		gamePlayer.reserveTransfer(value.mapId, value.x, value.y, gamePlayer.direction(), 0);
@@ -51,17 +53,19 @@
 
 <DeepTrigger {id} func={handleEval} />
 
-Current: <br>
+<FlatRow>
+	<div style="flex: 1;">Current:</div>
+	<button on:click={handleReload}>🔄</button>
+</FlatRow>
 <FlatRow>
 	<input placeholder="X" type="number" readonly value={current.x} />
 	<input placeholder="Y" type="number" readonly value={current.y} />
 </FlatRow>
-<FormItemWithButton on:click={handleReload}>
-	<MapSelector value={current.mapId} readonly />
-	<span slot="button">🔄</span>
-</FormItemWithButton>
-Destination:
-<button on:click={handleApply}>↓</button> <br>
+<input placeholder="Map ID" type="text" readonly value={maps[current.mapId]?.name || '-'} />
+<FlatRow>
+	<div style="flex: 1;">Destination:</div>
+	<button on:click={handleApply}>↓</button>
+</FlatRow>
 <FlatRow>
 	<input placeholder="X" type="number" min="0" step="1" bind:value={value.x} />
 	<input placeholder="Y" type="number" min="0" step="1" bind:value={value.y} />
