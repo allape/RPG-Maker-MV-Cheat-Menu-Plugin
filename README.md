@@ -4,8 +4,21 @@ inspired by (forked
 from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin)
 
 ---
+
 ### ⚠️⚠️⚠️ Still in TESTING, Save Game Frequently ⚠️⚠️⚠️
+
+- Tested in
+  - NW v0.29.0
+  - NW v0.49.0
+
 ---
+
+### Previews
+
+<img src="samples/pic-main.png" alt="Main Picture" width="50">  
+<br>
+<img src="samples/pic-empty-settings.png" alt="Empty Settings" width="500">
+<img src="samples/pic-settings.png" alt="Settings" width="500">
 
 ### Installation
 

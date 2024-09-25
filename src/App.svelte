@@ -334,7 +334,7 @@
         justify-content: center;
         align-items: stretch;
         border: 1px solid white;
-        width: 600px;
+        width: 800px;
         height: 400px;
 
         .section {
@@ -483,6 +483,7 @@
         margin: -5px 0 10px;
         padding: 0 10px;
         text-align: right;
+        user-select: text !important;
       }
     }
 
