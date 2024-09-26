@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { getRPGMaker } from '../../rpgmaker';
+	import type { IMap } from '../../rpgmaker/declare';
 
-	export let value: number = -1;
+	export let value: IMap['id'] = -1;
 	export let readonly: boolean = false;
 
 	export let maps = getRPGMaker().getMapList();

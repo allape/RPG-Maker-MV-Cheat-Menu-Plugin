@@ -1,48 +1,58 @@
 <script lang="ts">
-	import MV from '../../core/mv';
-	import DeepTrigger from '../ui/DeepTrigger.svelte';
+	import { onMount } from 'svelte';
+	import { getRPGMaker } from '../../rpgmaker';
+	import type { IVariable, Script, VariableValue } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import SearchableSelect from '../ui/SearchableSelect.svelte';
 
 	interface IValue {
 		index: string;
-		value: string;
+		value: VariableValue;
 	}
 
-	export let id: string = '';
 	export let value: IValue = {
 		index: '',
 		value: ''
 	};
+	export let script: Script = '';
 
-	export let list: string[] = MV.get$dataSystem().variables.map((i, ii) => `${ii}: ${i}`);
+	const maker = getRPGMaker();
+
+	let variableList: IVariable[] = maker.getVariableList();
+	let list: string[] = variableList.map(v => `${v.id}: ${v.name}`);
+
+	function make(): Script {
+		const v = variableList[list.indexOf(value.index)];
+		if (!v) {
+			return '';
+		}
+		return maker.getScriptGenerator().setVariable(v, value.value);
+	}
 
 	function getter(value: string): string {
-		return `${MV.get$gameVariables().value(list.indexOf(value))}`;
+		return `${variableList[list.indexOf(value)]?.value}`;
 	}
 
 	function handleSearch(keyword: string, value: string): boolean {
 		return getter(value).includes(keyword);
 	}
 
-	export function handleEval() {
-		const index = list.indexOf(value.index);
-		if (index === -1) {
-			return;
-		}
-		const oldValue = MV.get$gameVariables().value(index);
-		MV.setVariable(index, typeof oldValue === 'number' ? parseInt(value.value || '0') || 0 : value.value);
-		MV.playSound(true);
+	function run(): void {
+		maker.evaluate(make());
 	}
-</script>
 
-<DeepTrigger {id} func={handleEval} />
+	onMount(() => {
+		return () => {
+			script = make();
+		};
+	});
+</script>
 
 <SearchableSelect {list} {getter} filter={handleSearch}
 									placeholder="Search for name or value"
 									displayValuePlaceholder="Variable current value"
 									bind:value={value.index} />
-<FormItemWithButton on:click={handleEval}>
+<FormItemWithButton on:click={run}>
 	<input placeholder="Target value" type="text" bind:value={value.value}>
 	<span slot="button">Set</span>
 </FormItemWithButton>

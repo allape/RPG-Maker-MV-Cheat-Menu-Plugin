@@ -91,7 +91,7 @@ export class Dummy implements IRPGMaker {
 
 	getItemList(it: ItemType): IItem[] {
 		return [
-			{ id: 1, name: 'Dummy Item', type: it }
+			{ id: 1, name: `Dummy ${it}`, type: it, amount: Math.floor(Math.random() * 1000) }
 		];
 	}
 
@@ -103,7 +103,7 @@ export class Dummy implements IRPGMaker {
 
 	getSwitchList(): ISwitch[] {
 		return [
-			{ id: 1, name: 'Dummy Switch', state: false }
+			{ id: 1, name: 'Dummy Switch', state: Math.random() * 10 < 5 }
 		];
 	}
 

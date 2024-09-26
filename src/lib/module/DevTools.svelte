@@ -8,11 +8,11 @@
 
 	const maker = getRPGMaker();
 
-	function make() {
+	function make(): Script {
 		return maker.getScriptGenerator().openDevTools();
 	}
 
-	function run() {
+	function run(): void {
 		maker.evaluate(make());
 	}
 

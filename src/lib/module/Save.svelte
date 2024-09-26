@@ -1,24 +1,30 @@
 <script lang="ts">
-	import MV from '../../core/mv';
-	import DeepTrigger from '../ui/DeepTrigger.svelte';
+	import { onMount } from 'svelte';
+	import { getRPGMaker } from '../../rpgmaker';
+	import type { Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 
-	export let id: string = '';
-	export let value: string = '2';
+	export let value: number = 2;
+	export let script: Script = '';
 
-	export function handleEval() {
-		if (value) {
-			MV.getDataManager().saveGame(parseInt(value));
-			MV.playSound(true);
-		} else {
-			MV.playSound(false);
-		}
+	const maker = getRPGMaker();
+
+	function make(): Script {
+		return maker.getScriptGenerator().saveGame(Number(value));
 	}
+
+	function run(): void {
+		maker.evaluate(make());
+	}
+
+	onMount(() => {
+		return () => {
+			script = make();
+		};
+	});
 </script>
 
-<DeepTrigger {id} func={handleEval} />
-
-<FormItemWithButton on:click={handleEval}>
-	<input placeholder="Slot index" type="number" bind:value={value}>
+<FormItemWithButton on:click={run}>
+	<input placeholder="Slot index" min="1" max="99" type="number" bind:value={value}>
 	<span slot="button">Save Now</span>
 </FormItemWithButton>

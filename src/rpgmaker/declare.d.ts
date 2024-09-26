@@ -11,31 +11,32 @@ export type HMTPValue = 'full' | 'half' | '0' | '1' | number;
 export type VariableValue = number | string;
 
 export interface IActor {
-	id: number | string;
+	id: number;
 	name: string;
 	x: X;
 	y: Y;
 }
 
 export interface IItem {
-	id: number | string;
+	id: number;
 	name: string;
 	type: ItemType;
+	amount: number;
 }
 
 export interface IMap {
-	id: number | string;
+	id: number;
 	name: string;
 }
 
 export interface ISwitch {
-	id: number | string;
+	id: number;
 	name: string;
 	state: boolean;
 }
 
 export interface IVariable {
-	id: number | string;
+	id: number;
 	name: string;
 	value: VariableValue;
 }

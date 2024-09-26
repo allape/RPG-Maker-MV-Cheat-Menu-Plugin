@@ -1,42 +1,47 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import MV from '../../core/mv';
-	import DeepTrigger from '../ui/DeepTrigger.svelte';
+	import { getRPGMaker } from '../../rpgmaker';
+	import type { IMap, Script, X, Y } from '../../rpgmaker/declare';
 	import FlatRow from '../ui/FlatRow.svelte';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import MapSelector from '../ui/MapSelector.svelte';
 
-	type MapIndex = number;
-	type X = number;
-	type Y = number;
-
 	interface IValue {
-		mapId: MapIndex;
+		mapId: IMap['id'];
 		x: X;
 		y: Y;
 	}
 
-	export let id: string = '';
 	export let value: IValue = {
 		mapId: -1,
 		x: 0,
 		y: 0
 	};
 
+	export let script: Script = '';
+
+	const maker = getRPGMaker();
+
+	function make(): Script {
+		const map = maps.find(i => i.id === value.mapId);
+		if (!map) {
+			return '';
+		}
+		return maker.getScriptGenerator().teleport(map, value.x, value.y);
+	}
+
+	function run(): void {
+		maker.evaluate(make());
+	}
+
 	export let current: IValue = value;
 
-	export let maps = MV.get$dataMapInfos() || [];
-
-	export const handleEval = () => {
-		const gamePlayer = MV.get$gamePlayer();
-		gamePlayer.reserveTransfer(value.mapId, value.x, value.y, gamePlayer.direction(), 0);
-		gamePlayer.setPosition(value.x, value.y);
-	};
+	export let maps = maker.getMapList();
 
 	function handleReload() {
-		const actor = MV.get$gamePlayer();
+		const actor = maker.getHero();
 		current = {
-			mapId: MV.get$gameMap()?.mapId() || 0,
+			mapId: maker.getCurrentMap()?.id || 0,
 			x: actor?.x || 0,
 			y: actor?.y || 0
 		};
@@ -49,9 +54,13 @@
 	onMount(() => {
 		handleReload();
 	});
-</script>
 
-<DeepTrigger {id} func={handleEval} />
+	onMount(() => {
+		return () => {
+			script = make();
+		};
+	});
+</script>
 
 <FlatRow>
 	<div style="flex: 1;">Current:</div>
@@ -61,7 +70,7 @@
 	<input placeholder="X" type="number" readonly value={current.x} />
 	<input placeholder="Y" type="number" readonly value={current.y} />
 </FlatRow>
-<input placeholder="Map ID" type="text" readonly value={maps[current.mapId]?.name || '-'} />
+<input placeholder="Map ID" type="text" readonly value={maps.find(i=>i.id === current.mapId)?.name || '-'} />
 <FlatRow>
 	<div style="flex: 1;">Destination:</div>
 	<button on:click={handleApply}>↓</button>
@@ -70,7 +79,7 @@
 	<input placeholder="X" type="number" min="0" step="1" bind:value={value.x} />
 	<input placeholder="Y" type="number" min="0" step="1" bind:value={value.y} />
 </FlatRow>
-<FormItemWithButton on:click={handleEval}>
+<FormItemWithButton on:click={run}>
 	<MapSelector bind:value={value.mapId} />
 	<span slot="button">GO</span>
 </FormItemWithButton>

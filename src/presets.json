@@ -10,11 +10,12 @@
             "type": "HP|MP|TP",
             "value": {
               "actorType": "enemy",
-              "actorIndex": -1,
               "type": "hp",
               "valueType": "1",
-              "customValue": 1
-            }
+              "customValue": 1,
+              "actorId": -1
+            },
+            "script": "\n\t\t\tvar actors = $gameTroop.members();\n\t\t\tfor (var i = 0; i < actors.length; i++) {\n\t\t\t\tvar actor = actors[i];\n\t\t\t\tif (!actor) continue;\n\t\t\t\tif (actor._hp <= 0) continue;\n\t\t\t\tactor.setHp(1);\n\t\t\t}\n\t\t\tSoundManager.playSystemSound(1);\n\t\t"
           }
         ]
       },
@@ -25,22 +26,24 @@
           {
             "type": "HP|MP|TP",
             "value": {
-              "actorType": "party",
-              "actorIndex": -2,
+              "actorType": "alias",
               "type": "hp",
               "valueType": "full",
-              "customValue": 1
-            }
+              "customValue": 1,
+              "actorId": -2
+            },
+            "script": "\n\t\t\tvar actors = $gameParty.allMembers();\n\t\t\tfor (var i = 0; i < actors.length; i++) {\n\t\t\t\tvar actor = actors[i];\n\t\t\t\tif (!actor) continue;\n\t\t\t\t\n\t\t\t\tactor.setHp(actor.mhp);\n\t\t\t}\n\t\t\tSoundManager.playSystemSound(1);\n\t\t"
           },
           {
             "type": "HP|MP|TP",
             "value": {
-              "actorType": "party",
-              "actorIndex": -2,
+              "actorType": "alias",
               "type": "mp",
               "valueType": "full",
-              "customValue": 1
-            }
+              "customValue": 1,
+              "actorId": -2
+            },
+            "script": "\n\t\t\tvar actors = $gameParty.allMembers();\n\t\t\tfor (var i = 0; i < actors.length; i++) {\n\t\t\t\tvar actor = actors[i];\n\t\t\t\tif (!actor) continue;\n\t\t\t\t\n\t\t\t\tactor.setMp(actor.mmp);\n\t\t\t}\n\t\t\tSoundManager.playSystemSound(1);\n\t\t"
           }
         ]
       },
@@ -50,7 +53,8 @@
         "actions": [
           {
             "type": "Save",
-            "value": "2"
+            "value": "2",
+            "script": "DataManager.saveGame(2); SoundManager.playSystemSound(1);"
           }
         ]
       },
@@ -60,7 +64,8 @@
         "actions": [
           {
             "type": "Gold",
-            "value": 10000
+            "value": 10000,
+            "script": "$gameParty.gainGold(10000); SoundManager.playSystemSound(1);"
           }
         ]
       },
@@ -70,7 +75,8 @@
         "actions": [
           {
             "type": "SpeedHack",
-            "value": 0
+            "value": 0,
+            "script": "clearInterval(SceneManager._speedHackIntervalId); SoundManager.playSystemSound(1);"
           }
         ]
       },
@@ -80,7 +86,8 @@
         "actions": [
           {
             "type": "SpeedHack",
-            "value": 1
+            "value": 1,
+            "script": "clearInterval(SceneManager._speedHackIntervalId); SoundManager.playSystemSound(1);\n\t\t\t\tSceneManager._speedHackIntervalId = setInterval(function(){SceneManager.updateScene();}, 1000 / 60);\n\t\t\t"
           }
         ]
       },
@@ -90,7 +97,8 @@
         "actions": [
           {
             "type": "SpeedHack",
-            "value": 2
+            "value": 2,
+            "script": "clearInterval(SceneManager._speedHackIntervalId); SoundManager.playSystemSound(1);\n\t\t\t\tSceneManager._speedHackIntervalId = setInterval(function(){SceneManager.updateScene();}, 1000 / 120);\n\t\t\t"
           }
         ]
       }

@@ -2,14 +2,14 @@
 	import { onMount } from 'svelte';
 	import DevTools from './lib/module/DevTools.svelte';
 	import Gold from './lib/module/Gold.svelte';
-	// import Item from './lib/module/Item.svelte';
-	// import Navigator from './lib/module/Navigator.svelte';
-	// import Save from './lib/module/Save.svelte';
-	// import ScriptEval from './lib/module/ScriptEval.svelte';
-	// import SpeedHack from './lib/module/SpeedHack.svelte';
-	// import SpriteHMTP from './lib/module/SpriteHMTP.svelte';
-	// import Switch from './lib/module/Switch.svelte';
-	// import Variable from './lib/module/Variable.svelte';
+	import SpriteHMTP from './lib/module/HMTP.svelte';
+	import Item from './lib/module/Item.svelte';
+	import Navigator from './lib/module/Navigator.svelte';
+	import Save from './lib/module/Save.svelte';
+	import ScriptEval from './lib/module/Script.svelte';
+	import SpeedHack from './lib/module/SpeedHack.svelte';
+	import Switch from './lib/module/Switch.svelte';
+	import Variable from './lib/module/Variable.svelte';
 	import KeyBinder from './lib/ui/KeyBinder.svelte';
 	import PresetJSON from './presets.json';
 	import { getRPGMaker } from './rpgmaker';
@@ -20,14 +20,14 @@
 
 	const Functions = {
 		Gold,
-		// 'HP|MP|TP': SpriteHMTP,
-		// Navigator,
-		// Variable,
-		// Switch,
-		// Item,
-		// Save,
-		// SpeedHack,
-		// Script: ScriptEval,
+		'HP|MP|TP': SpriteHMTP,
+		Navigator,
+		Variable,
+		Switch,
+		Item,
+		Save,
+		SpeedHack,
+		Script: ScriptEval,
 
 		DevTools
 	};

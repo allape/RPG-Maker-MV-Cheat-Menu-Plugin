@@ -409,7 +409,7 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	playSound(positive?: boolean): void {
-		SoundManager.playSystemSound(positive ? 1 : 2);
+		this.evaluate(`SoundManager.playSystemSound(${positive ? 1 : 2});`);
 	}
 
 	getCurrentMap(): IMap | undefined {
@@ -472,7 +472,8 @@ export class MVMZ implements IRPGMaker {
 		return itemList.map((i, index) => ({
 			id: index,
 			name: i.name,
-			type: it
+			type: it,
+			amount: $gameParty[`_${it}s`][index]
 		}));
 	}
 
@@ -504,7 +505,12 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	evaluate(script: Script): unknown {
-		return new Function(script)();
+		try {
+			return new Function(script)();
+		} catch (e) {
+			console.error('Error occurred while evaluating script:', script, e);
+			return undefined;
+		}
 	}
 }
 

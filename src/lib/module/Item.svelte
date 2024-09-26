@@ -1,66 +1,72 @@
 <script lang="ts">
-	import MV from '../../core/mv';
-	import DeepTrigger from '../ui/DeepTrigger.svelte';
+	import { onMount } from 'svelte';
+	import { getRPGMaker } from '../../rpgmaker';
+	import type { IItem, ItemType, Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import SearchableSelect from '../ui/SearchableSelect.svelte';
 
 	interface IValue {
-		type: 'item' | 'weapon' | 'armor';
-		index: string;
-		value: string;
+		type: ItemType;
+		item: string;
 		amount: number;
 	}
 
-	export let id: string = '';
 	export let value: IValue = {
 		type: 'item',
-		index: '',
-		value: '',
+		item: '',
 		amount: 1
 	};
+	export let script: Script = '';
 
-	let partyField: keyof Pick<ReturnType<typeof MV.get$gameParty>, '_items' | '_weapons' | '_armors'> = '_items';
-	let listField: keyof Pick<typeof MV, 'get$dataItems' | 'get$dataWeapons' | 'get$dataArmors'> = 'get$dataItems';
-	let list: string[] = MV[listField]().map((i, ii) => `${ii}: ${i?.name}`);
+	const maker = getRPGMaker();
+
+	function itemList2StringList(items: IItem[]) {
+		return items.map(i => `${i.id}: ${i.name}`);
+	}
+
+	let itemList: IItem[] = maker.getItemList(value.type);
+	let list: string[] = itemList2StringList(maker.getItemList(value.type));
+
+	function make(): Script {
+		const item = itemList[list.indexOf(value.item)];
+		if (!item) {
+			return '';
+		}
+		return maker.getScriptGenerator().gainItem(value.type, item, value.amount);
+	}
+
+	function run(): void {
+		maker.evaluate(make());
+	}
 
 	$: {
 		switch (value.type) {
 			case 'weapon':
-				partyField = '_weapons';
-				listField = 'get$dataWeapons';
+				itemList = maker.getItemList('weapon');
 				break;
 			case 'armor':
-				partyField = '_armors';
-				listField = 'get$dataArmors';
+				itemList = maker.getItemList('armor');
 				break;
 			default:
-				partyField = '_items';
-				listField = 'get$dataItems';
-				break;
+				itemList = maker.getItemList('item');
 		}
-		list = MV[listField]().map((i, ii) => `${ii}: ${i?.name}`);
+		list = itemList2StringList(itemList);
 	}
 
 	function getter(value: string): string {
-		return `${MV.get$gameParty()[partyField][list.indexOf(value)] || 0}`;
+		return `${itemList[list.indexOf(value)]?.amount || 0}`;
 	}
 
 	function handleSearch(keyword: string, value: string): boolean {
 		return getter(value).includes(keyword);
 	}
 
-	export function handleEval() {
-		const index = list.indexOf(value.value);
-		if (index === -1) {
-			return;
-		}
-		const oldValue = MV.get$gameParty()[partyField][index] || 0;
-		MV.get$gameParty().gainItem(MV[listField]()[index], value.amount - oldValue);
-		MV.playSound(true);
-	}
+	onMount(() => {
+		return () => {
+			script = make();
+		};
+	});
 </script>
-
-<DeepTrigger {id} func={handleEval} />
 
 <select bind:value={value.type}>
 	<option value="item">Item</option>
@@ -70,8 +76,8 @@
 <SearchableSelect {list} {getter} filter={handleSearch}
 									placeholder="Search for name or value"
 									displayValuePlaceholder="amount"
-									bind:value={value.value} />
-<FormItemWithButton on:click={handleEval}>
+									bind:value={value.item} />
+<FormItemWithButton on:click={run}>
 	<input placeholder="Target value" type="text" bind:value={value.amount}>
 	<span slot="button">Set</span>
 </FormItemWithButton>
