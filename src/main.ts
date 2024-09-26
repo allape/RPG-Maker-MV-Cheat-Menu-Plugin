@@ -1,9 +1,10 @@
 import App from './App.svelte';
-import MV, { errorEnhancement } from './core/mv';
 import './style.scss';
+import { getRPGMaker } from './rpgmaker';
 
 try {
-	errorEnhancement();
+	const maker = getRPGMaker();
+	maker.evaluate(maker.getScriptGenerator().setup());
 } catch (e) {
 	console.error(e);
 }
@@ -20,5 +21,5 @@ setTimeout(() => {
 		target: root
 	});
 
-	MV.playSound(true);
+	getRPGMaker().playSound(true);
 }, 1000);

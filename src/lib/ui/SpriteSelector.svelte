@@ -1,27 +1,28 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import MV, { type GameActor } from '../../core/mv';
+	import { getRPGMaker } from '../../rpgmaker';
+	import type { IActor } from '../../rpgmaker/declare';
 
-	export let type: 'party' | 'enemy' = 'party';
+	export let type: 'alias' | 'enemy' = 'alias';
 
 	export let all: boolean = false;
 	export let alive: boolean = false;
 
 	export let value: number = 0;
-	export let actors: GameActor[] = [];
+	export let actors: IActor[] = [];
 
 	let label: string = '';
 
 	$: {
-		label = type === 'party' ? 'Party' : 'Enemy';
+		label = type === 'alias' ? 'Alias' : 'Enemy';
 	}
 
 	onMount(() => {
 		try {
-			if (type === 'party') {
-				actors = MV.get$gameParty().allMembers();
+			if (type === 'alias') {
+				actors = getRPGMaker().getAliasList();
 			} else {
-				actors = MV.get$gameTroop().members();
+				actors = getRPGMaker().getEnemyList();
 			}
 		} catch (e) {
 			console.error(e);
@@ -40,7 +41,7 @@
 			<option value={-1}>All {label}s</option>
 		</slot>
 	{/if}
-	{#each actors as actor, index (index)}
-		<option value={index}>{index}: {actor._name || '-'}</option>
+	{#each actors as actor (actor.id)}
+		<option value={actor.id}>{actor.id}: {actor.name || '-'}</option>
 	{/each}
 </select>

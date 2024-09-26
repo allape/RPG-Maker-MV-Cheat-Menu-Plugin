@@ -1,14 +1,14 @@
 <script lang="ts">
-	import MV from '../../core/mv';
+	import { getRPGMaker } from '../../rpgmaker';
 
 	export let value: number = -1;
 	export let readonly: boolean = false;
 
-	export let maps = MV.get$dataMapInfos() || [];
+	export let maps = getRPGMaker().getMapList();
 </script>
 
 <select bind:value={value} disabled={readonly}>
-	{#each maps as map, index}
-		<option value={index}>{index}: {map?.name || '-'}</option>
+	{#each maps as map (map.id)}
+		<option value={map.id}>{map.id}: {map?.name || '-'}</option>
 	{/each}
 </select>

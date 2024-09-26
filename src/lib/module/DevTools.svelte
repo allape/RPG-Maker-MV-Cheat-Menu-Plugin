@@ -1,19 +1,26 @@
 <script lang="ts">
-	import MV from '../../core/mv';
-	import DeepTrigger from '../ui/DeepTrigger.svelte';
+	import { onMount } from 'svelte';
+	import { getRPGMaker } from '../../rpgmaker';
+	import type { Script } from '../../rpgmaker/declare';
 
-	export let id: string = '';
+	// export let value: string = '';
+	export let script: Script = '';
 
-	export function handleEval() {
-		try {
-			new Function('require(\'nw.gui\').Window.get().showDevTools()')();
-			MV.playSound(true);
-		} catch (e) {
-			MV.playSound(false);
-		}
+	const maker = getRPGMaker();
+
+	function make() {
+		return maker.getScriptGenerator().openDevTools();
 	}
+
+	function run() {
+		maker.evaluate(make());
+	}
+
+	onMount(() => {
+		return () => {
+			script = make();
+		};
+	});
 </script>
 
-<DeepTrigger {id} func={handleEval} />
-
-<button on:click={handleEval}>Open Dev Tools</button>
+<button on:click={run}>Open Dev Tools</button>

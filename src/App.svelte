@@ -1,34 +1,33 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { EvalEvent } from './config/event';
 	import DevTools from './lib/module/DevTools.svelte';
 	import Gold from './lib/module/Gold.svelte';
-	import Item from './lib/module/Item.svelte';
-	import Navigator from './lib/module/Navigator.svelte';
-	import Save from './lib/module/Save.svelte';
-	import ScriptEval from './lib/module/ScriptEval.svelte';
-	import SpeedHack from './lib/module/SpeedHack.svelte';
-	import SpriteHMTP from './lib/module/SpriteHMTP.svelte';
-	import Switch from './lib/module/Switch.svelte';
-	import Variable from './lib/module/Variable.svelte';
+	// import Item from './lib/module/Item.svelte';
+	// import Navigator from './lib/module/Navigator.svelte';
+	// import Save from './lib/module/Save.svelte';
+	// import ScriptEval from './lib/module/ScriptEval.svelte';
+	// import SpeedHack from './lib/module/SpeedHack.svelte';
+	// import SpriteHMTP from './lib/module/SpriteHMTP.svelte';
+	// import Switch from './lib/module/Switch.svelte';
+	// import Variable from './lib/module/Variable.svelte';
 	import KeyBinder from './lib/ui/KeyBinder.svelte';
 	import PresetJSON from './presets.json';
+	import { getRPGMaker } from './rpgmaker';
 	import { id } from './utils/gen';
 	import { getJSON } from './utils/store';
-	import { getNodeVersion, getNWVersion } from './utils/version';
 
 	const KEY_CONFIG = 'v2-ascheater-config';
 
 	const Functions = {
 		Gold,
-		'HP|MP|TP': SpriteHMTP,
-		Navigator,
-		Variable,
-		Switch,
-		Item,
-		Save,
-		SpeedHack,
-		Script: ScriptEval,
+		// 'HP|MP|TP': SpriteHMTP,
+		// Navigator,
+		// Variable,
+		// Switch,
+		// Item,
+		// Save,
+		// SpeedHack,
+		// Script: ScriptEval,
 
 		DevTools
 	};
@@ -52,6 +51,7 @@
 		type: FunctionTypes;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		value: any;
+		script?: string;
 	}
 
 	interface ITrigger {
@@ -178,8 +178,11 @@
 		selectedTrigger.actions = [...selectedTrigger.actions];
 	}
 
-	function handleEval(id: ITrigger['id']) {
-		window.dispatchEvent(new EvalEvent(id));
+	function handleRun(trigger: ITrigger) {
+		trigger.actions.forEach(action => {
+			if (!action.script) return;
+			getRPGMaker().evaluate(action.script);
+		});
 	}
 
 	function handleFlushPresetIDs(preset: IPreset): IPreset {
@@ -267,7 +270,7 @@
 				return;
 			}
 			selectedPreset?.triggers.filter(t => t.hotKey === e.key).forEach(trigger => {
-				handleEval(trigger.id);
+				handleRun(trigger);
 				const triggerEle = document.getElementById(trigger.id) as TriggerElement;
 				if (triggerEle) {
 					clearTimeout(triggerEle.__asCheaterAnimationTimer);
@@ -596,7 +599,9 @@
 										<div class="text">{action.type}</div>
 										<button on:click={() => handleRemoveAction(index)}>-</button>
 									</div>
-									<svelte:component this={Functions[action.type]} id={selectedTrigger.id} bind:value={action.value} />
+									<svelte:component this={Functions[action.type]}
+																		bind:value={action.value}
+																		bind:script={action.script} />
 								</div>
 							{:else}
 								<div class="none">Empty</div>
@@ -634,9 +639,7 @@
 				</div>
 			</div>
 			<div class="versions">
-				{__APP_VERSION__},
-				NW v{getNWVersion()},
-				Node {getNodeVersion()}
+				{__APP_VERSION__}, {getRPGMaker().getVersionString()}
 			</div>
 		</div>
 	{:else}
@@ -645,17 +648,12 @@
 			<div class="triggers">
 				{#if selectedPreset}
 					{#each selectedPreset.triggers as trigger (trigger.id)}
-						<div role="none" class="trigger" id={trigger.id} on:click={() => handleEval(trigger.id)}
+						<div role="none" class="trigger" id={trigger.id} on:click={() => handleRun(trigger)}
 								 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined}>
 							{#if trigger.hotKey}
 								<span>[{trigger.hotKey}]</span>
 							{/if}
 							<span contenteditable="false" bind:innerHTML={trigger.name} />
-						</div>
-						<div style:display="none">
-							{#each trigger.actions as action (action.id)}
-								<svelte:component this={Functions[action.type]} id={trigger.id} bind:value={action.value} />
-							{/each}
 						</div>
 					{/each}
 				{/if}

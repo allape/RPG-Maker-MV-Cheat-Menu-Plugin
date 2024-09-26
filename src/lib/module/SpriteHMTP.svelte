@@ -5,7 +5,7 @@
 	import HeroSelector from '../ui/SpriteSelector.svelte';
 
 	interface IValue {
-		actorType: 'party' | 'enemy';
+		actorType: 'alias' | 'enemy';
 		actorIndex: number;
 		type: 'hp' | 'mp' | 'tp';
 		valueType: 'full' | 'half' | '0' | '1' | 'custom';
@@ -20,7 +20,7 @@
 
 	export let id: string = '';
 	export let value: IValue = {
-		actorType: 'party',
+		actorType: 'alias',
 		actorIndex: 0,
 		type: 'hp',
 		valueType: 'full',
@@ -77,7 +77,7 @@
 <DeepTrigger {id} func={handleEval} />
 
 <select bind:value={value.actorType}>
-	<option value="party">Party</option>
+	<option value="alias">Party</option>
 	<option value="enemy">Enemy</option>
 </select>
 <HeroSelector all alive type={value.actorType} bind:value={value.actorIndex} />
