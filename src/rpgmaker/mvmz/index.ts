@@ -118,6 +118,7 @@ declare global {
 	}
 
 	class Game_Item {
+		id: number;
 		name: string;
 	}
 
@@ -378,7 +379,7 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 	}
 
 	setSwitch(sw: ISwitch, state: boolean): Script {
-		return `$gameSwitches.setValue(${sw.id}, ${state});`;
+		return `$gameSwitches.setValue(${sw.id}, ${state});SoundManager.playSystemSound(1);`;
 	}
 
 	setVariable(v: IVariable, value: VariableValue): Script {
@@ -418,7 +419,7 @@ export class MVMZ implements IRPGMaker {
 		}
 		return {
 			id: $gameMap.mapId(),
-			name: $dataMapInfos[$gameMap.mapId()].name
+			name: $dataMapInfos[$gameMap.mapId()]?.name
 		};
 	}
 
@@ -469,16 +470,16 @@ export class MVMZ implements IRPGMaker {
 			default:
 				throw new Error(`Invalid item type: ${it}`);
 		}
-		return itemList.map((i, index) => ({
-			id: index,
+		return itemList.filter(Boolean).map(i => ({
+			id: i.id,
 			name: i.name,
 			type: it,
-			amount: $gameParty[`_${it}s`][index]
+			amount: $gameParty[`_${it}s`][i.id]
 		}));
 	}
 
 	getMapList(): IMap[] {
-		return $dataMapInfos.map((i) => ({
+		return $dataMapInfos.filter(Boolean).map((i) => ({
 			id: i.id,
 			name: i.name
 		}));

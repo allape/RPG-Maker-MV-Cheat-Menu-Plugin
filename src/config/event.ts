@@ -1,7 +1,7 @@
-export const EvalEventName = '__asCheater_eval';
+export const MakeScriptEventName = '__asCheater_makeScript';
 
-export class EvalEvent extends Event {
-	constructor(public readonly id: string) {
-		super(EvalEventName);
+export class MakeScriptEvent extends Event {
+	constructor() {
+		super(MakeScriptEventName);
 	}
 }

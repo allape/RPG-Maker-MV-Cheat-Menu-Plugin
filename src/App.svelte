@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEvent } from './config/event';
 	import DevTools from './lib/module/DevTools.svelte';
 	import Gold from './lib/module/Gold.svelte';
 	import SpriteHMTP from './lib/module/HMTP.svelte';
@@ -88,13 +89,22 @@
 
 	export let fileSelector: HTMLInputElement;
 
+	let exportingDelayTimerId: number;
+
 	let selectedPreset: IPreset | undefined;
 	let selectedTrigger: ITrigger | undefined;
 
 	function handleDone() {
-		localStorage.setItem(KEY_CONFIG, JSON.stringify(config));
-		editing = false;
-		selectedTrigger = undefined;
+		if (exportingDelayTimerId) {
+			return;
+		}
+
+		exportingDelayTimerId = setTimeout(() => {
+			exportingDelayTimerId = 0;
+			localStorage.setItem(KEY_CONFIG, JSON.stringify(config));
+			editing = false;
+			selectedTrigger = undefined;
+		}, 200);
 	}
 
 	function handleEdit() {
@@ -233,17 +243,24 @@
 	}
 
 	function handleExport() {
-		if (!selectedPreset) {
+		if (exportingDelayTimerId) {
 			return;
 		}
-		const preset = JSON.stringify(selectedPreset);
-		const blob = new Blob([preset], { type: 'application/json' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = `${selectedPreset.name}.json`;
-		a.click();
-		URL.revokeObjectURL(url);
+		window.dispatchEvent(new MakeScriptEvent());
+		exportingDelayTimerId = setTimeout(() => {
+			exportingDelayTimerId = 0;
+			if (!selectedPreset) {
+				return;
+			}
+			const preset = JSON.stringify(selectedPreset);
+			const blob = new Blob([preset], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `${selectedPreset.name}.json`;
+			a.click();
+			URL.revokeObjectURL(url);
+		}, 300);
 	}
 
 	// region Hooks

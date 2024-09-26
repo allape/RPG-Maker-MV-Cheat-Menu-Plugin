@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { ISwitch, Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
@@ -26,7 +27,8 @@
 		if (!swi) {
 			return '';
 		}
-		return maker.getScriptGenerator().setSwitch(swi, value.value);
+		script = maker.getScriptGenerator().setSwitch(swi, value.value);
+		return script;
 	}
 
 	function getter(value: string): string {
@@ -38,8 +40,10 @@
 	}
 
 	onMount(() => {
+		window.addEventListener(MakeScriptEventName, make);
 		return () => {
-			script = make();
+			window.removeEventListener(MakeScriptEventName, make);
+			make();
 		};
 	});
 </script>
@@ -49,6 +53,6 @@
 									displayValuePlaceholder="On or off"
 									bind:value={value.index} />
 <FormItemWithButton on:click={run}>
-	<input type="checkbox" bind:value={value.value}>
+	<input type="checkbox" bind:checked={value.value}>
 	<span slot="button">Set</span>
 </FormItemWithButton>

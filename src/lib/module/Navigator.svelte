@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { IMap, Script, X, Y } from '../../rpgmaker/declare';
 	import FlatRow from '../ui/FlatRow.svelte';
@@ -27,7 +28,8 @@
 		if (!map) {
 			return '';
 		}
-		return maker.getScriptGenerator().teleport(map, value.x, value.y);
+		script = maker.getScriptGenerator().teleport(map, value.x, value.y);
+		return script;
 	}
 
 	function run(): void {
@@ -42,8 +44,8 @@
 		const actor = maker.getHero();
 		current = {
 			mapId: maker.getCurrentMap()?.id || 0,
-			x: actor?.x || 0,
-			y: actor?.y || 0
+			x: actor.x || 0,
+			y: actor.y || 0
 		};
 	}
 
@@ -56,8 +58,10 @@
 	});
 
 	onMount(() => {
+		window.addEventListener(MakeScriptEventName, make);
 		return () => {
-			script = make();
+			window.removeEventListener(MakeScriptEventName, make);
+			make();
 		};
 	});
 </script>
@@ -76,8 +80,8 @@
 	<button on:click={handleApply}>↓</button>
 </FlatRow>
 <FlatRow>
-	<input placeholder="X" type="number" min="0" step="1" bind:value={value.x} />
-	<input placeholder="Y" type="number" min="0" step="1" bind:value={value.y} />
+	<input placeholder="X" type="number" step="1" bind:value={value.x} />
+	<input placeholder="Y" type="number" step="1" bind:value={value.y} />
 </FlatRow>
 <FormItemWithButton on:click={run}>
 	<MapSelector bind:value={value.mapId} />

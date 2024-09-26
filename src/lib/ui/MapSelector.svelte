@@ -10,6 +10,6 @@
 
 <select bind:value={value} disabled={readonly}>
 	{#each maps as map (map.id)}
-		<option value={map.id}>{map.id}: {map?.name || '-'}</option>
+		<option value={map.id}>{map.id}: {map.name || '-'}</option>
 	{/each}
 </select>

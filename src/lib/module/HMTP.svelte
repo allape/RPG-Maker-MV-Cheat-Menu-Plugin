@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { HMTP, HMTPValue, IActor, Script, TeamType } from '../../rpgmaker/declare';
 	import FlatRow from '../ui/FlatRow.svelte';
@@ -46,7 +47,8 @@
 				}
 				break;
 		}
-		return maker.getScriptGenerator().setHMTP(value.actorType, aliveOrActorID, value.type, hmtpType);
+		script = maker.getScriptGenerator().setHMTP(value.actorType, aliveOrActorID, value.type, hmtpType);
+		return script;
 	}
 
 	function run(): void {
@@ -54,8 +56,10 @@
 	}
 
 	onMount(() => {
+		window.addEventListener(MakeScriptEventName, make);
 		return () => {
-			script = make();
+			window.removeEventListener(MakeScriptEventName, make);
+			make();
 		};
 	});
 </script>

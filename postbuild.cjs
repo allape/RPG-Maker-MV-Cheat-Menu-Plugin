@@ -29,6 +29,7 @@ fs.unlinkSync(appFileName);
 const remoteFileURL = '';
 
 if (remoteFileURL) {
+	console.log(`Uploading merged file to server [${remoteFileURL}]...`);
 	fetch(remoteFileURL, {
 		method: 'put',
 		body: new Blob([mergedContent])

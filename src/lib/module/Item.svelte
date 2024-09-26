@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { IItem, ItemType, Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
@@ -25,14 +26,15 @@
 	}
 
 	let itemList: IItem[] = maker.getItemList(value.type);
-	let list: string[] = itemList2StringList(maker.getItemList(value.type));
+	let list: string[] = itemList2StringList(itemList);
 
 	function make(): Script {
 		const item = itemList[list.indexOf(value.item)];
 		if (!item) {
 			return '';
 		}
-		return maker.getScriptGenerator().gainItem(value.type, item, value.amount);
+		script = maker.getScriptGenerator().gainItem(value.type, item, value.amount);
+		return script;
 	}
 
 	function run(): void {
@@ -62,8 +64,10 @@
 	}
 
 	onMount(() => {
+		window.addEventListener(MakeScriptEventName, make);
 		return () => {
-			script = make();
+			window.removeEventListener(MakeScriptEventName, make);
+			make();
 		};
 	});
 </script>

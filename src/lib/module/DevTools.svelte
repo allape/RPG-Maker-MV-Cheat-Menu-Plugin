@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
 
-	// export let value: string = '';
 	export let script: Script = '';
 
 	const maker = getRPGMaker();
 
 	function make(): Script {
-		return maker.getScriptGenerator().openDevTools();
+		script = maker.getScriptGenerator().openDevTools();
+		return script;
 	}
 
 	function run(): void {
@@ -17,8 +18,10 @@
 	}
 
 	onMount(() => {
+		window.addEventListener(MakeScriptEventName, make);
 		return () => {
-			script = make();
+			window.removeEventListener(MakeScriptEventName, make);
+			make();
 		};
 	});
 </script>

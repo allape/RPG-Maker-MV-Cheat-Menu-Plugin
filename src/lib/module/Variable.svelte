@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { IVariable, Script, VariableValue } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
@@ -26,7 +27,8 @@
 		if (!v) {
 			return '';
 		}
-		return maker.getScriptGenerator().setVariable(v, value.value);
+		script = maker.getScriptGenerator().setVariable(v, value.value);
+		return script;
 	}
 
 	function getter(value: string): string {
@@ -42,8 +44,10 @@
 	}
 
 	onMount(() => {
+		window.addEventListener(MakeScriptEventName, make);
 		return () => {
-			script = make();
+			window.removeEventListener(MakeScriptEventName, make);
+			make();
 		};
 	});
 </script>
