@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 fs.copyFileSync('./patch.bat', './dist/patch.bat');
-fs.copyFileSync('./patch.bat', './dist/patch.bat');
+fs.copyFileSync('./patch.txt', './dist/patch.txt');
 fs.copyFileSync('./patch-fix.bat', './dist/patch-fix.bat');
 fs.copyFileSync('./patcher.html', './dist/patcher.html');
 fs.copyFileSync('./patcher.json', './dist/patcher.json');
