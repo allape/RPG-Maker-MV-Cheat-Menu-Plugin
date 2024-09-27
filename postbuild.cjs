@@ -1,6 +1,10 @@
 const fs = require('fs');
 
-fs.copyFileSync('./patch.sh', './dist/patch.sh');
+fs.copyFileSync('./patch.bat', './dist/patch.bat');
+fs.copyFileSync('./patch.bat', './dist/patch.bat');
+fs.copyFileSync('./patch-fix.bat', './dist/patch-fix.bat');
+fs.copyFileSync('./patcher.html', './dist/patcher.html');
+fs.copyFileSync('./patcher.json', './dist/patcher.json');
 
 const polyfillFileName = './dist/app-legacy.js';
 const appFileName = './dist/app.js';

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PRG Maker Cheat Menu Patcher</title>
+</head>
+<body>
+<div>
+	<h1>PRG Maker Cheat Menu Patcher</h1>
+	<button onclick="exit()">Exit</button>
+	<hr>
+	<div id="Logger">
+		Starting up... <br>
+	</div>
+</div>
+<script>
+	const PLUGIN_DEF_TXT = 'patch.txt';
+	const DEFAULT_PLUGIN_DEF_STRING = '{"name":"AsCheater","status":true,"description":"","parameters":{}}';
+
+	const MV_PLUGIN_FILE = 'www/js/plugins.js';
+	const MZ_PLUGIN_FILE = 'js/plugins.js';
+
+	function patch() {
+		const logger = document.getElementById('Logger');
+		var fs = require('fs');
+		var pluginJS = '';
+		if (fs.existsSync(MV_PLUGIN_FILE)) {
+			logger.innerHTML = logger.innerHTML + 'Found MV plugins.js file... <br>';
+			pluginJS = MV_PLUGIN_FILE;
+		} else if (fs.existsSync(MZ_PLUGIN_FILE)) {
+			logger.innerHTML = logger.innerHTML + 'Found MZ plugins.js file... <br>';
+			pluginJS = MZ_PLUGIN_FILE;
+		} else {
+			alert('Cannot find plugins.js file');
+			exit();
+			return;
+		}
+
+		var pluginDefString = DEFAULT_PLUGIN_DEF_STRING;
+		if (fs.existsSync(PLUGIN_DEF_TXT)) {
+			logger.innerHTML = logger.innerHTML + 'Found patch.txt file... <br>';
+			pluginDefString = fs.readFileSync(PLUGIN_DEF_TXT, 'utf8').trim();
+			logger.innerHTML = logger.innerHTML + 'Use patch content: ' + pluginDefString + ' <br>';
+		}
+
+		const pluginJsContent = fs.readFileSync(pluginJS, 'utf8');
+		if (pluginJsContent.includes(pluginDefString)) {
+			logger.innerHTML = logger.innerHTML + 'This game has already been patched... <br>';
+			setTimeout(function() {
+				alert('This game has already been patched');
+				exit();
+			}, 100);
+			return;
+		}
+
+		fs.copyFileSync(pluginJS, pluginJS + '~');
+
+		var injectPoint = -1;
+		const lines = pluginJsContent.split('\n').reverse();
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			if (line.trim() == '];') {
+				injectPoint = i;
+				break;
+			}
+		}
+
+		if (injectPoint == -1) {
+			alert('Cannot find patch point');
+			exit();
+			return;
+		}
+
+		const prefix = lines.slice(injectPoint + 1).reverse().join('\n');
+		const suffix = lines.slice(0, injectPoint + 1).reverse().join('\n');
+
+		const newJsContent = prefix + '\r\n,' + pluginDefString + '\r\n' + suffix;
+		fs.writeFileSync(pluginJS, newJsContent);
+
+		logger.innerHTML = logger.innerHTML + 'Patched successfully... <br>';
+		setTimeout(function() {
+			alert('Patched successfully');
+			exit();
+		}, 100);
+	}
+
+	function exit() {
+		if (confirm('Exit Patcher?')) {
+			window.close();
+		}
+	}
+
+	window.addEventListener('DOMContentLoaded', function() {
+		const logger = document.getElementById('Logger');
+		logger.innerHTML = logger.innerHTML + 'Ready to patch this game in 3 seconds... <br>';
+		setTimeout(function() {
+			patch();
+		}, 3000);
+	});
+
+	// window.addEventListener('beforeunload', function() {
+	// 	var fs = require('fs');
+	// 	fs.copyFileSync('package.json~', 'package.json');
+	// });
+</script>
+</body>
+</html>

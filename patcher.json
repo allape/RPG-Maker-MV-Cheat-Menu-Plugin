@@ -1,0 +1,10 @@
+{
+  "name": "PRG Maker Cheat Menu Patcher",
+  "main": "patcher.html",
+  "window": {
+    "title": "PRG Maker Cheat Menu Patcher",
+    "width": 640,
+    "height": 360,
+    "position": "center"
+  }
+}
