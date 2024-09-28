@@ -23,12 +23,12 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
 
 - Download [Cheat Menu](https://github.com/allape/RPG-Maker-MV-Cheat-Menu-Plugin/releases).
 - Extract the zip file and copy everything to game folder.
-  - Make sure that `patch.bat` is in the same folder of `Game.exe`.
-- Double click `patch.bat`.
+  - Make sure that `cm-patch.bat` is in the same folder of `Game.exe`.
+- Double click `cm-patch.bat`.
 
 ### Uninstallation
 
-- Double click `patch.bat`, it will guide to unpatch this game.
+- Double click `cm-patch.bat`, it will guide to unpatch this game.
   - And also, you can manually copy `www/js/plugins.js~` to `www/js/plugins.js`.
     - It will be `js/plugins.js~` if you have MZ game.
 
