@@ -16,7 +16,6 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
 ### Previews
 
 <img src="samples/pic-main.png" alt="Main Picture" width="50">  
-<br>
 <img src="samples/pic-empty-settings.png" alt="Empty Settings" width="500">
 <img src="samples/pic-settings.png" alt="Settings" width="500">
 
@@ -27,10 +26,11 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
   - Make sure that `patch.bat` is in the same folder of `Game.exe`.
 - Double click `patch.bat`.
 
-### Uninstallation, for now.
+### Uninstallation
 
-- Open `www/js/plugins.js` or `js/plugins.js`, scroll to the end of the file,
-  delete the line that contains `AsCheater` and save the file.
+- Double click `patch.bat`, it will guide to unpatch this game.
+  - And also, you can manually copy `www/js/plugins.js~` to `www/js/plugins.js`.
+    - It will be `js/plugins.js~` if you have MZ game.
 
 ### FAQ
 
