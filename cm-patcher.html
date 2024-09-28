@@ -26,13 +26,13 @@
 	 * @property {Object} parameters
 	 */
 
-	const EXTERNAL_PLUGIN_DEF_FILE_NAME = 'patch.json';
+	const EXTERNAL_PLUGIN_DEF_FILE_NAME = 'cm-patch.json';
 
 	/** @type PluginDef */
 	const DEFAULT_PLUGIN_DEF = { name: 'AsCheater', status: true, description: '', parameters: {} };
 
-	const MV_PLUGIN_FILE = 'www/js/plugins.js';
-	const MZ_PLUGIN_FILE = 'js/plugins.js';
+	const MV_PLUGINS_JS = 'www/js/plugins.js';
+	const MZ_PLUGINS_JS = 'js/plugins.js';
 
 	/**
 	 * @param {...string} msg
@@ -44,27 +44,15 @@
 
 	function patch() {
 		var fs = require('fs');
-		var pluginJS = '';
-		if (fs.existsSync(MV_PLUGIN_FILE)) {
-			println('Found MV plugins.js file...');
-			pluginJS = MV_PLUGIN_FILE;
-		} else if (fs.existsSync(MZ_PLUGIN_FILE)) {
-			println('Found MZ plugins.js file...');
-			pluginJS = MZ_PLUGIN_FILE;
-		} else {
-			alert('Cannot find plugins.js file');
-			exit();
-			return;
-		}
 
 		/** @type PluginDef */
 		var pluginDef = DEFAULT_PLUGIN_DEF;
 		if (fs.existsSync(EXTERNAL_PLUGIN_DEF_FILE_NAME)) {
 			println('Found external plugin definition file...');
 			try {
-				const patchContent = fs.readFileSync(EXTERNAL_PLUGIN_DEF_FILE_NAME, 'utf8');
-				pluginDef = JSON.parse(patchContent);
-				println('Use patch content:', patchContent);
+				const def = fs.readFileSync(EXTERNAL_PLUGIN_DEF_FILE_NAME, 'utf8');
+				pluginDef = JSON.parse(def);
+				println('Use patch content:', def);
 			} catch (e) {
 				const msg = 'Failed to parse external plugin definition file: ' + e.message;
 				println(msg);
@@ -72,6 +60,19 @@
 				exit();
 				return;
 			}
+		}
+
+		var pluginJS = '';
+		if (fs.existsSync(MV_PLUGINS_JS)) {
+			println('Found MV plugins.js file...');
+			pluginJS = MV_PLUGINS_JS;
+		} else if (fs.existsSync(MZ_PLUGINS_JS)) {
+			println('Found MZ plugins.js file...');
+			pluginJS = MZ_PLUGINS_JS;
+		} else {
+			alert('Cannot find plugins.js file');
+			exit();
+			return;
 		}
 
 		/** @type PluginDef[] */
@@ -90,7 +91,7 @@
 			return;
 		}
 
-		/** @type {'Patched' | 'Unpatched'} */
+		/** @type {'Patch' | 'Unpatch'} */
 		var operation;
 
 		const foundPlugins = plugins.filter(p => p.name == pluginDef.name);
@@ -100,13 +101,13 @@
 				for (var i = 0; i < foundPlugins.length; i++) {
 					plugins.splice(plugins.indexOf(foundPlugins[i]), 1);
 				}
-				operation = 'Unpatched';
+				operation = 'Unpatch';
 			} else {
 				exit();
 				return;
 			}
 		} else {
-			operation = 'Patched';
+			operation = 'Patch';
 			plugins.push(pluginDef);
 		}
 

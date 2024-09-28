@@ -1,10 +1,10 @@
 const fs = require('fs');
 
-fs.copyFileSync('./patch.bat', './dist/patch.bat');
-fs.copyFileSync('./patch.json', './dist/patch.json');
-fs.copyFileSync('./patch-fix.bat', './dist/patch-fix.bat');
-fs.copyFileSync('./patcher.html', './dist/patcher.html');
-fs.copyFileSync('./patcher-package.json', './dist/patcher-package.json');
+fs.copyFileSync('./cm-patch.bat', './dist/cm-patch.bat');
+fs.copyFileSync('./cm-patch.json', './dist/cm-patch.json');
+fs.copyFileSync('./cm-patch-fix.bat', './dist/cm-patch-fix.bat');
+fs.copyFileSync('./cm-patcher.html', './dist/cm-patcher.html');
+fs.copyFileSync('./cm-patcher-package.json', './dist/cm-patcher-package.json');
 
 const polyfillFileName = './dist/app-legacy.js';
 const appFileName = './dist/app.js';
@@ -22,8 +22,13 @@ ${app.trim()};
 }catch(e){alert(e.message);}
 `.trim();
 
+// mv
 fs.mkdirSync('./dist/www/js/plugins', { recursive: true });
 fs.writeFileSync('./dist/www/js/plugins/AsCheater.js', mergedContent);
+
+// mz
+fs.mkdirSync('./dist/js/plugins', { recursive: true });
+fs.writeFileSync('./dist/js/plugins/AsCheater.js', mergedContent);
 
 fs.unlinkSync('./dist/index.html');
 fs.unlinkSync(polyfillFileName);

@@ -1,6 +1,6 @@
 {
   "name": "PRG Maker Cheat Menu Patcher",
-  "main": "patcher.html",
+  "main": "cm-patcher.html",
   "window": {
     "title": "PRG Maker Cheat Menu Patcher",
     "width": 640,
