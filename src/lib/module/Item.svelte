@@ -25,8 +25,13 @@
 		return items.map(i => `${i.id}: ${i.name}`);
 	}
 
-	let itemList: IItem[] = maker.getItemList(value.type);
-	let list: string[] = itemList2StringList(itemList);
+	let itemList: IItem[] = [];
+	let list: string[] = [];
+
+	function renderItemList() {
+		itemList = maker.getItemList(value.type);
+		list = itemList2StringList(itemList);
+	}
 
 	function make(): Script {
 		const item = itemList[list.indexOf(value.item)];
@@ -39,6 +44,7 @@
 
 	function run(): void {
 		maker.evaluate(make());
+		renderItemList();
 	}
 
 	$: {
@@ -64,6 +70,7 @@
 	}
 
 	onMount(() => {
+		renderItemList();
 		window.addEventListener(MakeScriptEventName, make);
 		return () => {
 			window.removeEventListener(MakeScriptEventName, make);

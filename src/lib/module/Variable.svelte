@@ -19,8 +19,13 @@
 
 	const maker = getRPGMaker();
 
-	let variableList: IVariable[] = maker.getVariableList();
-	let list: string[] = variableList.map(v => `${v.id}: ${v.name}`);
+	let variableList: IVariable[] = [];
+	let list: string[] = [];
+
+	function renderVariableList() {
+		variableList = maker.getVariableList();
+		list = variableList.map(v => `${v.id}: ${v.name}`);
+	}
 
 	function make(): Script {
 		const v = variableList[list.indexOf(value.index)];
@@ -41,9 +46,11 @@
 
 	function run(): void {
 		maker.evaluate(make());
+		renderVariableList();
 	}
 
 	onMount(() => {
+		renderVariableList();
 		window.addEventListener(MakeScriptEventName, make);
 		return () => {
 			window.removeEventListener(MakeScriptEventName, make);

@@ -5,6 +5,7 @@
 	import type { IMap, Script, X, Y } from '../../rpgmaker/declare';
 	import FlatRow from '../ui/FlatRow.svelte';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
+	import HoverCountdown from '../ui/HoverCountdown.svelte';
 	import MapSelector from '../ui/MapSelector.svelte';
 
 	interface IValue {
@@ -68,7 +69,9 @@
 
 <FlatRow>
 	<div style="flex: 1;">Current:</div>
-	<button on:click={handleReload}>🔄</button>
+	<HoverCountdown on:timeout={handleReload}>
+		<button>🔄</button>
+	</HoverCountdown>
 </FlatRow>
 <FlatRow>
 	<input placeholder="X" type="number" readonly value={current.x} />

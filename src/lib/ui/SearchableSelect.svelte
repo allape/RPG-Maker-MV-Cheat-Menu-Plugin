@@ -19,6 +19,9 @@
 	$: {
 		const lowedKeyword = keyword.toLowerCase();
 		renderedList = list.filter(item => item?.toLowerCase().includes(lowedKeyword) || filter?.(lowedKeyword, item));
+		if (getter && value) {
+			displayedValue = getter(value);
+		}
 	}
 
 	const handleChange = (e: Event) => {
