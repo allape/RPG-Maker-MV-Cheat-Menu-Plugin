@@ -30,7 +30,11 @@ fs.writeFileSync('./dist/www/js/plugins/AsCheater.js', mergedContent);
 fs.mkdirSync('./dist/js/plugins', { recursive: true });
 fs.writeFileSync('./dist/js/plugins/AsCheater.js', mergedContent);
 
-fs.unlinkSync('./dist/index.html');
+fs.mkdirSync('./docs', { recursive: true });
+fs.renameSync('./dist/index.html', './docs/index.html');
+fs.writeFileSync('./docs/app.js', mergedContent);
+fs.writeFileSync('./docs/app-legacy.js', '');
+
 fs.unlinkSync(polyfillFileName);
 fs.unlinkSync(appFileName);
 

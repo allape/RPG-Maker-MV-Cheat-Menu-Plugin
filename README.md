@@ -15,9 +15,11 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
 
 ### Previews
 
-<img src="samples/pic-main.png" alt="Main Picture" width="50">  
-<img src="samples/pic-empty-settings.png" alt="Empty Settings" width="500">
-<img src="samples/pic-settings.png" alt="Settings" width="500">
+[Dummy Playground](https://allape.github.io/RPG-Maker-MV-Cheat-Menu-Plugin/index.html)
+
+<img src="samples/pic-main.png" alt="Main Picture" height="300">  
+<img src="samples/pic-empty-settings.png" alt="Empty Settings" height="300">
+<img src="samples/pic-settings.png" alt="Settings" height="300">
 
 ### Installation
 

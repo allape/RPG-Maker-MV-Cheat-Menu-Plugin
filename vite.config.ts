@@ -13,6 +13,7 @@ export default defineConfig({
 	define: {
 		__APP_VERSION__: `"v${Package.version}"`
 	},
+	base: '/RPG-Maker-MV-Cheat-Menu-Plugin/',
 	build: {
 		rollupOptions: {
 			output: {

@@ -20,7 +20,7 @@
         ]
       },
       {
-        "name": "<span style=\"color:green;\">HP</span>/<span style=\"color:blue;\">MP</span> <span style=\"color:green;\">Full</span>",
+        "name": "<span style=\"color:green;\">HP</span>/<span style=\"color:lightblue;\">MP</span> <span style=\"color:green;\">Full</span>",
         "hotKey": "2",
         "actions": [
           {
