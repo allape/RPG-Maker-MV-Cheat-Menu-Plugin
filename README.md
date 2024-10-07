@@ -45,5 +45,5 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
 # run
 npm run dev
 # build
-npm build
+npm run build
 ```
