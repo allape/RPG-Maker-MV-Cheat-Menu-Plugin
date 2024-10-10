@@ -3,6 +3,17 @@
     "name": "Winner",
     "triggers": [
       {
+        "name": "<span style=\"color:white;\">Save<br/> at 2</span>",
+        "hotKey": "`",
+        "actions": [
+          {
+            "type": "Save",
+            "value": "2",
+            "script": "DataManager.saveGame(2); SoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
         "name": "<span style=\"color:red;\">Enemy<br/> ONE</span>",
         "hotKey": "1",
         "actions": [
@@ -20,7 +31,7 @@
         ]
       },
       {
-        "name": "<span style=\"color:green;\">HP</span>/<span style=\"color:lightblue;\">MP</span> <span style=\"color:green;\">Full</span>",
+        "name": "<span style=\"color:greenyellow;\">HP</span>/<span style=\"color:skyblue;\">MP</span> <span style=\"color:greenyellow;\">Full</span>",
         "hotKey": "2",
         "actions": [
           {
@@ -48,19 +59,8 @@
         ]
       },
       {
-        "name": "<span style=\"color:white;\">Save<br/> at 2</span>",
-        "hotKey": "3",
-        "actions": [
-          {
-            "type": "Save",
-            "value": "2",
-            "script": "DataManager.saveGame(2); SoundManager.playSystemSound(1);"
-          }
-        ]
-      },
-      {
         "name": "<span style=\"color:orange;\">Gold</span> <br/> 10K",
-        "hotKey": "4",
+        "hotKey": "9",
         "actions": [
           {
             "type": "Gold",

@@ -141,11 +141,11 @@
 		if (!selectedPreset) {
 			return;
 		}
-		let hotKey = '';
-		if (selectedPreset.triggers.length < 9) {
-			hotKey = `${selectedPreset.triggers.length + 1}`;
-		}
-		selectedTrigger = { id: id(), name: 'Trigger', hotKey, actions: [] };
+		// let hotKey = '';
+		// if (selectedPreset.triggers.length < 9) {
+		// 	hotKey = `${selectedPreset.triggers.length + 1}`;
+		// }
+		selectedTrigger = { id: id(), name: 'Trigger', hotKey: '', actions: [] };
 		selectedPreset.triggers.push(selectedTrigger);
 		selectedPreset.triggers = [...selectedPreset.triggers];
 	}
