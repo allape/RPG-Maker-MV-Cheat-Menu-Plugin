@@ -161,6 +161,19 @@
 		}
 	}
 
+	function handleMoveTrigger(from: number, to: number) {
+		if (!selectedPreset) {
+			return;
+		}
+		if (to < 0 || to >= selectedPreset.triggers.length) {
+			return;
+		}
+		const temp = selectedPreset.triggers[from];
+		selectedPreset.triggers[from] = selectedPreset.triggers[to];
+		selectedPreset.triggers[to] = temp;
+		selectedPreset.triggers = [...selectedPreset.triggers];
+	}
+
 	function handleSelectTrigger(trigger: ITrigger) {
 		selectedTrigger = trigger;
 	}
@@ -587,9 +600,17 @@
 							{#each selectedPreset.triggers as trigger, index (trigger.id)}
 								<div role="none" class="item" class:selected={trigger === selectedTrigger}
 										 on:click={() => handleSelectTrigger(trigger)}>
+									<textarea rows="3" placeholder="HTML supported" bind:value={trigger.name}></textarea>
 									<div class="row">
-										<input type="text" placeholder="HTML supported" bind:value={trigger.name}>
+										<button disabled={index === 0} on:click={() => handleMoveTrigger(index, 0)}>⤒</button>
+										<button disabled={index === 0} on:click={() => handleMoveTrigger(index, index-1)}>↑</button>
 										<button on:click={() => handleRemoveTrigger(index)}>-</button>
+										<button disabled={index === selectedPreset.triggers.length-1}
+														on:click={() => handleMoveTrigger(index, index+1)}>↓
+										</button>
+										<button disabled={index === selectedPreset.triggers.length-1}
+														on:click={() => handleMoveTrigger(index, (selectedPreset?.triggers.length||0)-1)}>⤓
+										</button>
 									</div>
 									<KeyBinder bind:key={trigger.hotKey} />
 								</div>

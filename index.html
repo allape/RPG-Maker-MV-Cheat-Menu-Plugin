@@ -6,6 +6,12 @@
     <title>AS Cheater</title>
   </head>
   <body style="background-color: black;">
+  <script>
+    // mock in browser
+    if (window.location.search.includes('mvmz')) {
+      window.DataManager = {};
+    }
+  </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

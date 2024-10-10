@@ -34,7 +34,7 @@
     justify-content: center;
     align-items: stretch;
 
-    button, textarea {
+    button {
       flex: 1;
     }
   }
