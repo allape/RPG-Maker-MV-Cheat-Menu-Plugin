@@ -1,77 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { AuthorPresets, FunctionKeys, Functions, type IConfig, type IPreset, type ITrigger } from './app';
 	import { MakeScriptEvent } from './config/event';
-	import DevTools from './lib/module/DevTools.svelte';
-	import Gold from './lib/module/Gold.svelte';
-	import SpriteHMTP from './lib/module/HMTP.svelte';
-	import Item from './lib/module/Item.svelte';
-	import Navigator from './lib/module/Navigator.svelte';
-	import Save from './lib/module/Save.svelte';
-	import ScriptEval from './lib/module/Script.svelte';
-	import SpeedHack from './lib/module/SpeedHack.svelte';
-	import Switch from './lib/module/Switch.svelte';
-	import Variable from './lib/module/Variable.svelte';
+	import Button from './lib/ui/Button.svelte';
+	import Empty from './lib/ui/Empty.svelte';
 	import KeyBinder from './lib/ui/KeyBinder.svelte';
-	import PresetJSON from './presets.json';
+	import Menu from './Menu.svelte';
 	import { getRPGMaker } from './rpgmaker';
 	import { id } from './utils/gen';
 	import { getJSON } from './utils/store';
 
 	const KEY_CONFIG = 'v2-ascheater-config';
-
-	const Functions = {
-		Gold,
-		'HP|MP|TP': SpriteHMTP,
-		Navigator,
-		Variable,
-		Switch,
-		Item,
-		Save,
-		SpeedHack,
-		Script: ScriptEval,
-
-		DevTools
-	};
-	type FunctionTypes = keyof typeof Functions;
-
-	const FunctionKeys: FunctionTypes[] = Object.keys(Functions) as FunctionTypes[];
-
-	const AuthorPresets: IPreset[] = PresetJSON as IPreset[];
-
-	type HTMLString = string;
-	type IDString = string;
-
-	interface IAppearance {
-		idlingOpacityLevel: number;
-		maxIdlingOpacityLevel: number;
-		// focusingOpacity: number;
-	}
-
-	interface IAction {
-		id: IDString;
-		type: FunctionTypes;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		value: any;
-		script?: string;
-	}
-
-	interface ITrigger {
-		id: IDString;
-		name: HTMLString;
-		hotKey?: string;
-		actions: IAction[];
-	}
-
-	interface IPreset {
-		id: IDString;
-		name: string;
-		triggers: ITrigger[];
-	}
-
-	interface IConfig {
-		appearance: IAppearance;
-		presets: IPreset[];
-	}
 
 	interface TriggerElement extends HTMLDivElement {
 		__asCheaterAnimationTimer: number;
@@ -348,18 +287,6 @@
       opacity: 1 !important;
     }
 
-    .button {
-      cursor: pointer;
-      opacity: 0.7;
-      text-align: center;
-      border: 1px solid white;
-      user-select: none;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-
     .editPage {
       .table {
         display: flex;
@@ -519,51 +446,13 @@
         user-select: text !important;
       }
     }
-
-    .triggerList {
-      display: flex;
-      justify-content: flex-start;
-      align-items: stretch;
-      flex-direction: column;
-      text-align: center;
-      width: 60px;
-      height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-
-      .triggers {
-        display: flex;
-        justify-content: center;
-        align-items: stretch;
-        flex-direction: column;
-
-        .trigger {
-          cursor: pointer;
-          border: 1px solid white;
-          opacity: 0.5;
-          overflow: hidden;
-          white-space: pre-wrap;
-          user-select: none;
-          text-align: center;
-          padding: 3px;
-
-          &:hover {
-            opacity: 0.8;
-          }
-
-          &:active {
-            opacity: 1;
-          }
-        }
-      }
-    }
   }
 </style>
 
 <div class="wrapper" style:opacity="{config.appearance.idlingOpacityLevel / config.appearance.maxIdlingOpacityLevel}">
 	{#if editing}
 		<div class="editPage">
-			<div role="none" class="button" on:click={handleDone}>Done</div>
+			<Button on:click={handleDone}>Done</Button>
 			<div class="table">
 				<div class="section presetSection">
 					<div class="title">Formulas</div>
@@ -577,7 +466,6 @@
 							</div>
 						{/each}
 					</div>
-					<!--					<div class="title">Saved</div>-->
 					<div class="list savedPresetList">
 						{#each config.presets as preset, index (preset.id)}
 							<div role="none" class="item" class:selected={preset === selectedPreset}
@@ -588,10 +476,10 @@
 								</div>
 							</div>
 						{:else}
-							<div class="none" style="margin-bottom: 10px;">Empty</div>
+							<Empty style="padding-bottom: 10px">Empty</Empty>
 						{/each}
 					</div>
-					<div role="none" class="button" on:click={handleAddPreset}>+</div>
+					<Button on:click={handleAddPreset}>+</Button>
 				</div>
 				<div class="section triggerSection">
 					<div class="title">Triggers</div>
@@ -615,16 +503,16 @@
 									<KeyBinder bind:key={trigger.hotKey} />
 								</div>
 							{:else}
-								<div class="none">Empty</div>
+								<Empty>Empty</Empty>
 							{/each}
 						</div>
-						<div role="none" class="button" on:click={handleAddTrigger}>+</div>
+						<Button on:click={handleAddTrigger}>+</Button>
 					{:else}
-						<div class="none">
-							Select <br>
-							a <b>preset</b> <br>
+						<Empty>
+							Select or create <br>
+							a <b>preset</b>
 							first
-						</div>
+						</Empty>
 					{/if}
 				</div>
 				<div class="section actionSection">
@@ -642,15 +530,15 @@
 																		bind:script={action.script} />
 								</div>
 							{:else}
-								<div class="none">Empty</div>
+								<Empty>Empty</Empty>
 							{/each}
 						</div>
 					{:else}
-						<div class="none">
-							Select <br>
-							a <b>trigger</b> <br>
+						<Empty>
+							Select or create <br>
+							a <b>trigger</b>
 							first
-						</div>
+						</Empty>
 					{/if}
 				</div>
 				<div class="section functionSection">
@@ -681,22 +569,7 @@
 			</div>
 		</div>
 	{:else}
-		<div class="triggerList">
-			<div role="none" class="button" on:click={handleEdit}>Edit</div>
-			<div class="triggers">
-				{#if selectedPreset}
-					{#each selectedPreset.triggers as trigger (trigger.id)}
-						<div role="none" class="trigger" id={trigger.id} on:click={() => handleRun(trigger)}
-								 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined}>
-							{#if trigger.hotKey}
-								<span>[{trigger.hotKey}]</span>
-							{/if}
-							<span contenteditable="false" bind:innerHTML={trigger.name} />
-						</div>
-					{/each}
-				{/if}
-			</div>
-		</div>
+		<Menu {selectedPreset} on:edit={handleEdit} on:run={e => handleRun(e.detail)} />
 	{/if}
 	<input bind:this={fileSelector} style="display: none;" type="file" accept="application/json"
 				 on:change={handlePresetFileChange}>
