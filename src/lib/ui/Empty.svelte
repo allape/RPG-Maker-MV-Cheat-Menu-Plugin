@@ -14,5 +14,5 @@
 </style>
 
 <div class="wrapper" style="padding: 4px;" {...$$restProps}>
-	<slot></slot>
+	<slot>Empty</slot>
 </div>

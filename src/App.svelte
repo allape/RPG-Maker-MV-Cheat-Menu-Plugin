@@ -330,11 +330,6 @@
             }
           }
 
-          .none {
-            color: lightgray;
-            text-align: center;
-          }
-
           &.presetSection {
             .authorPresets {
               .item {
