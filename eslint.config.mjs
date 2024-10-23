@@ -15,57 +15,64 @@ const compat = new FlatCompat({
 	allConfig: js.configs.all
 });
 
-export default [{
-	ignores: [
-		'**/.DS_Store',
-		'**/node_modules',
-		'build',
-		'.svelte-kit',
-		'package',
-		'**/.env',
-		'**/.env.*',
-		'!**/.env.example',
-		'**/pnpm-lock.yaml',
-		'**/package-lock.json',
-		'**/yarn.lock'
-	]
-}, ...compat.extends(
-	'eslint:recommended',
-	'plugin:@typescript-eslint/recommended',
-	'plugin:svelte/recommended',
-	'prettier'
-), {
-	plugins: {
-		'@typescript-eslint': typescriptEslint
+export default [
+	{
+		ignores: [
+			'**/.DS_Store',
+			'**/node_modules',
+			'build',
+			'.svelte-kit',
+			'package',
+			'**/.env',
+			'**/.env.*',
+			'!**/.env.example',
+			'**/pnpm-lock.yaml',
+			'**/package-lock.json',
+			'**/yarn.lock',
+			'prebuild.cjs',
+			'postbuild.cjs'
+		]
 	},
-
-	languageOptions: {
-		globals: {
-			...globals.browser,
-			...globals.node
+	...compat.extends(
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:svelte/recommended',
+		'prettier'
+	),
+	{
+		plugins: {
+			'@typescript-eslint': typescriptEslint
 		},
 
-		parser: tsParser,
-		ecmaVersion: 2020,
-		sourceType: 'module',
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.node
+			},
 
-		parserOptions: {
-			extraFileExtensions: ['.svelte']
+			parser: tsParser,
+			ecmaVersion: 2020,
+			sourceType: 'module',
+
+			parserOptions: {
+				extraFileExtensions: ['.svelte']
+			}
+		}
+	},
+	{
+		files: ['**/*.svelte'],
+
+		languageOptions: {
+			globals: {
+				__APP_VERSION__: true
+			},
+			parser: parser,
+			ecmaVersion: 5,
+			sourceType: 'script',
+
+			parserOptions: {
+				parser: '@typescript-eslint/parser'
+			}
 		}
 	}
-}, {
-	files: ['**/*.svelte'],
-
-	languageOptions: {
-		globals: {
-			__APP_VERSION__: true
-		},
-		parser: parser,
-		ecmaVersion: 5,
-		sourceType: 'script',
-
-		parserOptions: {
-			parser: '@typescript-eslint/parser'
-		}
-	}
-}];
+];

@@ -39,7 +39,6 @@
         border: 1px solid white;
         opacity: 0.5;
         overflow: hidden;
-        white-space: pre-wrap;
         user-select: none;
         text-align: center;
         padding: 3px;
@@ -64,7 +63,7 @@
 				<div role="none" class="trigger" id={trigger.id} onclick={() => handleRun(trigger)}
 						 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined}>
 					{#if trigger.hotKey}
-						<span>[{trigger.hotKey}]</span>
+						<div>[{trigger.hotKey}]</div>
 					{/if}
 					<span contenteditable="false" bind:innerHTML={trigger.name}></span>
 				</div>

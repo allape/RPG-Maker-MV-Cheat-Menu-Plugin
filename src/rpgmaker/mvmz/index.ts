@@ -398,7 +398,7 @@ export class MVMZ implements IRPGMaker {
 
 	getVersionString(): string {
 		return this.evaluate(
-			`return "NW v" + process.versions["nw"] + ", Node " + process.version;`
+			`return "NW v" + process.versions["nw"] + ", Node " + process.version + ", Chromium " + process.versions["chromium"];`
 		) as string;
 	}
 

@@ -48,5 +48,7 @@ if (remoteFileURL) {
 	fetch(remoteFileURL, {
 		method: 'put',
 		body: new Blob([mergedContent])
-	}).then().catch();
+	})
+		.then()
+		.catch();
 }

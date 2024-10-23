@@ -52,3 +52,9 @@ npm run dev
 # build
 npm run build
 ```
+
+#### Dev FAQ
+
+- By updating to Svelte 5, svelte compiler will use `:where` selector to constraint the style,
+  which will only be available above Chromium 88.
+    - Therefore, [prebuild.cjs](./prebuild.cjs) will change the code of svelte/compiler.
