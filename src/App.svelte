@@ -69,9 +69,7 @@
 
 	function handleEdit() {
 		editing = true;
-		if (!selectedPreset || !config.presets.includes(selectedPreset)) {
-			selectedPresetIndex = 0;
-		}
+		selectedPresetIndex = 0;
 		selectedTriggerIndex = 0;
 	}
 
@@ -84,11 +82,12 @@
 		handleSelectPreset(config.presets.length - 1);
 	}
 
-	function handleRemovePreset(index: number) {
-		const removed = config.presets.splice(index, 1);
+	function handleRemovePreset(e: MouseEvent, index: number) {
+		e.stopPropagation();
+		config.presets.splice(index, 1);
 		config.presets = [...config.presets];
-		if (selectedPreset?.id === removed[0].id) {
-			handleEdit();
+		if (selectedPresetIndex >= index) {
+			selectedPresetIndex -= 1;
 		}
 	}
 
@@ -488,7 +487,7 @@
 									 onclick={() => handleSelectPreset(index)}>
 								<div class="row">
 									<input type="text" placeholder="Name" bind:value={preset.name}>
-									<button onclick={() => handleRemovePreset(index)}>-</button>
+									<button onclickcapture={(e) => handleRemovePreset(e, index)}>-</button>
 								</div>
 							</div>
 						{:else}
