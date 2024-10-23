@@ -2,31 +2,18 @@
 	import { onMount } from 'svelte';
 	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
-	import type { HMTP, HMTPValue, IActor, Script, TeamType } from '../../rpgmaker/declare';
+	import type { HMTPValue, IActor, Script } from '../../rpgmaker/declare';
 	import FlatRow from '../ui/FlatRow.svelte';
-	import HeroSelector from '../ui/SpriteSelector.svelte';
-
-	interface IValue {
-		actorType: TeamType;
-		actorId: IActor['id'];
-		type: HMTP;
-		valueType: Exclude<HMTPValue, number> | 'custom';
-		customValue: number;
-	}
+	import SpriteSelector from '../ui/SpriteSelector.svelte';
+	import { DefaultValue, type IHMTPValue } from './DefaultValue';
 
 	interface Props {
-		value?: IValue;
+		value?: ReturnType<IHMTPValue['HP|MP|TP']>;
 		script?: Script;
 	}
 
 	let {
-		value = $bindable({
-			actorType: 'alias',
-			actorId: -1,
-			type: 'hp',
-			valueType: 'full',
-			customValue: 1
-		}),
+		value = $bindable(DefaultValue['HP|MP|TP']()),
 		script = $bindable('')
 	}: Props = $props();
 
@@ -75,7 +62,7 @@
 	<option value="alias">Alias</option>
 	<option value="enemy">Enemy</option>
 </select>
-<HeroSelector all alive type={value.actorType} bind:value={value.actorId} />
+<SpriteSelector all alive type={value.actorType} bind:value={value.actorId} />
 <FlatRow>
 	<select bind:value={value.type}>
 		<option value="hp">HP</option>

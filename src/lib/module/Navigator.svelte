@@ -2,19 +2,28 @@
 	import { onMount } from 'svelte';
 	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
-	import type { IMap, Script, X, Y } from '../../rpgmaker/declare';
+	import type { IMap, Script } from '../../rpgmaker/declare';
 	import FlatRow from '../ui/FlatRow.svelte';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import HoverCountdown from '../ui/HoverCountdown.svelte';
 	import MapSelector from '../ui/MapSelector.svelte';
-
-	interface IValue {
-		mapId: IMap['id'];
-		x: X;
-		y: Y;
-	}
+	import { DefaultValue, type INavigatorValue } from './DefaultValue';
 
 	const maker = getRPGMaker();
+
+	interface Props {
+		value?: ReturnType<INavigatorValue['Navigator']>;
+		script?: Script;
+		current?: ReturnType<INavigatorValue['Navigator']>;
+		maps?: IMap[];
+	}
+
+	let {
+		value = $bindable(DefaultValue.Navigator()),
+		script = $bindable(''),
+		current = $bindable(value),
+		maps = maker.getMapList()
+	}: Props = $props();
 
 	function make(): Script {
 		const map = maps.find(i => i.id === value.mapId);
@@ -28,25 +37,6 @@
 	function run(): void {
 		maker.evaluate(make());
 	}
-
-
-	interface Props {
-		value?: IValue;
-		script?: Script;
-		current?: IValue;
-		maps?: IMap[];
-	}
-
-	let {
-		value = $bindable({
-			mapId: -1,
-			x: 0,
-			y: 0
-		}),
-		script = $bindable(''),
-		current = $bindable(value),
-		maps = maker.getMapList()
-	}: Props = $props();
 
 	function handleReload() {
 		const actor = maker.getHero();

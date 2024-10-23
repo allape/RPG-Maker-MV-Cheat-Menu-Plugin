@@ -4,13 +4,17 @@
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
+	import { DefaultValue, type ISpeedHackValue } from './DefaultValue';
 
 	interface Props {
-		value?: number;
+		value?: ReturnType<ISpeedHackValue['SpeedHack']>;
 		script?: Script;
 	}
 
-	let { value = $bindable(0), script = $bindable('') }: Props = $props();
+	let {
+		value = $bindable(DefaultValue.SpeedHack()),
+		script = $bindable('')
+	}: Props = $props();
 
 	const maker = getRPGMaker();
 

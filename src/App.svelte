@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { AuthorPresets, FunctionKeys, Functions, type IConfig, type IPreset, type ITrigger } from './app';
 	import { MakeScriptEvent } from './config/event';
+	import { DefaultValue } from './lib/module/DefaultValue';
 	import Button from './lib/ui/Button.svelte';
 	import Empty from './lib/ui/Empty.svelte';
 	import KeyBinder from './lib/ui/KeyBinder.svelte';
@@ -137,7 +138,8 @@
 			{
 				id: id(),
 				type: functionName,
-				value: undefined
+				value: DefaultValue[functionName]?.() || '',
+				script: ''
 			}
 		];
 	}

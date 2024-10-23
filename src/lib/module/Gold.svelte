@@ -4,13 +4,14 @@
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
+	import { DefaultValue, type IGoldValue } from './DefaultValue';
 
 	interface Props {
-		value?: number;
+		value?: ReturnType<IGoldValue['Gold']>;
 		script?: Script;
 	}
 
-	let { value = $bindable(0), script = $bindable('') }: Props = $props();
+	let { value = $bindable(DefaultValue.Gold()), script = $bindable('') }: Props = $props();
 
 	const maker = getRPGMaker();
 

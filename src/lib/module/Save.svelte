@@ -4,13 +4,17 @@
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
+	import { DefaultValue, type ISaveValue } from './DefaultValue';
 
 	interface Props {
-		value?: number;
+		value?: ReturnType<ISaveValue['Save']>;
 		script?: Script;
 	}
 
-	let { value = $bindable(2), script = $bindable('') }: Props = $props();
+	let {
+		value = $bindable(DefaultValue.Save()),
+		script = $bindable('')
+	}: Props = $props();
 
 	const maker = getRPGMaker();
 

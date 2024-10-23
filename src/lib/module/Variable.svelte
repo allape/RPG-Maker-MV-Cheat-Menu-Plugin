@@ -2,25 +2,19 @@
 	import { onMount } from 'svelte';
 	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
-	import type { IVariable, Script, VariableValue } from '../../rpgmaker/declare';
+	import type { IVariable, Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import SearchableSelect from '../ui/SearchableSelect.svelte';
-
-	interface IValue {
-		index: string;
-		value: VariableValue;
-	}
+	import { DefaultValue, type IVariableValue } from './DefaultValue';
 
 	interface Props {
-		value?: IValue;
+		value?: ReturnType<IVariableValue['Variable']>;
 		script?: Script;
 	}
 
 	let {
-		value = $bindable({
-			index: '',
-			value: ''
-		}), script = $bindable('')
+		value = $bindable(DefaultValue.Variable()),
+		script = $bindable('')
 	}: Props = $props();
 
 	const maker = getRPGMaker();

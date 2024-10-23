@@ -2,27 +2,18 @@
 	import { onMount } from 'svelte';
 	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
-	import type { IItem, ItemType, Script } from '../../rpgmaker/declare';
+	import type { IItem, Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import SearchableSelect from '../ui/SearchableSelect.svelte';
-
-	interface IValue {
-		type: ItemType;
-		item: string;
-		amount: number;
-	}
+	import { DefaultValue, type IItemValue } from './DefaultValue';
 
 	interface Props {
-		value?: IValue;
+		value?: ReturnType<IItemValue['Item']>;
 		script?: Script;
 	}
 
 	let {
-		value = $bindable({
-			type: 'item',
-			item: '',
-			amount: 1
-		}),
+		value = $bindable(DefaultValue.Item()),
 		script = $bindable('')
 	}: Props = $props();
 
@@ -32,11 +23,10 @@
 		return items.map(i => `${i.id}: ${i.name}`);
 	}
 
-	let itemList: IItem[] = $state([]);
+	let itemList: IItem[] = $derived(maker.getItemList(value.type));
 	let list: string[] = $state([]);
 
 	function renderItemList() {
-		itemList = maker.getItemList(value.type);
 		list = itemList2StringList(itemList);
 	}
 
@@ -54,11 +44,6 @@
 		renderItemList();
 	}
 
-	$effect(() => {
-		itemList = maker.getItemList(value.type);
-		list = itemList2StringList(itemList);
-	});
-
 	function getter(value: string): string {
 		return `${itemList[list.indexOf(value)]?.amount || 0}`;
 	}
@@ -68,6 +53,7 @@
 	}
 
 	onMount(() => {
+		renderItemList();
 		window.addEventListener(MakeScriptEventName, make);
 		return () => {
 			window.removeEventListener(MakeScriptEventName, make);

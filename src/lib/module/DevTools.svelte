@@ -3,12 +3,14 @@
 	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
+	import { DefaultValue, type IDevToolsValue } from './DefaultValue';
 
 	interface Props {
+		value: ReturnType<IDevToolsValue['DevTools']>;
 		script?: Script;
 	}
 
-	let { script = $bindable('') }: Props = $props();
+	let { value = $bindable(DefaultValue.DevTools()), script = $bindable('') }: Props = $props();
 
 	const maker = getRPGMaker();
 

@@ -5,22 +5,15 @@
 	import type { ISwitch, Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import SearchableSelect from '../ui/SearchableSelect.svelte';
-
-	interface IValue {
-		index: string;
-		value: boolean;
-	}
+	import { DefaultValue, type ISwitchValue } from './DefaultValue';
 
 	interface Props {
-		value?: IValue;
+		value?: ReturnType<ISwitchValue['Switch']>;
 		script?: Script;
 	}
 
 	let {
-		value = $bindable({
-			index: '',
-			value: false
-		}),
+		value = $bindable(DefaultValue.Switch()),
 		script = $bindable('')
 	}: Props = $props();
 
