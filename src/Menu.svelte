@@ -1,21 +1,17 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import type { IPreset, ITrigger } from './app';
 	import Button from './lib/ui/Button.svelte';
 
-	export let selectedPreset: IPreset | undefined;
-
-	const dispatch = createEventDispatcher<{
-		edit: void;
-		run: ITrigger;
-	}>();
-
-	function handleEdit() {
-		dispatch('edit');
+	interface Props {
+		selectedPreset: IPreset | undefined;
+		onedit: () => void;
+		onrun: (trigger: ITrigger) => void;
 	}
 
+	let { selectedPreset, onedit, onrun, ...rest }: Props = $props();
+
 	function handleRun(trigger: ITrigger) {
-		dispatch('run', trigger);
+		onrun?.(trigger);
 	}
 </script>
 
@@ -60,17 +56,17 @@
   }
 </style>
 
-<div class="wrapper" {...$$restProps}>
-	<Button on:click={handleEdit}>Edit</Button>
+<div class="wrapper" {...rest}>
+	<Button onclick={onedit}>Edit</Button>
 	<div class="triggers">
 		{#if selectedPreset}
 			{#each selectedPreset.triggers as trigger (trigger.id)}
-				<div role="none" class="trigger" id={trigger.id} on:click={() => handleRun(trigger)}
+				<div role="none" class="trigger" id={trigger.id} onclick={() => handleRun(trigger)}
 						 title={trigger.hotKey ? `Press [${trigger.hotKey}] to trigger` : undefined}>
 					{#if trigger.hotKey}
 						<span>[{trigger.hotKey}]</span>
 					{/if}
-					<span contenteditable="false" bind:innerHTML={trigger.name} />
+					<span contenteditable="false" bind:innerHTML={trigger.name}></span>
 				</div>
 			{/each}
 		{/if}

@@ -1,3 +1,4 @@
+import { mount } from 'svelte';
 import App from './App.svelte';
 import './style.scss';
 import { getRPGMaker } from './rpgmaker';
@@ -17,7 +18,7 @@ setTimeout(() => {
 	const root = document.createElement('div');
 	window.document.body.appendChild(root);
 
-	(window as IGlobal).__AsCheaterApp = new App({
+	(window as IGlobal).__AsCheaterApp = mount(App, {
 		target: root
 	});
 

@@ -14,14 +14,6 @@
 		y: Y;
 	}
 
-	export let value: IValue = {
-		mapId: -1,
-		x: 0,
-		y: 0
-	};
-
-	export let script: Script = '';
-
 	const maker = getRPGMaker();
 
 	function make(): Script {
@@ -37,9 +29,24 @@
 		maker.evaluate(make());
 	}
 
-	export let current: IValue = value;
 
-	export let maps = maker.getMapList();
+	interface Props {
+		value?: IValue;
+		script?: Script;
+		current?: IValue;
+		maps?: IMap[];
+	}
+
+	let {
+		value = $bindable({
+			mapId: -1,
+			x: 0,
+			y: 0
+		}),
+		script = $bindable(''),
+		current = $bindable(value),
+		maps = maker.getMapList()
+	}: Props = $props();
 
 	function handleReload() {
 		const actor = maker.getHero();
@@ -69,7 +76,7 @@
 
 <FlatRow>
 	<div style="flex: 1;">Current:</div>
-	<HoverCountdown on:timeout={handleReload}>
+	<HoverCountdown ontimeout={handleReload}>
 		<button>🔄</button>
 	</HoverCountdown>
 </FlatRow>
@@ -80,13 +87,15 @@
 <input placeholder="Map ID" type="text" readonly value={maps.find(i=>i.id === current.mapId)?.name || '-'} />
 <FlatRow>
 	<div style="flex: 1;">Destination:</div>
-	<button on:click={handleApply}>↓</button>
+	<button onclick={handleApply}>↓</button>
 </FlatRow>
 <FlatRow>
 	<input placeholder="X" type="number" step="1" bind:value={value.x} />
 	<input placeholder="Y" type="number" step="1" bind:value={value.y} />
 </FlatRow>
-<FormItemWithButton on:click={run}>
+<FormItemWithButton onclick={run}>
 	<MapSelector bind:value={value.mapId} />
-	<span slot="button">GO</span>
+	{#snippet button()}
+		<span>GO</span>
+	{/snippet}
 </FormItemWithButton>

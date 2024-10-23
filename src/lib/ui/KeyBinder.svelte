@@ -1,7 +1,11 @@
 <script lang="ts">
-	export let key: string = '';
+	interface Props {
+		key?: string;
+	}
 
-	let binding: boolean = false;
+	let { key = $bindable('') }: Props = $props();
+
+	let binding: boolean = $state(false);
 
 	function handleKeyUp(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
@@ -37,8 +41,8 @@
   }
 </style>
 
-<button class="wrapper" class:binding={binding} on:click={handleClick} on:pointerleave={handleCancel}
-				on:blur={handleCancel}>
+<button class="wrapper" class:binding={binding} onclick={handleClick} onpointerleave={handleCancel}
+				onblur={handleCancel}>
 	{#if binding}
 		[Esc] to clear, wait...
 	{:else}

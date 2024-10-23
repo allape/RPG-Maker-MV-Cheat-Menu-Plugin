@@ -1,8 +1,7 @@
 <script lang="ts">
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
-	interface $$Props extends Partial<SvelteHTMLElements['button']> {
-	}
+	let { children, ...rest }: SvelteHTMLElements['div'] = $props();
 </script>
 
 <style lang="scss">
@@ -19,6 +18,6 @@
   }
 </style>
 
-<div role="none" class="button" on:click {...$$restProps}>
-	<slot></slot>
+<div role="none" class="button" {...rest}>
+	{@render children?.()}
 </div>

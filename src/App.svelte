@@ -16,22 +16,31 @@
 		__asCheaterAnimationTimer: number;
 	}
 
-	export let editing = false;
+	interface Props {
+		editing?: boolean;
+		config?: IConfig;
+		fileSelector: HTMLInputElement;
+	}
 
-	export let config: IConfig = {
-		appearance: {
-			idlingOpacityLevel: 2,
-			maxIdlingOpacityLevel: 5
-		},
-		presets: []
-	};
-
-	export let fileSelector: HTMLInputElement;
+	let {
+		editing = $bindable(false),
+		config = $bindable({
+			appearance: {
+				idlingOpacityLevel: 2,
+				maxIdlingOpacityLevel: 5
+			},
+			presets: []
+		}),
+		fileSelector = $bindable()
+	}: Props = $props();
 
 	let exportingDelayTimerId: number;
 
-	let selectedPreset: IPreset | undefined;
-	let selectedTrigger: ITrigger | undefined;
+	let selectedPresetIndex: number = $state(0);
+	let selectedTriggerIndex: number = $state(0);
+
+	let selectedPreset: IPreset | undefined = $derived(config.presets[selectedPresetIndex]);
+	let selectedTrigger: ITrigger | undefined = $derived(selectedPreset?.triggers[selectedTriggerIndex]);
 
 	function handleDone() {
 		if (exportingDelayTimerId) {
@@ -42,16 +51,16 @@
 			exportingDelayTimerId = 0;
 			localStorage.setItem(KEY_CONFIG, JSON.stringify(config));
 			editing = false;
-			selectedTrigger = undefined;
+			selectedTriggerIndex = -1;
 		}, 200);
 	}
 
 	function handleEdit() {
 		editing = true;
 		if (!selectedPreset || !config.presets.includes(selectedPreset)) {
-			selectedPreset = config.presets[0];
+			selectedPresetIndex = 0;
 		}
-		selectedTrigger = selectedPreset?.triggers[0];
+		selectedTriggerIndex = 0;
 	}
 
 	function handleAddPreset() {
@@ -60,48 +69,49 @@
 			...config.presets,
 			preset
 		];
-		handleSelectPreset(preset);
+		handleSelectPreset(config.presets.length - 1);
 	}
 
 	function handleRemovePreset(index: number) {
 		const removed = config.presets.splice(index, 1);
 		config.presets = [...config.presets];
-		if (selectedPreset === removed[0]) {
+		if (selectedPreset?.id === removed[0].id) {
 			handleEdit();
 		}
 	}
 
-	function handleSelectPreset(preset: IPreset) {
-		selectedPreset = preset;
-		selectedTrigger = preset.triggers[0];
+	function handleSelectPreset(index: number) {
+		selectedPresetIndex = index;
+		selectedTriggerIndex = 0;
 	}
 
 	function handleAddTrigger() {
-		if (!selectedPreset) {
+		if (!selectedPreset?.id) {
 			return;
 		}
 		// let hotKey = '';
 		// if (selectedPreset.triggers.length < 9) {
 		// 	hotKey = `${selectedPreset.triggers.length + 1}`;
 		// }
-		selectedTrigger = { id: id(), name: 'Trigger', hotKey: '', actions: [] };
-		selectedPreset.triggers.push(selectedTrigger);
+		const newTrigger = { id: id(), name: 'Trigger', hotKey: '', actions: [] };
+		selectedPreset.triggers.push(newTrigger);
 		selectedPreset.triggers = [...selectedPreset.triggers];
+		selectedTriggerIndex = selectedPreset.triggers.length - 1;
 	}
 
 	function handleRemoveTrigger(index: number) {
-		if (!selectedPreset) {
+		if (!selectedPreset?.id) {
 			return;
 		}
 		const removed = selectedPreset.triggers.splice(index, 1);
 		selectedPreset.triggers = [...selectedPreset.triggers];
-		if (selectedTrigger === removed[0]) {
-			selectedTrigger = selectedPreset.triggers[0];
+		if (selectedTrigger?.id === removed[0].id) {
+			selectedTriggerIndex = 0;
 		}
 	}
 
 	function handleMoveTrigger(from: number, to: number) {
-		if (!selectedPreset) {
+		if (!selectedPreset?.id) {
 			return;
 		}
 		if (to < 0 || to >= selectedPreset.triggers.length) {
@@ -113,12 +123,12 @@
 		selectedPreset.triggers = [...selectedPreset.triggers];
 	}
 
-	function handleSelectTrigger(trigger: ITrigger) {
-		selectedTrigger = trigger;
+	function handleSelectTrigger(index: number) {
+		selectedTriggerIndex = index;
 	}
 
 	function handleAddAction(functionName: keyof typeof Functions) {
-		if (!selectedTrigger) {
+		if (!selectedTrigger?.id) {
 			return;
 		}
 
@@ -133,7 +143,7 @@
 	}
 
 	function handleRemoveAction(index: number) {
-		if (!selectedTrigger) {
+		if (!selectedTrigger?.id) {
 			return;
 		}
 		selectedTrigger.actions.splice(index, 1);
@@ -166,7 +176,7 @@
 			...config.presets,
 			cloned
 		];
-		handleSelectPreset(cloned);
+		handleSelectPreset(config.presets.length - 1);
 	}
 
 	function handleImport() {
@@ -189,7 +199,7 @@
 				...config.presets,
 				preset
 			];
-			handleSelectPreset(preset);
+			handleSelectPreset(config.presets.length - 1);
 		};
 		reader.readAsText(file);
 	}
@@ -201,7 +211,7 @@
 		window.dispatchEvent(new MakeScriptEvent());
 		exportingDelayTimerId = setTimeout(() => {
 			exportingDelayTimerId = 0;
-			if (!selectedPreset) {
+			if (!selectedPreset?.id) {
 				return;
 			}
 			const preset = JSON.stringify(selectedPreset);
@@ -230,12 +240,12 @@
 
 		config = savedConfig;
 
-		selectedPreset = config.presets[0];
+		selectedPresetIndex = 0;
 	});
 
 	onMount(() => {
 		const handleKeyUp = (e: KeyboardEvent) => {
-			if (!selectedPreset || editing) {
+			if (!selectedPreset?.id || editing) {
 				return;
 			}
 			selectedPreset?.triggers.filter(t => t.hotKey === e.key).forEach(trigger => {
@@ -376,10 +386,6 @@
                   display: flex;
                   flex-wrap: nowrap;
 
-                  input {
-                    width: 100%;
-                  }
-
                   button {
                     flex: 1;
                   }
@@ -447,7 +453,7 @@
 <div class="wrapper" style:opacity="{config.appearance.idlingOpacityLevel / config.appearance.maxIdlingOpacityLevel}">
 	{#if editing}
 		<div class="editPage">
-			<Button on:click={handleDone}>Done</Button>
+			<Button onclick={handleDone}>Done</Button>
 			<div class="table">
 				<div class="section presetSection">
 					<div class="title">Formulas</div>
@@ -456,43 +462,43 @@
 							<div class="item">
 								<div class="title">
 									<div class="text">{preset.name}</div>
-									<button on:click={() => handleAuthorPreset(preset)}>↓</button>
+									<button onclick={() => handleAuthorPreset(preset)}>↓</button>
 								</div>
 							</div>
 						{/each}
 					</div>
 					<div class="list savedPresetList">
 						{#each config.presets as preset, index (preset.id)}
-							<div role="none" class="item" class:selected={preset === selectedPreset}
-									 on:click={() => handleSelectPreset(preset)}>
+							<div role="none" class="item" class:selected={index === selectedPresetIndex}
+									 onclick={() => handleSelectPreset(index)}>
 								<div class="row">
 									<input type="text" placeholder="Name" bind:value={preset.name}>
-									<button on:click={() => handleRemovePreset(index)}>-</button>
+									<button onclick={() => handleRemovePreset(index)}>-</button>
 								</div>
 							</div>
 						{:else}
 							<Empty style="padding-bottom: 10px">Empty</Empty>
 						{/each}
 					</div>
-					<Button on:click={handleAddPreset}>+</Button>
+					<Button onclick={handleAddPreset}>+</Button>
 				</div>
 				<div class="section triggerSection">
 					<div class="title">Triggers</div>
-					{#if selectedPreset}
+					{#if selectedPreset?.id}
 						<div class="list">
 							{#each selectedPreset.triggers as trigger, index (trigger.id)}
-								<div role="none" class="item" class:selected={trigger === selectedTrigger}
-										 on:click={() => handleSelectTrigger(trigger)}>
+								<div role="none" class="item" class:selected={index === selectedTriggerIndex}
+										 onclick={() => handleSelectTrigger(index)}>
 									<textarea rows="3" placeholder="HTML supported" bind:value={trigger.name}></textarea>
 									<div class="row">
-										<button disabled={index === 0} on:click={() => handleMoveTrigger(index, 0)}>⤒</button>
-										<button disabled={index === 0} on:click={() => handleMoveTrigger(index, index-1)}>↑</button>
-										<button on:click={() => handleRemoveTrigger(index)}>-</button>
+										<button disabled={index === 0} onclick={() => handleMoveTrigger(index, 0)}>⤒</button>
+										<button disabled={index === 0} onclick={() => handleMoveTrigger(index, index-1)}>↑</button>
+										<button onclick={() => handleRemoveTrigger(index)}>-</button>
 										<button disabled={index === selectedPreset.triggers.length-1}
-														on:click={() => handleMoveTrigger(index, index+1)}>↓
+														onclick={() => handleMoveTrigger(index, index+1)}>↓
 										</button>
 										<button disabled={index === selectedPreset.triggers.length-1}
-														on:click={() => handleMoveTrigger(index, (selectedPreset?.triggers.length||0)-1)}>⤓
+														onclick={() => handleMoveTrigger(index, (selectedPreset?.triggers.length||0)-1)}>⤓
 										</button>
 									</div>
 									<KeyBinder bind:key={trigger.hotKey} />
@@ -501,7 +507,7 @@
 								<Empty>Empty</Empty>
 							{/each}
 						</div>
-						<Button on:click={handleAddTrigger}>+</Button>
+						<Button onclick={handleAddTrigger}>+</Button>
 					{:else}
 						<Empty>
 							Select or create <br>
@@ -512,17 +518,18 @@
 				</div>
 				<div class="section actionSection">
 					<div class="title">Actions</div>
-					{#if selectedTrigger}
+					{#if selectedTrigger?.id}
 						<div class="list">
 							{#each selectedTrigger.actions as action, index (action.id)}
+								{@const SvelteComponent = Functions[action.type]}
 								<div class="item">
 									<div class="title">
 										<div class="text">{action.type}</div>
-										<button on:click={() => handleRemoveAction(index)}>-</button>
+										<button onclick={() => handleRemoveAction(index)}>-</button>
 									</div>
-									<svelte:component this={Functions[action.type]}
-																		bind:value={action.value}
-																		bind:script={action.script} />
+									<SvelteComponent
+										bind:value={action.value}
+										bind:script={action.script} />
 								</div>
 							{:else}
 								<Empty>Empty</Empty>
@@ -542,7 +549,7 @@
 						{#each FunctionKeys as name}
 							<div class="item">
 								<div class="name">{name}</div>
-								<button disabled={!selectedTrigger} on:click={() => handleAddAction(name)}>←</button>
+								<button disabled={!selectedTrigger?.id} onclick={() => handleAddAction(name)}>←</button>
 							</div>
 						{/each}
 					</div>
@@ -555,8 +562,8 @@
 								 bind:value={config.appearance.idlingOpacityLevel}>
 				</div>
 				<div class="setting" style="justify-content: flex-end;">
-					<button on:click={handleImport}>Import</button>
-					<button disabled={!selectedPreset} on:click={handleExport}>Export</button>
+					<button onclick={handleImport}>Import</button>
+					<button disabled={!selectedPreset?.id} onclick={handleExport}>Export</button>
 				</div>
 			</div>
 			<div class="versions">
@@ -564,8 +571,8 @@
 			</div>
 		</div>
 	{:else}
-		<Menu {selectedPreset} on:edit={handleEdit} on:run={e => handleRun(e.detail)} />
+		<Menu {selectedPreset} onedit={handleEdit} onrun={trigger => handleRun(trigger)} />
 	{/if}
 	<input bind:this={fileSelector} style="display: none;" type="file" accept="application/json"
-				 on:change={handlePresetFileChange}>
+				 onchange={handlePresetFileChange}>
 </div>

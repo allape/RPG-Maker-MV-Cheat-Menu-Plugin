@@ -2,10 +2,13 @@
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { IMap } from '../../rpgmaker/declare';
 
-	export let value: IMap['id'] = -1;
-	export let readonly: boolean = false;
+	interface Props {
+		value?: IMap['id'];
+		readonly?: boolean;
+		maps?: IMap[];
+	}
 
-	export let maps = getRPGMaker().getMapList();
+	let { value = $bindable(-1), readonly = false, maps = getRPGMaker().getMapList() }: Props = $props();
 </script>
 
 <select bind:value={value} disabled={readonly}>

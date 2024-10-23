@@ -52,9 +52,7 @@ declare global {
 
 	const $dataMapInfos: Game_Map_Info[];
 
-	class Game_Skill {
-
-	}
+	class Game_Skill {}
 
 	class Game_State {
 		id: number;
@@ -166,41 +164,39 @@ declare global {
 		_data: Game_Actor[];
 	}
 
-	class Game_Weapon extends Game_Item {
-	}
+	class Game_Weapon extends Game_Item {}
 
-	class Game_Armor extends Game_Item {
-	}
+	class Game_Armor extends Game_Item {}
 
 	class Data_System {
 		switches: string[];
 		variables: string[];
 		terms: {
-			params: string[]
+			params: string[];
 		};
 	}
 
 	class DataManager {
-		static loadGame(saveFieldId: number): any
+		static loadGame(saveFieldId: number): any;
 
-		static setupNewGame(): any
+		static setupNewGame(): any;
 
-		static saveGame(saveFieldId: number): any
+		static saveGame(saveFieldId: number): any;
 	}
 
 	class SoundManager {
-		static playSystemSound(soundIndex?: number): void
+		static playSystemSound(soundIndex?: number): void;
 
-		static _playSystemSound_proxy(soundIndex?: number): void
+		static _playSystemSound_proxy(soundIndex?: number): void;
 	}
 
 	class AudioManager {
 		static _playBgm_proxy: typeof AudioManager.playBgm;
 		static _playBgs_proxy: typeof AudioManager.playBgs;
 
-		static playBgm(bgm: any, pos?: number): void
+		static playBgm(bgm: any, pos?: number): void;
 
-		static playBgs(bgs: any, pos?: number): void
+		static playBgs(bgs: any, pos?: number): void;
 	}
 
 	class SceneManager {
@@ -209,8 +205,7 @@ declare global {
 }
 
 export class MVMZScriptGenerator implements ICheatScriptGenerator {
-	constructor(private readonly maker: IRPGMaker) {
-	}
+	constructor(private readonly maker: IRPGMaker) {}
 
 	openDevTools(): Script {
 		return `require('nw.gui').Window.get().showDevTools(); SoundManager.playSystemSound(1);`;
@@ -383,15 +378,15 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 	}
 
 	setVariable(v: IVariable, value: VariableValue): Script {
-		if (typeof value === 'string') {
-			return `
-				$gameVariables.setValue(${v.id}, decodeURIComponent("${encodeURIComponent(value)}"));
-				SoundManager.playSystemSound(1);
-			`;
+		return `
+		if (typeof $gameVariables.value(${v.id})) {
+			$gameVariables.setValue(${v.id}, decodeURIComponent("${encodeURIComponent(value)}"));
+		} else {
+			$gameVariables.setValue(${v.id}, ${parseInt(`${value}`, 10) || 0});
 		}
-		return `$gameVariables.setValue(${v.id}, ${value});SoundManager.playSystemSound(1);`;
+		SoundManager.playSystemSound(1);
+		`;
 	}
-
 }
 
 export class MVMZ implements IRPGMaker {
@@ -402,7 +397,9 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	getVersionString(): string {
-		return this.evaluate(`return "NW v" + process.versions["nw"] + ", Node " + process.version;`) as string;
+		return this.evaluate(
+			`return "NW v" + process.versions["nw"] + ", Node " + process.version;`
+		) as string;
 	}
 
 	setup(): void {
@@ -424,7 +421,7 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	getEnemyList(): IActor[] {
-		return $gameTroop.members().map(i => ({
+		return $gameTroop.members().map((i) => ({
 			id: i._actorId,
 			name: i._name,
 			x: 0,
@@ -433,7 +430,7 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	getAliasList(): IActor[] {
-		return $gameParty.allMembers().map(i => ({
+		return $gameParty.allMembers().map((i) => ({
 			id: i._actorId,
 			name: i._name,
 			x: 0,
@@ -446,7 +443,9 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	getHero(): IActor {
-		const heroActor = $gameParty.allMembers().find(i => i._characterName === $gamePlayer._characterName);
+		const heroActor = $gameParty
+			.allMembers()
+			.find((i) => i._characterName === $gamePlayer._characterName);
 		return {
 			id: heroActor?._actorId || 0,
 			name: heroActor?._name || '-',
@@ -470,7 +469,7 @@ export class MVMZ implements IRPGMaker {
 			default:
 				throw new Error(`Invalid item type: ${it}`);
 		}
-		return itemList.filter(Boolean).map(i => ({
+		return itemList.filter(Boolean).map((i) => ({
 			id: i.id,
 			name: i.name,
 			type: it,
@@ -514,4 +513,3 @@ export class MVMZ implements IRPGMaker {
 		}
 	}
 }
-

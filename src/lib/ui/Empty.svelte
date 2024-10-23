@@ -1,9 +1,7 @@
 <script lang="ts">
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
-	interface $$Props extends Partial<SvelteHTMLElements['div']> {
-
-	}
+	let { children, ...rest }: SvelteHTMLElements['div'] = $props();
 </script>
 
 <style lang="scss">
@@ -13,6 +11,6 @@
   }
 </style>
 
-<div class="wrapper" style="padding: 4px;" {...$$restProps}>
-	<slot>Empty</slot>
+<div class="wrapper" style="padding: 4px;" {...rest}>
+	{#if children}{@render children()}{:else}Empty{/if}
 </div>

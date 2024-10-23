@@ -14,14 +14,21 @@
 		customValue: number;
 	}
 
-	export let value: IValue = {
-		actorType: 'alias',
-		actorId: -1,
-		type: 'hp',
-		valueType: 'full',
-		customValue: 1
-	};
-	export let script: Script = '';
+	interface Props {
+		value?: IValue;
+		script?: Script;
+	}
+
+	let {
+		value = $bindable({
+			actorType: 'alias',
+			actorId: -1,
+			type: 'hp',
+			valueType: 'full',
+			customValue: 1
+		}),
+		script = $bindable('')
+	}: Props = $props();
 
 	const maker = getRPGMaker();
 
@@ -86,4 +93,4 @@
 {#if value.valueType === 'custom'}
 	<input type="number" min="0" step="1" bind:value={value.customValue}>
 {/if}
-<button on:click={run}>Set Now</button>
+<button onclick={run}>Set Now</button>

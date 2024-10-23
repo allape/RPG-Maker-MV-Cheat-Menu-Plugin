@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { type Snippet } from 'svelte';
 
-	const dispatch = createEventDispatcher();
-
-	function handleClick() {
-		dispatch('click');
+	interface Props {
+		children?: Snippet;
+		button?: Snippet;
+		onclick?: HTMLButtonElement['onclick'];
 	}
+
+	let { children, button, onclick }: Props = $props();
 </script>
 
 <style>
@@ -16,7 +18,7 @@
         flex-direction: row;
         width: 100%;
 
-        & > input, & > select {
+        & > :global(input), & > :global(select) {
             width: 100%;
             align-self: stretch;
         }
@@ -24,8 +26,8 @@
 </style>
 
 <div class="wrapper">
-	<slot></slot>
-	<button on:click={handleClick}>
-		<slot name="button">Button</slot>
+	{@render children?.()}
+	<button onclick={onclick}>
+		{#if button}{@render button()}{:else}Click{/if}
 	</button>
 </div>

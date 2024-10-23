@@ -4,7 +4,11 @@
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
 
-	export let script: Script = '';
+	interface Props {
+		script?: Script;
+	}
+
+	let { script = $bindable('') }: Props = $props();
 
 	const maker = getRPGMaker();
 
@@ -26,4 +30,4 @@
 	});
 </script>
 
-<button on:click={run}>Open Dev Tools</button>
+<button onclick={run}>Open Dev Tools</button>

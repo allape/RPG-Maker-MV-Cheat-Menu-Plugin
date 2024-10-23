@@ -5,8 +5,12 @@
 	import type { Script } from '../../rpgmaker/declare';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 
-	export let value: number = 2;
-	export let script: Script = '';
+	interface Props {
+		value?: number;
+		script?: Script;
+	}
+
+	let { value = $bindable(2), script = $bindable('') }: Props = $props();
 
 	const maker = getRPGMaker();
 
@@ -28,7 +32,9 @@
 	});
 </script>
 
-<FormItemWithButton on:click={run}>
+<FormItemWithButton onclick={run}>
 	<input placeholder="Slot index" min="1" max="99" type="number" bind:value={value}>
-	<span slot="button">Save Now</span>
+	{#snippet button()}
+		<span>Save Now</span>
+	{/snippet}
 </FormItemWithButton>

@@ -1,29 +1,27 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
-	import type { SvelteHTMLElements } from 'svelte/elements';
+	import { onMount } from 'svelte';
 
-	interface $$Props extends Partial<SvelteHTMLElements['div']> {
+	interface Props {
 		title?: string;
 		timeout?: number;
+		children?: import('svelte').Snippet;
+		ontimeout?: () => void;
 	}
 
-	const dispatch = createEventDispatcher<Record<'timeout', void>>();
+	let { title = $bindable(''), timeout = 3000, children, ontimeout, ...rest }: Props = $props();
 
-	export let title: Exclude<$$Props['title'], undefined> = '';
-	export let timeout: Exclude<$$Props['timeout'], undefined> = 3000;
-
-	$: {
+	$effect(() => {
 		title = `Hover for ${timeout / 1000}s or click this to trigger`;
-	}
+	});
 
 	let triggered: boolean = false;
 	let timer: number;
 
-	let countdown: number = 0;
+	let countdown: number = $state(0);
 
 	function trigger() {
 		triggered = true;
-		dispatch('timeout');
+		ontimeout?.();
 		clearTimeout(timer);
 		countdown = 0;
 	}
@@ -82,10 +80,10 @@
   }
 </style>
 
-<div role="none" class="wrapper" {title} on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}
-		 on:click={trigger}
-		 {...$$restProps}>
-	<slot></slot>
+<div role="none" class="wrapper" {title} onmouseenter={handleMouseEnter} onmouseleave={handleMouseLeave}
+		 onclick={trigger}
+		 {...rest}>
+	{@render children?.()}
 	{#if countdown > 0}
 		<div class="countdown">{(countdown / 1000).toFixed(0)}</div>
 	{/if}

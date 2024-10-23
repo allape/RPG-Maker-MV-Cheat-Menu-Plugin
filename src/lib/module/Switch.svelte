@@ -11,11 +11,18 @@
 		value: boolean;
 	}
 
-	export let value: IValue = {
-		index: '',
-		value: false
-	};
-	export let script: Script = '';
+	interface Props {
+		value?: IValue;
+		script?: Script;
+	}
+
+	let {
+		value = $bindable({
+			index: '',
+			value: false
+		}),
+		script = $bindable('')
+	}: Props = $props();
 
 	const maker = getRPGMaker();
 
@@ -52,7 +59,9 @@
 									placeholder="Search for name"
 									displayValuePlaceholder="On or off"
 									bind:value={value.index} />
-<FormItemWithButton on:click={run}>
+<FormItemWithButton onclick={run}>
 	<input type="checkbox" bind:checked={value.value}>
-	<span slot="button">Set</span>
+	{#snippet button()}
+		<span>Set</span>
+	{/snippet}
 </FormItemWithButton>

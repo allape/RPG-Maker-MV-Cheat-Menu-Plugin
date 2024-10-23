@@ -1,23 +1,27 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { IActor } from '../../rpgmaker/declare';
 
-	export let type: 'alias' | 'enemy' = 'alias';
-
-	export let all: boolean = false;
-	export let alive: boolean = false;
-
-	export let value: number = 0;
-	export let actors: IActor[] = [];
-
-	let label: string = '';
-
-	$: {
-		label = type === 'alias' ? 'Alias' : 'Enemy';
+	interface Props {
+		type?: 'alias' | 'enemy';
+		all?: boolean;
+		alive?: boolean;
+		value?: number;
+		actors?: IActor[];
 	}
 
-	onMount(() => {
+	let {
+		type = 'alias',
+		all = false,
+		alive = false,
+		value = $bindable(0),
+		actors = $bindable([])
+	}: Props = $props();
+
+	let label: string = $state('');
+
+	$effect(() => {
+		label = type === 'alias' ? 'Alias' : 'Enemy';
 		try {
 			if (type === 'alias') {
 				actors = getRPGMaker().getAliasList();
@@ -32,14 +36,10 @@
 
 <select bind:value={value}>
 	{#if alive}
-		<slot name="alive">
-			<option value={-2}>Alive {label}s</option>
-		</slot>
+		<option value={-2}>Alive {label}s</option>
 	{/if}
 	{#if all}
-		<slot name="all">
-			<option value={-1}>All {label}s</option>
-		</slot>
+		<option value={-1}>All {label}s</option>
 	{/if}
 	{#each actors as actor (actor.id)}
 		<option value={actor.id}>{actor.id}: {actor.name || '-'}</option>

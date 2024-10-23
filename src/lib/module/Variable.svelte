@@ -11,16 +11,22 @@
 		value: VariableValue;
 	}
 
-	export let value: IValue = {
-		index: '',
-		value: ''
-	};
-	export let script: Script = '';
+	interface Props {
+		value?: IValue;
+		script?: Script;
+	}
+
+	let {
+		value = $bindable({
+			index: '',
+			value: ''
+		}), script = $bindable('')
+	}: Props = $props();
 
 	const maker = getRPGMaker();
 
 	let variableList: IVariable[] = [];
-	let list: string[] = [];
+	let list: string[] = $state([]);
 
 	function renderVariableList() {
 		variableList = maker.getVariableList();
@@ -63,7 +69,9 @@
 									placeholder="Search for name or value"
 									displayValuePlaceholder="Variable current value"
 									bind:value={value.index} />
-<FormItemWithButton on:click={run}>
+<FormItemWithButton onclick={run}>
 	<input placeholder="Target value" type="text" bind:value={value.value}>
-	<span slot="button">Set</span>
+	{#snippet button()}
+		<span>Set</span>
+	{/snippet}
 </FormItemWithButton>

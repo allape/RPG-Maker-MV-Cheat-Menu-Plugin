@@ -12,12 +12,19 @@
 		amount: number;
 	}
 
-	export let value: IValue = {
-		type: 'item',
-		item: '',
-		amount: 1
-	};
-	export let script: Script = '';
+	interface Props {
+		value?: IValue;
+		script?: Script;
+	}
+
+	let {
+		value = $bindable({
+			type: 'item',
+			item: '',
+			amount: 1
+		}),
+		script = $bindable('')
+	}: Props = $props();
 
 	const maker = getRPGMaker();
 
@@ -25,8 +32,8 @@
 		return items.map(i => `${i.id}: ${i.name}`);
 	}
 
-	let itemList: IItem[] = [];
-	let list: string[] = [];
+	let itemList: IItem[] = $state([]);
+	let list: string[] = $state([]);
 
 	function renderItemList() {
 		itemList = maker.getItemList(value.type);
@@ -47,19 +54,10 @@
 		renderItemList();
 	}
 
-	$: {
-		switch (value.type) {
-			case 'weapon':
-				itemList = maker.getItemList('weapon');
-				break;
-			case 'armor':
-				itemList = maker.getItemList('armor');
-				break;
-			default:
-				itemList = maker.getItemList('item');
-		}
+	$effect(() => {
+		itemList = maker.getItemList(value.type);
 		list = itemList2StringList(itemList);
-	}
+	});
 
 	function getter(value: string): string {
 		return `${itemList[list.indexOf(value)]?.amount || 0}`;
@@ -70,7 +68,6 @@
 	}
 
 	onMount(() => {
-		renderItemList();
 		window.addEventListener(MakeScriptEventName, make);
 		return () => {
 			window.removeEventListener(MakeScriptEventName, make);
@@ -88,7 +85,9 @@
 									placeholder="Search for name or value"
 									displayValuePlaceholder="amount"
 									bind:value={value.item} />
-<FormItemWithButton on:click={run}>
+<FormItemWithButton onclick={run}>
 	<input placeholder="Target value" type="text" bind:value={value.amount}>
-	<span slot="button">Set</span>
+	{#snippet button()}
+		<span>Set</span>
+	{/snippet}
 </FormItemWithButton>

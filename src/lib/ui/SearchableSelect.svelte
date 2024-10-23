@@ -1,41 +1,45 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	interface Props {
+		list?: string[];
+		value?: string | undefined;
+		keyword?: string;
+		placeholder?: string | undefined;
+		filter?: ((keyword: string, val: string) => boolean) | undefined;
+		getter?: ((val: string) => string) | undefined;
+		displayedValue?: string;
+		displayValuePlaceholder?: string;
+		onchange?: (v?: string) => void;
+	}
 
-	const dispatch = createEventDispatcher();
+	let {
+		list = [],
+		value = $bindable(undefined),
+		keyword = $bindable(''),
+		placeholder = undefined,
+		filter = undefined,
+		getter = undefined,
+		displayedValue = $bindable(''),
+		displayValuePlaceholder = '',
+		onchange
+	}: Props = $props();
 
-	export let list: string[] = [];
-	export let value: string | undefined = undefined;
-	export let keyword: string = '';
-	export let placeholder: string | undefined = undefined;
+	let renderedList: string[] = $state([]);
 
-	export let filter: ((keyword: string, val: string) => boolean) | undefined = undefined;
-
-	export let getter: ((val: string) => string) | undefined = undefined;
-	export let displayedValue = '';
-	export let displayValuePlaceholder: string = '';
-
-	let renderedList: string[] = [];
-
-	$: {
+	$effect(() => {
 		const lowedKeyword = keyword.toLowerCase();
 		renderedList = list.filter(item => item?.toLowerCase().includes(lowedKeyword) || filter?.(lowedKeyword, item));
 		if (getter && value) {
 			displayedValue = getter(value);
 		}
-	}
+	});
 
-	const handleChange = (e: Event) => {
-		const target = e.target as HTMLSelectElement;
-		const v = target?.value;
-		dispatch('change', v);
-		if (getter) {
-			displayedValue = getter(v);
-		}
-	};
+	function handleChange() {
+		onchange?.(value);
+	}
 </script>
 
 <input placeholder={placeholder} type="text" bind:value={keyword} />
-<select bind:value={value} on:change={handleChange}>
+<select bind:value={value} onchange={handleChange}>
 	{#each renderedList as item}
 		<option value={item}>{item}</option>
 	{/each}

@@ -1,3 +1,9 @@
+<script lang="ts">
+	import type { SvelteHTMLElements } from 'svelte/elements';
+
+	let { children }: SvelteHTMLElements['div'] = $props();
+</script>
+
 <style>
     .flat {
         display: flex;
@@ -13,5 +19,5 @@
 </style>
 
 <div class="flat">
-	<slot></slot>
+	{@render children?.()}
 </div>

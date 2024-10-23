@@ -4,8 +4,12 @@
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
 
-	export let value: string = `alert('Hello World!');`;
-	export let script: Script = '';
+	interface Props {
+		value?: string;
+		script?: Script;
+	}
+
+	let { value = $bindable(`alert('Hello World!');`), script = $bindable('') }: Props = $props();
 
 	const maker = getRPGMaker();
 
@@ -42,6 +46,6 @@
 
 <div class="wrapper">
 	<textarea placeholder="Put code here" rows="5" bind:value={value}></textarea>
-	<button on:click={run}>Run</button>
+	<button onclick={run}>Run</button>
 </div>
 
