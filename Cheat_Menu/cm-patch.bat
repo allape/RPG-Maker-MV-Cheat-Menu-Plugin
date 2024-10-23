@@ -10,5 +10,17 @@ echo If patcher exits with error, run "cm-patch-fix.bat" to restore the game.
 
 echo Patcher should be opened now...
 
-.\Game.exe
+if exist .\nw.exe (
+    .\nw.exe .
+) else if exist .\Game.exe (
+    .\Game.exe
+) else (
+    for /r %%i in (*.exe) do (
+        if not "%%~nxi" == "notification_helper.exe" (
+            echo Run %%i as Game.exe
+            %%i
+        )
+    )
+)
+
 .\cm-patch-fix.bat
