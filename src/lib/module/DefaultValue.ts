@@ -61,6 +61,11 @@ export interface IDevToolsValue extends Pick<Record<FunctionTypes, () => unknown
 	DevTools: () => null;
 }
 
+export interface IChronusTimeHackValue
+	extends Pick<Record<FunctionTypes, () => unknown>, 'ChronusTimeHack'> {
+	ChronusTimeHack: () => number;
+}
+
 export type IDefaultValue = IGoldValue &
 	IHMTPValue &
 	INavigatorValue &
@@ -70,7 +75,8 @@ export type IDefaultValue = IGoldValue &
 	ISaveValue &
 	ISpeedHackValue &
 	IScriptValue &
-	IDevToolsValue;
+	IDevToolsValue &
+	IChronusTimeHackValue;
 
 export const DefaultValue: IDefaultValue = {
 	Gold: () => 10_000,
@@ -102,5 +108,6 @@ export const DefaultValue: IDefaultValue = {
 	Save: () => 2,
 	SpeedHack: () => 0,
 	Script: () => `alert('Hello World!');`,
-	DevTools: () => null
+	DevTools: () => null,
+	ChronusTimeHack: () => 0
 };

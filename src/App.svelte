@@ -1,6 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { AuthorPresets, FunctionKeys, Functions, type IConfig, type IPreset, type ITrigger } from './app';
+	import {
+		AllFunctions,
+		AuthorPresets,
+		FunctionKeys,
+		type FunctionTypes,
+		GetAvailableFunctionKeys,
+		type IConfig,
+		type IPreset,
+		type ITrigger
+	} from './app';
 	import { MakeScriptEvent } from './config/event';
 	import { DefaultValue } from './lib/module/DefaultValue';
 	import Button from './lib/ui/Button.svelte';
@@ -42,6 +51,8 @@
 
 	let selectedPreset: IPreset | undefined = $derived(config.presets[selectedPresetIndex]);
 	let selectedTrigger: ITrigger | undefined = $derived(selectedPreset?.triggers[selectedTriggerIndex]);
+
+	let AvailableFunctionKeys: FunctionTypes[] = $state(GetAvailableFunctionKeys());
 
 	function handleDone() {
 		if (exportingDelayTimerId) {
@@ -130,7 +141,7 @@
 		selectedTriggerIndex = index;
 	}
 
-	function handleAddAction(functionName: keyof typeof Functions) {
+	function handleAddAction(functionName: keyof typeof AllFunctions) {
 		if (!selectedTrigger?.id) {
 			return;
 		}
@@ -527,7 +538,7 @@
 					{#if selectedTrigger?.id}
 						<div class="list">
 							{#each selectedTrigger.actions as action, index (action.id)}
-								{@const SvelteComponent = Functions[action.type]}
+								{@const SvelteComponent = AllFunctions[action.type]}
 								<div class="item">
 									<div class="title">
 										<div class="text">{action.type}</div>
@@ -550,12 +561,17 @@
 					{/if}
 				</div>
 				<div class="section functionSection">
-					<div class="title">Functions</div>
+					<div class="title">
+						<span class="text">Functions</span>
+						<button onclick={() => AvailableFunctionKeys = GetAvailableFunctionKeys()}>🔄</button>
+					</div>
 					<div class="list">
 						{#each FunctionKeys as name}
 							<div class="item">
 								<div class="name">{name}</div>
-								<button disabled={!selectedTrigger?.id} onclick={() => handleAddAction(name)}>←</button>
+								<button disabled={!selectedTrigger?.id || !AvailableFunctionKeys.includes(name)}
+												onclick={() => handleAddAction(name)}>←
+								</button>
 							</div>
 						{/each}
 					</div>
