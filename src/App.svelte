@@ -111,13 +111,15 @@
 		}
 	}
 
-	function handleMoveTrigger(from: number, to: number) {
+	function handleMoveTrigger(e: MouseEvent, from: number, to: number) {
+		e.stopPropagation();
 		if (!selectedPreset?.id) {
 			return;
 		}
 		if (to < 0 || to >= selectedPreset.triggers.length) {
 			return;
 		}
+		selectedTriggerIndex = to;
 		const temp = selectedPreset.triggers[from];
 		selectedPreset.triggers[from] = selectedPreset.triggers[to];
 		selectedPreset.triggers[to] = temp;
@@ -134,13 +136,13 @@
 		}
 
 		selectedTrigger.actions = [
-			...selectedTrigger.actions,
 			{
 				id: id(),
 				type: functionName,
 				value: DefaultValue[functionName]?.() || '',
 				script: ''
-			}
+			},
+			...selectedTrigger.actions
 		];
 	}
 
@@ -493,14 +495,16 @@
 										 onclick={() => handleSelectTrigger(index)}>
 									<textarea rows="3" placeholder="HTML supported" bind:value={trigger.name}></textarea>
 									<div class="row">
-										<button disabled={index === 0} onclick={() => handleMoveTrigger(index, 0)}>⤒</button>
-										<button disabled={index === 0} onclick={() => handleMoveTrigger(index, index-1)}>↑</button>
+										<button disabled={index === 0} onclickcapture={(e) => handleMoveTrigger(e, index, 0)}>⤒</button>
+										<button disabled={index === 0} onclickcapture={(e) => handleMoveTrigger(e, index, index-1)}>↑
+										</button>
 										<button onclick={() => handleRemoveTrigger(index)}>-</button>
 										<button disabled={index === selectedPreset.triggers.length-1}
-														onclick={() => handleMoveTrigger(index, index+1)}>↓
+														onclickcapture={(e) => handleMoveTrigger(e, index, index+1)}>↓
 										</button>
 										<button disabled={index === selectedPreset.triggers.length-1}
-														onclick={() => handleMoveTrigger(index, (selectedPreset?.triggers.length||0)-1)}>⤓
+														onclickcapture={(e) => handleMoveTrigger(e, index, (selectedPreset?.triggers.length||0)-1)}>
+											⤓
 										</button>
 									</div>
 									<KeyBinder bind:key={trigger.hotKey} />
