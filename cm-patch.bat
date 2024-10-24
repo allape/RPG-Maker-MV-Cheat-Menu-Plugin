@@ -17,7 +17,7 @@ if exist .\nw.exe (
 ) else (
     for /r %%i in (*.exe) do (
         if not "%%~nxi" == "notification_helper.exe" (
-            echo run %%i
+            echo Run %%i as Game.exe
             %%i
         )
     )
