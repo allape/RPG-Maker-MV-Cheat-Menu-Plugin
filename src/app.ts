@@ -4,6 +4,7 @@ import Gold from './lib/module/Gold.svelte';
 import SpriteHMTP from './lib/module/HMTP.svelte';
 import Item from './lib/module/Item.svelte';
 import Navigator from './lib/module/Navigator.svelte';
+import OptionSelect from './lib/module/OptionSelect.svelte';
 import Save from './lib/module/Save.svelte';
 import ScriptEval from './lib/module/Script.svelte';
 import SpeedHack from './lib/module/SpeedHack.svelte';
@@ -56,6 +57,7 @@ export const AllFunctions = {
 	Save,
 	SpeedHack,
 	Script: ScriptEval,
+	OptionSelect,
 
 	DevTools,
 
@@ -76,6 +78,7 @@ export interface IFunction {
 		| typeof Save
 		| typeof SpeedHack
 		| typeof ScriptEval
+		| typeof OptionSelect
 		| typeof DevTools
 		| typeof ChronusTimeHack;
 	isAvailable: () => boolean;
@@ -116,6 +119,10 @@ export const Functions: Record<FunctionTypes, IFunction> = {
 	},
 	Script: {
 		component: ScriptEval,
+		isAvailable: () => true
+	},
+	OptionSelect: {
+		component: OptionSelect,
 		isAvailable: () => true
 	},
 	DevTools: {

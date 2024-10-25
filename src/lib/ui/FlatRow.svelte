@@ -12,7 +12,7 @@
         flex-direction: row;
         width: 100%;
 
-        & > input, & > select {
+        & > :global(input), & > :global(select) {
             width: 100%;
         }
     }

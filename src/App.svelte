@@ -69,7 +69,6 @@
 
 	function handleEdit() {
 		editing = true;
-		selectedPresetIndex = 0;
 		selectedTriggerIndex = 0;
 	}
 

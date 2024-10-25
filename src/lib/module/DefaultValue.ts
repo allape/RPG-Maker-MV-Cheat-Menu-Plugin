@@ -57,6 +57,13 @@ export interface IScriptValue extends Pick<Record<FunctionTypes, () => unknown>,
 	Script: () => string;
 }
 
+export interface IOptionSelect extends Pick<Record<FunctionTypes, () => unknown>, 'OptionSelect'> {
+	OptionSelect: () => {
+		index: number;
+		sceneWindowName: string;
+	};
+}
+
 export interface IDevToolsValue extends Pick<Record<FunctionTypes, () => unknown>, 'DevTools'> {
 	DevTools: () => null;
 }
@@ -75,6 +82,7 @@ export type IDefaultValue = IGoldValue &
 	ISaveValue &
 	ISpeedHackValue &
 	IScriptValue &
+	IOptionSelect &
 	IDevToolsValue &
 	IChronusTimeHackValue;
 
@@ -108,6 +116,10 @@ export const DefaultValue: IDefaultValue = {
 	Save: () => 2,
 	SpeedHack: () => 0,
 	Script: () => `alert('Hello World!');`,
+	OptionSelect: () => ({
+		index: 0,
+		sceneWindowName: ''
+	}),
 	DevTools: () => null,
 	ChronusTimeHack: () => 0
 };
