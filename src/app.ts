@@ -82,52 +82,64 @@ export interface IFunction {
 		| typeof DevTools
 		| typeof ChronusTimeHack;
 	isAvailable: () => boolean;
+	description?: string;
 }
 
 export const Functions: Record<FunctionTypes, IFunction> = {
 	Gold: {
 		component: Gold,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Make money or lose it'
 	},
 	'HP|MP|TP': {
 		component: SpriteHMTP,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Change HP, MP, or TP of alias/enemy'
 	},
 	Navigator: {
 		component: Navigator,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Teleport from one map to another'
 	},
 	Variable: {
 		component: Variable,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Change game variables'
 	},
 	Switch: {
 		component: Switch,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Change game switches'
 	},
 	Item: {
 		component: Item,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Gain item/weapon/armor or lose it'
 	},
 	Save: {
 		component: Save,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Save game at any circumstances'
 	},
 	SpeedHack: {
 		component: SpeedHack,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Change game speed (may cause game crash)'
 	},
 	Script: {
 		component: ScriptEval,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Run script in game console'
 	},
 	OptionSelect: {
 		component: OptionSelect,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Fast choose option from menu/list'
 	},
 	DevTools: {
 		component: DevTools,
-		isAvailable: () => true
+		isAvailable: () => true,
+		description: 'Open DevTools in game window (may not working)'
 	},
 	ChronusTimeHack: {
 		component: ChronusTimeHack,
@@ -138,7 +150,8 @@ export const Functions: Record<FunctionTypes, IFunction> = {
 				typeof anyWindow.$gameSystem?.chronus === 'function' &&
 				typeof anyWindow.$gameSystem.chronus().addTime === 'function'
 			);
-		}
+		},
+		description: 'Change time in game with chronus plugin'
 	}
 };
 

@@ -1,6 +1,6 @@
 [
   {
-    "name": "Winner",
+    "name": "Fun Gamer",
     "triggers": [
       {
         "name": "<span style=\"color:white;\">Save<br/> at 2</span>",
@@ -99,6 +99,67 @@
             "type": "SpeedHack",
             "value": 2,
             "script": "clearInterval(SceneManager._speedHackIntervalId); SoundManager.playSystemSound(1);\n\t\t\t\tSceneManager._speedHackIntervalId = setInterval(function(){SceneManager.updateScene();}, 1000 / 120);\n\t\t\t"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fast Menu",
+    "triggers": [
+      {
+        "name": "Choose <span style=\"color:orangered\">1st</span>",
+        "hotKey": "1",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": {
+              "index": 0,
+              "sceneWindowName": ""
+            },
+            "script": "\nif (!window.SceneManager) return;\n\nvar scene = SceneManager._scene;\nif (!scene) return;\n\nvar windowName = decodeURIComponent('');\n\nif (windowName) {\n\tscene = scene[windowName];\n\tif (!scene) return;\n}\n\nif (!(scene instanceof Window_Selectable)) {\n\tvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\n\tscene = found[1];\n}\n\nif (!scene) return;\n\nvar index = parseInt('0');\nif (isNaN(index) || index < 0) {\n\talert('Invalid index');\n}\n\nscene._index = parseInt('0');\nscene.processOk();\n"
+          }
+        ]
+      },
+      {
+        "name": "Choose <span style=\"color:gold\">2nd</span>",
+        "hotKey": "2",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": {
+              "index": 1,
+              "sceneWindowName": ""
+            },
+            "script": "\nif (!window.SceneManager) return;\n\nvar scene = SceneManager._scene;\nif (!scene) return;\n\nvar windowName = decodeURIComponent('');\n\nif (windowName) {\n\tscene = scene[windowName];\n\tif (!scene) return;\n}\n\nif (!(scene instanceof Window_Selectable)) {\n\tvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\n\tscene = found[1];\n}\n\nif (!scene) return;\n\nvar index = parseInt('1');\nif (isNaN(index) || index < 0) {\n\talert('Invalid index');\n}\n\nscene._index = parseInt('1');\nscene.processOk();\n"
+          }
+        ]
+      },
+      {
+        "name": "Choose <span style=\"color:green\">3rd</span>",
+        "hotKey": "3",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": {
+              "index": 2,
+              "sceneWindowName": ""
+            },
+            "script": "\nif (!window.SceneManager) return;\n\nvar scene = SceneManager._scene;\nif (!scene) return;\n\nvar windowName = decodeURIComponent('');\n\nif (windowName) {\n\tscene = scene[windowName];\n\tif (!scene) return;\n}\n\nif (!(scene instanceof Window_Selectable)) {\n\tvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\n\tscene = found[1];\n}\n\nif (!scene) return;\n\nvar index = parseInt('2');\nif (isNaN(index) || index < 0) {\n\talert('Invalid index');\n}\n\nscene._index = parseInt('2');\nscene.processOk();\n"
+          }
+        ]
+      },
+      {
+        "name": "Choose <span style=\"color:skyblue\">4th</span>",
+        "hotKey": "4",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": {
+              "index": 3,
+              "sceneWindowName": ""
+            },
+            "script": "\nif (!window.SceneManager) return;\n\nvar scene = SceneManager._scene;\nif (!scene) return;\n\nvar windowName = decodeURIComponent('');\n\nif (windowName) {\n\tscene = scene[windowName];\n\tif (!scene) return;\n}\n\nif (!(scene instanceof Window_Selectable)) {\n\tvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\n\tscene = found[1];\n}\n\nif (!scene) return;\n\nvar index = parseInt('3');\nif (isNaN(index) || index < 0) {\n\talert('Invalid index');\n}\n\nscene._index = parseInt('3');\nscene.processOk();\n"
           }
         ]
       }

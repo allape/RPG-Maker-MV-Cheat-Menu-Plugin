@@ -20,7 +20,8 @@ setTimeout(() => {
 
 	(window as IGlobal).__AsCheaterApp = mount(App, {
 		target: root
-	});
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	}) as unknown as any;
 
 	getRPGMaker().playSound(true);
 }, 1000);

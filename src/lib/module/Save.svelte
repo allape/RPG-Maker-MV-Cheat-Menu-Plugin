@@ -19,7 +19,7 @@
 	const maker = getRPGMaker();
 
 	function make(): Script {
-		script = maker.getScriptGenerator().saveGame(Number(value));
+		script = maker.getScriptGenerator().saveGame(value);
 		return script;
 	}
 

@@ -19,8 +19,13 @@
 
 	const maker = getRPGMaker();
 
-	let switchList: ISwitch[] = maker.getSwitchList();
-	let list: string[] = switchList.map((i) => `${i.id}: ${i.name}`);
+	let switchList: ISwitch[] = [];
+	let list: string[] = $state(getRenderableList());
+
+	function getRenderableList(): string[] {
+		switchList = maker.getSwitchList();
+		return switchList.map((i) => `${i.id}: ${i.name}`);
+	}
 
 	function make(): Script {
 		const swi = switchList[list.indexOf(value.index)];
@@ -37,6 +42,7 @@
 
 	function run(): void {
 		maker.evaluate(make());
+		list = getRenderableList();
 	}
 
 	onMount(() => {

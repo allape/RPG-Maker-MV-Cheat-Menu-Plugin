@@ -4,6 +4,7 @@
 		AllFunctions,
 		AuthorPresets,
 		FunctionKeys,
+		Functions,
 		type FunctionTypes,
 		GetAvailableFunctionKeys,
 		type IConfig,
@@ -16,6 +17,7 @@
 	import Empty from './lib/ui/Empty.svelte';
 	import KeyBinder from './lib/ui/KeyBinder.svelte';
 	import Menu from './Menu.svelte';
+	import OtherSettings from './OtherSettings.svelte';
 	import { getRPGMaker } from './rpgmaker';
 	import { id } from './utils/gen';
 	import { getJSON } from './utils/store';
@@ -26,25 +28,17 @@
 		__asCheaterAnimationTimer: number;
 	}
 
-	interface Props {
-		editing?: boolean;
-		config?: IConfig;
-		fileSelector: HTMLInputElement;
-	}
-
-	let {
-		editing = $bindable(false),
-		config = $bindable({
-			appearance: {
-				idlingOpacityLevel: 2,
-				maxIdlingOpacityLevel: 5
-			},
-			presets: []
-		}),
-		fileSelector = $bindable()
-	}: Props = $props();
-
 	let exportingDelayTimerId: number;
+
+	let editing: boolean = $state(false);
+	let config: IConfig = $state({
+		appearance: {
+			idlingOpacityLevel: 2,
+			maxIdlingOpacityLevel: 5
+		},
+		presets: []
+	});
+	let fileSelector: HTMLInputElement | undefined;
 
 	let selectedPresetIndex: number = $state(0);
 	let selectedTriggerIndex: number = $state(0);
@@ -73,7 +67,7 @@
 	}
 
 	function handleAddPreset() {
-		const preset: IPreset = { id: id(), name: 'Preset', triggers: [] };
+		const preset: IPreset = { id: id(), name: 'Formula', triggers: [] };
 		config.presets = [
 			...config.presets,
 			preset
@@ -128,7 +122,19 @@
 		if (to < 0 || to >= selectedPreset.triggers.length) {
 			return;
 		}
+
 		selectedTriggerIndex = to;
+
+		if (to === 0 || to === selectedPreset.triggers.length - 1) {
+			const [temp] = selectedPreset.triggers.splice(from, 1);
+			if (to === 0) {
+				selectedPreset.triggers = [temp, ...selectedPreset.triggers];
+			} else {
+				selectedPreset.triggers = [...selectedPreset.triggers, temp];
+			}
+			return;
+		}
+
 		const temp = selectedPreset.triggers[from];
 		selectedPreset.triggers[from] = selectedPreset.triggers[to];
 		selectedPreset.triggers[to] = temp;
@@ -182,7 +188,7 @@
 		return preset;
 	}
 
-	function handleAuthorPreset(preset: IPreset) {
+	function handleAddAuthorPreset(preset: IPreset) {
 		const cloned: IPreset = JSON.parse(JSON.stringify(preset));
 		handleFlushPresetIDs(cloned);
 		config.presets = [
@@ -190,6 +196,18 @@
 			cloned
 		];
 		handleSelectPreset(config.presets.length - 1);
+	}
+
+	function handleMergeAuthorPreset(preset: IPreset) {
+		if (!selectedPreset?.id) {
+			return;
+		}
+		const cloned: IPreset = JSON.parse(JSON.stringify(preset));
+		handleFlushPresetIDs(cloned);
+		selectedPreset.triggers = [
+			...selectedPreset.triggers,
+			...cloned.triggers
+		];
 	}
 
 	function handleImport() {
@@ -435,30 +453,6 @@
           }
         }
       }
-
-      .otherSettings {
-        padding: 10px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .setting {
-          flex: 1;
-          display: flex;
-          align-items: center;
-
-          button:not(:first-child) {
-            margin-left: 10px;
-          }
-        }
-      }
-
-      .versions {
-        margin: -5px 0 10px;
-        padding: 0 10px;
-        text-align: right;
-        user-select: text !important;
-      }
     }
   }
 </style>
@@ -475,7 +469,14 @@
 							<div class="item">
 								<div class="title">
 									<div class="text">{preset.name}</div>
-									<button onclick={() => handleAuthorPreset(preset)}>↓</button>
+									<button title="Merge this author formula into current preset"
+													disabled={!selectedPreset?.id}
+													onclick={() => handleMergeAuthorPreset(preset)}>
+										⨁
+									</button>
+									<button title="Add this auther formula as new formula" onclick={() => handleAddAuthorPreset(preset)}>
+										↓
+									</button>
 								</div>
 							</div>
 						{/each}
@@ -490,7 +491,7 @@
 								</div>
 							</div>
 						{:else}
-							<Empty style="padding-bottom: 10px">Empty</Empty>
+							<Empty style="padding-bottom: 10px" />
 						{/each}
 					</div>
 					<Button onclick={handleAddPreset}>+</Button>
@@ -519,7 +520,7 @@
 									<KeyBinder bind:key={trigger.hotKey} />
 								</div>
 							{:else}
-								<Empty>Empty</Empty>
+								<Empty />
 							{/each}
 						</div>
 						<Button onclick={handleAddTrigger}>+</Button>
@@ -547,7 +548,7 @@
 										bind:script={action.script} />
 								</div>
 							{:else}
-								<Empty>Empty</Empty>
+								<Empty />
 							{/each}
 						</div>
 					{:else}
@@ -565,7 +566,7 @@
 					</div>
 					<div class="list">
 						{#each FunctionKeys as name}
-							<div class="item">
+							<div class="item" title={Functions[name]?.description}>
 								<div class="name">{name}</div>
 								<button disabled={!selectedTrigger?.id || !AvailableFunctionKeys.includes(name)}
 												onclick={() => handleAddAction(name)}>←
@@ -575,20 +576,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="otherSettings">
-				<div class="setting">
-					Opacity:
-					<input type="range" min="0" max={config.appearance.maxIdlingOpacityLevel} step="1"
-								 bind:value={config.appearance.idlingOpacityLevel}>
-				</div>
-				<div class="setting" style="justify-content: flex-end;">
-					<button onclick={handleImport}>Import</button>
-					<button disabled={!selectedPreset?.id} onclick={handleExport}>Export</button>
-				</div>
-			</div>
-			<div class="versions">
-				{__APP_VERSION__}, {getRPGMaker().getVersionString()}
-			</div>
+			<OtherSettings bind:opacity={config.appearance.idlingOpacityLevel}
+										 maxOpacity={config.appearance.maxIdlingOpacityLevel} exportDisabled={!selectedPreset?.id}
+										 onimport={handleImport} onexport={handleExport} />
 		</div>
 	{:else}
 		<Menu {selectedPreset} onedit={handleEdit} onrun={trigger => handleRun(trigger)} />
