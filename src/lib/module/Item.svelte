@@ -30,6 +30,10 @@
 		list = itemList2StringList(itemList);
 	}
 
+	$effect(() => {
+		if (itemList) renderItemList();
+	});
+
 	function make(): Script {
 		const item = itemList[list.indexOf(value.item)];
 		if (!item) {

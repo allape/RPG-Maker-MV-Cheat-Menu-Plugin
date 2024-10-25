@@ -247,19 +247,15 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 	}
 
 	gainItem(it: ItemType, item: IItem, amount: number): Script {
-		let itemVariableName: '_items' | '_weapons' | '_armors';
 		let itemListVariableName: '$dataItems' | '$dataWeapons' | '$dataArmors';
 		switch (it) {
 			case 'item':
-				itemVariableName = '_items';
 				itemListVariableName = '$dataItems';
 				break;
 			case 'weapon':
-				itemVariableName = '_weapons';
 				itemListVariableName = '$dataWeapons';
 				break;
 			case 'armor':
-				itemVariableName = '_armors';
 				itemListVariableName = '$dataArmors';
 				break;
 			default:
@@ -268,7 +264,7 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 		return `
 			$gameParty.gainItem(
 				${itemListVariableName}[${item.id}], 
-				${amount} - $gameParty.${itemVariableName}[${item.id}]
+				${amount}
 			);
 			SoundManager.playSystemSound(1);
 		`;

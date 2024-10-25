@@ -18,10 +18,9 @@
 		actors = $bindable([])
 	}: Props = $props();
 
-	let label: string = $state('');
+	let label: string = $derived(type === 'alias' ? 'Aliases' : 'Enemies');
 
 	$effect(() => {
-		label = type === 'alias' ? 'Alias' : 'Enemy';
 		try {
 			if (type === 'alias') {
 				actors = getRPGMaker().getAliasList();
@@ -36,10 +35,10 @@
 
 <select bind:value={value}>
 	{#if alive}
-		<option value={-2}>Alive {label}s</option>
+		<option value={-2}>Alive {label}</option>
 	{/if}
 	{#if all}
-		<option value={-1}>All {label}s</option>
+		<option value={-1}>All {label}</option>
 	{/if}
 	{#each actors as actor (actor.id)}
 		<option value={actor.id}>{actor.id}: {actor.name || '-'}</option>
