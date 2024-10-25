@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { IPreset, ITrigger } from './app';
 	import Button from './lib/ui/Button.svelte';
+	import Empty from './lib/ui/Empty.svelte';
 
 	interface Props {
 		selectedPreset: IPreset | undefined;
@@ -51,6 +52,12 @@
           opacity: 1;
         }
       }
+
+      .empty {
+        border: 1px solid white;
+        user-select: none;
+        opacity: 0.5;
+      }
     }
   }
 </style>
@@ -68,6 +75,10 @@
 					<span contenteditable="false" bind:innerHTML={trigger.name}></span>
 				</div>
 			{/each}
+		{:else}
+			<div class="empty">
+				<Empty />
+			</div>
 		{/if}
 	</div>
 </div>
