@@ -27,10 +27,6 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
 
 [Dummy Playground](https://allape.github.io/RPG-Maker-MV-Cheat-Menu-Plugin/index.html)
 
-![pic-main.png](samples/pic-main.png)
-![pic-empty-settings.png](samples/pic-empty-settings.png)
-![pic-settings.png](samples/pic-settings.png)
-
 ### Installation
 
 - Download [Cheat Menu](https://github.com/allape/RPG-Maker-MV-Cheat-Menu-Plugin/releases).
