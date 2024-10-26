@@ -16,52 +16,61 @@ import type {
 	X,
 	Y
 } from '../declare';
+import { NewScript } from '../script';
 
 export class DummyScriptGenerator implements ICheatScriptGenerator {
 	openDevTools(): Script {
-		return `console.log('called openDevTools')`;
+		return NewScript(`console.log('called openDevTools')`);
 	}
 
 	setup(): Script {
-		return `console.log('called setup')`;
+		return NewScript(`console.log('called setup')`);
 	}
 
 	gainGold(gold: Gold): Script {
-		return `console.log('called gainGold(${gold})')`;
+		return NewScript(`console.log('called gainGold(${gold})')`);
 	}
 
 	gainItem(it: ItemType, item: IItem, amount: number): Script {
-		return `console.log('called gainItem(${it}, ${item.id}, ${amount})')`;
+		return NewScript(`console.log('called gainItem(${it}, ${item.id}, ${amount})')`);
 	}
 
 	teleport(map: IMap, x: X, y: Y): Script {
-		return `console.log('called teleport(${map.id}, ${x}, ${y})')`;
+		return NewScript(`console.log('called teleport(${map.id}, ${x}, ${y})')`);
 	}
 
 	saveGame(index: number): Script {
-		return `console.log('called saveGame(${index})')`;
+		return NewScript(`console.log('called saveGame(${index})')`);
 	}
 
 	speedHack(fps: number): Script {
-		return `console.log('called speedHack(${fps})')`;
+		return NewScript(`console.log('called speedHack(${fps})')`);
 	}
 
 	setHMTP(tt: TeamType, aliveOrActor: boolean | IActor, hmtp: HMTP, value: HMTPValue): Script {
-		return `console.log('called setHMTP(${tt}, ${typeof aliveOrActor === 'boolean' ? aliveOrActor : aliveOrActor.id}, ${hmtp}, ${value})')`;
+		return NewScript(
+			`console.log('called setHMTP(${tt}, ${typeof aliveOrActor === 'boolean' ? aliveOrActor : aliveOrActor.id}, ${hmtp}, ${value})')`
+		);
 	}
 
 	setSwitch(sw: ISwitch, state: boolean): Script {
-		return `console.log('called setSwitch(${sw.id}, ${state})')`;
+		return NewScript(`console.log('called setSwitch(${sw.id}, ${state})')`);
 	}
 
 	setVariable(v: IVariable, value: VariableValue): Script {
-		return `console.log('called setVariable(${v.id}, ${value})')`;
+		return NewScript(`console.log('called setVariable(${v.id}, ${value})')`);
 	}
 }
 
 export class Dummy implements IRPGMaker {
 	getVersionString(): string {
-		return navigator.userAgent.split(' ').find(s => s.startsWith('Chrome/'))?.split('/').join(' v') || '-';
+		return (
+			navigator.userAgent
+				.split(' ')
+				.find((s) => s.startsWith('Chrome/'))
+				?.split('/')
+				.join(' v') || '-'
+		);
 	}
 
 	setup(): void {
@@ -90,39 +99,27 @@ export class Dummy implements IRPGMaker {
 	}
 
 	getItemList(it: ItemType): IItem[] {
-		return [
-			{ id: 1, name: `Dummy ${it}`, type: it, amount: Math.floor(Math.random() * 1000) }
-		];
+		return [{ id: 1, name: `Dummy ${it}`, type: it, amount: Math.floor(Math.random() * 1000) }];
 	}
 
 	getMapList(): IMap[] {
-		return [
-			{ id: 1, name: 'Dummy Map' }
-		];
+		return [{ id: 1, name: 'Dummy Map' }];
 	}
 
 	getSwitchList(): ISwitch[] {
-		return [
-			{ id: 1, name: 'Dummy Switch', state: Math.random() * 10 < 5 }
-		];
+		return [{ id: 1, name: 'Dummy Switch', state: Math.random() * 10 < 5 }];
 	}
 
 	getVariableList(): IVariable[] {
-		return [
-			{ id: 1, name: 'Dummy Variable', value: 0 }
-		];
+		return [{ id: 1, name: 'Dummy Variable', value: 0 }];
 	}
 
 	getEnemyList(): IActor[] {
-		return [
-			{ id: 1, name: 'Dummy Enemy', x: 0, y: 0 }
-		];
+		return [{ id: 1, name: 'Dummy Enemy', x: 0, y: 0 }];
 	}
 
 	getAliasList(): IActor[] {
-		return [
-			{ id: 1, name: 'Dummy Alias', x: 0, y: 0 }
-		];
+		return [{ id: 1, name: 'Dummy Alias', x: 0, y: 0 }];
 	}
 
 	getCurrentMap(): IMap | undefined {

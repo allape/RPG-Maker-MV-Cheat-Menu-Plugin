@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { DownloadAsJSONFile, NewIDs, RunTrigger } from './app';
+	import { MakeScriptEvent } from './config/event';
 	import {
 		AllFunctions,
 		AuthorPresets,
@@ -10,15 +12,13 @@
 		type IConfig,
 		type IPreset,
 		type ITrigger
-	} from './app';
-	import { MakeScriptEvent } from './config/event';
+	} from './functions';
 	import { DefaultValue } from './lib/module/DefaultValue';
 	import Button from './lib/ui/Button.svelte';
 	import Empty from './lib/ui/Empty.svelte';
 	import KeyBinder from './lib/ui/KeyBinder.svelte';
 	import Menu from './Menu.svelte';
 	import OtherSettings from './OtherSettings.svelte';
-	import { getRPGMaker } from './rpgmaker';
 	import { id } from './utils/gen';
 	import { getJSON } from './utils/store';
 
@@ -80,7 +80,7 @@
 		config.presets.splice(index, 1);
 		config.presets = [...config.presets];
 		if (selectedPresetIndex >= index) {
-			selectedPresetIndex -= 1;
+			if (selectedPresetIndex > 0) selectedPresetIndex -= 1;
 		}
 	}
 
@@ -93,10 +93,6 @@
 		if (!selectedPreset?.id) {
 			return;
 		}
-		// let hotKey = '';
-		// if (selectedPreset.triggers.length < 9) {
-		// 	hotKey = `${selectedPreset.triggers.length + 1}`;
-		// }
 		const newTrigger = { id: id(), name: 'Trigger', hotKey: '', actions: [] };
 		selectedPreset.triggers.push(newTrigger);
 		selectedPreset.triggers = [...selectedPreset.triggers];
@@ -169,28 +165,9 @@
 		selectedTrigger.actions = [...selectedTrigger.actions];
 	}
 
-	function handleRun(trigger: ITrigger) {
-		trigger.actions.forEach(action => {
-			if (!action.script) return;
-			getRPGMaker().evaluate(action.script);
-		});
-	}
-
-	function handleFlushPresetIDs(preset: IPreset): IPreset {
-		preset.id = id();
-		preset.triggers.forEach(trigger => {
-			trigger.id = id();
-			trigger.actions.forEach(action => {
-				action.id = id();
-			});
-		});
-
-		return preset;
-	}
-
 	function handleAddAuthorPreset(preset: IPreset) {
 		const cloned: IPreset = JSON.parse(JSON.stringify(preset));
-		handleFlushPresetIDs(cloned);
+		NewIDs(cloned);
 		config.presets = [
 			...config.presets,
 			cloned
@@ -203,7 +180,7 @@
 			return;
 		}
 		const cloned: IPreset = JSON.parse(JSON.stringify(preset));
-		handleFlushPresetIDs(cloned);
+		NewIDs(cloned);
 		selectedPreset.triggers = [
 			...selectedPreset.triggers,
 			...cloned.triggers
@@ -225,7 +202,7 @@
 		const reader = new FileReader();
 		reader.onload = () => {
 			const preset = JSON.parse(reader.result as string) as IPreset;
-			handleFlushPresetIDs(preset);
+			NewIDs(preset);
 			config.presets = [
 				...config.presets,
 				preset
@@ -245,14 +222,7 @@
 			if (!selectedPreset?.id) {
 				return;
 			}
-			const preset = JSON.stringify(selectedPreset);
-			const blob = new Blob([preset], { type: 'application/json' });
-			const url = URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `${selectedPreset.name}.json`;
-			a.click();
-			URL.revokeObjectURL(url);
+			DownloadAsJSONFile(selectedPreset);
 		}, 300);
 	}
 
@@ -280,7 +250,7 @@
 				return;
 			}
 			selectedPreset?.triggers.filter(t => t.hotKey === e.key).forEach(trigger => {
-				handleRun(trigger);
+				RunTrigger(trigger);
 				const triggerEle = document.getElementById(trigger.id) as TriggerElement;
 				if (triggerEle) {
 					clearTimeout(triggerEle.__asCheaterAnimationTimer);
@@ -329,6 +299,8 @@
     }
 
     .editPage {
+      background-color: rgba(0, 0, 0, 1);
+
       .table {
         display: flex;
         flex-direction: row;
@@ -368,6 +340,24 @@
               margin-bottom: 10px;
               display: flex;
               flex-direction: column;
+              opacity: 0.5;
+
+              &.selected {
+                opacity: 1;
+              }
+
+              .row {
+                display: flex;
+                flex-wrap: nowrap;
+
+                input {
+                  width: 100%;
+                }
+
+                button {
+                  flex: 1;
+                }
+              }
             }
           }
 
@@ -375,59 +365,20 @@
             .authorPresets {
               .item {
                 margin-bottom: 0;
+                opacity: 1;
               }
             }
 
             .savedPresetList {
               margin-top: 10px;
-
-              .item {
-                opacity: 0.5;
-
-                &.selected {
-                  opacity: 1;
-                }
-
-                .row {
-                  display: flex;
-                  flex-wrap: nowrap;
-
-                  input {
-                    width: 100%;
-                  }
-
-                  button {
-                    flex: 1;
-                  }
-                }
-              }
-            }
-          }
-
-          &.triggerSection {
-            .list {
-              .item {
-                opacity: 0.5;
-
-                &.selected {
-                  opacity: 1;
-                }
-
-                .row {
-                  display: flex;
-                  flex-wrap: nowrap;
-
-                  button {
-                    flex: 1;
-                  }
-                }
-              }
             }
           }
 
           &.actionSection {
             .list {
               .item {
+                opacity: 1;
+
                 .title {
                   border-top: 1px solid white;
                 }
@@ -438,11 +389,12 @@
           &.functionSection {
             .list {
               .item {
-                display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 border-bottom: 1px solid white;
                 margin-bottom: 0;
+                opacity: 1;
+                user-select: none;
 
                 .name {
                   flex: 1;
@@ -581,7 +533,7 @@
 										 onimport={handleImport} onexport={handleExport} />
 		</div>
 	{:else}
-		<Menu {selectedPreset} onedit={handleEdit} onrun={trigger => handleRun(trigger)} />
+		<Menu {selectedPreset} onedit={handleEdit} onrun={RunTrigger} />
 	{/if}
 	<input bind:this={fileSelector} style="display: none;" type="file" accept="application/json"
 				 onchange={handlePresetFileChange}>

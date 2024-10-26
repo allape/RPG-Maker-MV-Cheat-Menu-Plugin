@@ -38,7 +38,5 @@
 
 <FormItemWithButton onclick={run}>
 	<input placeholder="Slot index" min="1" max="99" type="number" bind:value={value}>
-	{#snippet button()}
-		<span>Save Now</span>
-	{/snippet}
+	{#snippet button()}Save Now{/snippet}
 </FormItemWithButton>

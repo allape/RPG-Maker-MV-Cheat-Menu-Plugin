@@ -31,6 +31,7 @@
         flex: 1;
         display: flex;
         align-items: center;
+        user-select: none;
 
         button:not(:first-child) {
           margin-left: 10px;

@@ -8,6 +8,7 @@
   .wrapper {
     color: lightgray;
     text-align: center;
+    user-select: none;
   }
 </style>
 

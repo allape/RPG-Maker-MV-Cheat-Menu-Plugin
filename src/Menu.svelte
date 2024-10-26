@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IPreset, ITrigger } from './app';
+	import type { IPreset, ITrigger } from './functions';
 	import Button from './lib/ui/Button.svelte';
 	import Empty from './lib/ui/Empty.svelte';
 
@@ -55,7 +55,6 @@
 
       .empty {
         border: 1px solid white;
-        user-select: none;
         opacity: 0.5;
       }
     }

@@ -1,17 +1,25 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AS Cheater</title>
-  </head>
-  <body style="background-color: black;">
-  <script>
-    // mock in browser
-    if (window.location.search.includes('mvmz')) {
-      window.DataManager = {};
-    }
-  </script>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>AS Cheater</title>
+	<style>
+      body {
+          background-color: #f0f0f0;
+          background-image: radial-gradient(circle, #6e7f80 20%, transparent 20%);
+          background-size: 20px 20px;
+          background-repeat: repeat;
+      }
+	</style>
+</head>
+<body style="background-color: black;">
+<script>
+	// mock in browser
+	if (window.location.search.includes('mvmz')) {
+		window.DataManager = {};
+	}
+</script>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>

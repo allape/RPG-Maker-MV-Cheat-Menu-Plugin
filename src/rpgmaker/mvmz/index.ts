@@ -18,6 +18,7 @@ import type {
 	X,
 	Y
 } from '../declare';
+import { NewScript } from '../script';
 
 declare global {
 	const nw: any;
@@ -208,11 +209,16 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 	constructor(private readonly maker: IRPGMaker) {}
 
 	openDevTools(): Script {
-		return `require('nw.gui').Window.get().showDevTools(); SoundManager.playSystemSound(1);`;
+		// language=JavaScript
+		return NewScript(`
+			require('nw.gui').Window.get().showDevTools();
+			SoundManager.playSystemSound(1);
+		`);
 	}
 
 	setup(): Script {
-		return `
+		// language=JavaScript
+		return NewScript(`
 			AudioManager._playBgm_proxy = AudioManager.playBgm;
 			AudioManager.playBgm = function(bgm, pos) {
 				try {
@@ -221,7 +227,7 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 					console.error('error occurred while calling AudioManager.playBgm');
 				}
 			};
-		
+
 			AudioManager._playBgs_proxy = AudioManager.playBgs;
 			AudioManager.playBgs = function(bgm, pos) {
 				try {
@@ -230,7 +236,7 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 					console.error('error occurred while calling AudioManager.playBgs');
 				}
 			};
-		
+
 			SoundManager._playSystemSound_proxy = SoundManager.playSystemSound;
 			SoundManager.playSystemSound = function(pos) {
 				try {
@@ -239,11 +245,15 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 					console.error('error occurred while calling SoundManager.playSystemSound');
 				}
 			};
-		`;
+		`);
 	}
 
 	gainGold(gold: Gold): Script {
-		return `$gameParty.gainGold(${gold || 0}); SoundManager.playSystemSound(1);`;
+		// language=JavaScript
+		return NewScript(`
+			$gameParty.gainGold(${gold || 0});
+			SoundManager.playSystemSound(1);
+		`);
 	}
 
 	gainItem(it: ItemType, item: IItem, amount: number): Script {
@@ -261,35 +271,46 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 			default:
 				throw new Error(`Invalid item type: ${it}`);
 		}
-		return `
-			$gameParty.gainItem(
-				${itemListVariableName}[${item.id}], 
-				${amount}
-			);
+
+		// language=JavaScript
+		return NewScript(`
+			$gameParty.gainItem(${itemListVariableName}[${item.id}], ${amount});
 			SoundManager.playSystemSound(1);
-		`;
+		`);
 	}
 
 	teleport(map: IMap, x: X, y: Y): Script {
-		return `
+		// language=JavaScript
+		return NewScript(`
 			$gamePlayer.reserveTransfer(${map.id}, ${x}, ${y}, $gamePlayer.direction(), 0);
 			$gamePlayer.setPosition(${x}, ${y});
 			SoundManager.playSystemSound(1);
-		`;
+		`);
 	}
 
 	saveGame(index: number): Script {
-		return `DataManager.saveGame(${index}); SoundManager.playSystemSound(1);`;
+		// language=JavaScript
+		return NewScript(`
+			DataManager.saveGame(${index});
+			SoundManager.playSystemSound(1);
+		`);
 	}
 
 	speedHack(fps: number): Script {
-		let script: Script = `clearInterval(SceneManager._speedHackIntervalId); SoundManager.playSystemSound(1);`;
+		// language=JavaScript
+		let script: Script = `
+			clearInterval(SceneManager._speedHackIntervalId);
+			SoundManager.playSystemSound(1);
+		`;
 		if (fps > 0) {
+			// language=JavaScript
 			script += `
-				SceneManager._speedHackIntervalId = setInterval(function(){SceneManager.updateScene();}, 1000 / ${fps});
+				SceneManager._speedHackIntervalId = setInterval(function() {
+					SceneManager.updateScene();
+				}, 1000 / ${fps});
 			`;
 		}
-		return script;
+		return NewScript(script);
 	}
 
 	setHMTP(tt: TeamType, aliveOrActor: boolean | IActor, hmtp: HMTP, value: HMTPValue): Script {
@@ -357,7 +378,8 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 			}
 		}
 
-		return `
+		// language=JavaScript
+		return NewScript(`
 			var actors = ${actorsScript};
 			for (var i = 0; i < actors.length; i++) {
 				var actor = actors[i];
@@ -366,22 +388,27 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 				actor.${setFuncName}(${valueScript});
 			}
 			SoundManager.playSystemSound(1);
-		`;
+		`);
 	}
 
 	setSwitch(sw: ISwitch, state: boolean): Script {
-		return `$gameSwitches.setValue(${sw.id}, ${state});SoundManager.playSystemSound(1);`;
+		// language=JavaScript
+		return NewScript(`
+			$gameSwitches.setValue(${sw.id}, ${state});
+			SoundManager.playSystemSound(1);
+		`);
 	}
 
 	setVariable(v: IVariable, value: VariableValue): Script {
-		return `
-		if (typeof $gameVariables.value(${v.id})) {
-			$gameVariables.setValue(${v.id}, decodeURIComponent("${encodeURIComponent(value)}"));
-		} else {
-			$gameVariables.setValue(${v.id}, ${parseInt(`${value}`, 10) || 0});
-		}
-		SoundManager.playSystemSound(1);
-		`;
+		// language=JavaScript
+		return NewScript(`
+			if (typeof $gameVariables.value(${v.id})) {
+				$gameVariables.setValue(${v.id}, decodeURIComponent("${encodeURIComponent(value)}"));
+			} else {
+				$gameVariables.setValue(${v.id}, ${parseInt(`${value}`, 10) || 0});
+			}
+			SoundManager.playSystemSound(1);
+		`);
 	}
 }
 
@@ -394,7 +421,10 @@ export class MVMZ implements IRPGMaker {
 
 	getVersionString(): string {
 		return this.evaluate(
-			`return "NW v" + process.versions["nw"] + ", Node " + process.version + ", Chromium " + process.versions["chromium"];`
+			// language=JavaScript
+			NewScript(
+				`return "NW v" + process.versions["nw"] + ", Node " + process.version + ", Chromium " + process.versions["chromium"];`
+			)
 		) as string;
 	}
 
@@ -403,7 +433,8 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	playSound(positive?: boolean): void {
-		this.evaluate(`SoundManager.playSystemSound(${positive ? 1 : 2});`);
+		// language=JavaScript
+		this.evaluate(NewScript(`SoundManager.playSystemSound(${positive ? 1 : 2});`));
 	}
 
 	getCurrentMap(): IMap | undefined {
@@ -474,26 +505,41 @@ export class MVMZ implements IRPGMaker {
 	}
 
 	getMapList(): IMap[] {
-		return $dataMapInfos.filter(Boolean).map((i) => ({
-			id: i.id,
-			name: i.name
-		}));
+		try {
+			return $dataMapInfos.filter(Boolean).map((i) => ({
+				id: i.id,
+				name: i.name
+			}));
+		} catch (e) {
+			console.log('Error occurred while getting map list:', e);
+			return [];
+		}
 	}
 
 	getSwitchList(): ISwitch[] {
-		return $dataSystem.switches.map((i, index) => ({
-			id: index,
-			name: i,
-			state: $gameSwitches.value(index)
-		}));
+		try {
+			return $dataSystem.switches.map((i, index) => ({
+				id: index,
+				name: i,
+				state: $gameSwitches.value(index)
+			}));
+		} catch (e) {
+			console.log('Error occurred while getting switch list:', e);
+			return [];
+		}
 	}
 
 	getVariableList(): IVariable[] {
-		return $dataSystem.variables.map((i, index) => ({
-			id: index,
-			name: i,
-			value: $gameVariables.value(index)
-		}));
+		try {
+			return $dataSystem.variables.map((i, index) => ({
+				id: index,
+				name: i,
+				value: $gameVariables.value(index)
+			}));
+		} catch (e) {
+			console.log('Error occurred while getting variable list:', e);
+			return [];
+		}
 	}
 
 	getScriptGenerator(): ICheatScriptGenerator {

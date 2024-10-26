@@ -3,6 +3,7 @@
 	import { MakeScriptEventName } from '../../config/event';
 	import { getRPGMaker } from '../../rpgmaker';
 	import type { Script } from '../../rpgmaker/declare';
+	import { NewScript } from '../../rpgmaker/script';
 	import FormItemWithButton from '../ui/FormItemWithButton.svelte';
 	import { DefaultValue, type IOptionSelect } from './DefaultValue';
 
@@ -24,34 +25,35 @@
 	// }
 
 	function make() {
-		script = `
-if (!window.SceneManager) return;
+		// language=JavaScript
+		script = NewScript(`
+			if (!window.SceneManager) return;
 
-var scene = SceneManager._scene;
-if (!scene) return;
+			var scene = SceneManager._scene;
+			if (!scene) return;
 
-var windowName = decodeURIComponent('${encodeURIComponent(value.sceneWindowName)}');
+			var windowName = decodeURIComponent('${encodeURIComponent(value.sceneWindowName)}');
 
-if (windowName) {
-	scene = scene[windowName];
-	if (!scene) return;
-}
+			if (windowName) {
+				scene = scene[windowName];
+				if (!scene) return;
+			}
 
-if (!(scene instanceof Window_Selectable)) {
-	var found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);
-	scene = found[1];
-}
+			if (!(scene instanceof Window_Selectable)) {
+				var found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);
+				scene = found[1];
+			}
 
-if (!scene) return;
+			if (!scene) return;
 
-var index = parseInt('${value.index}');
-if (isNaN(index) || index < 0) {
-	alert('Invalid index');
-}
+			var index = parseInt('${value.index}');
+			if (isNaN(index) || index < 0) {
+				alert('Invalid index');
+			}
 
-scene._index = parseInt('${value.index}');
-scene.processOk();
-`;
+			scene._index = parseInt('${value.index}');
+			scene.processOk();
+		`);
 		return script;
 	}
 

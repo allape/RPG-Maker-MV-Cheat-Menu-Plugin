@@ -1,5 +1,6 @@
 button {
   cursor: pointer;
+  user-select: none;
 }
 
 select {
@@ -10,8 +11,3 @@ select {
 textarea {
   resize: vertical;
 }
-
-//body {
-//  margin: 0;
-//  background-color: #000;
-//}

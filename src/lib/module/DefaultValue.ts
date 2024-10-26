@@ -1,4 +1,4 @@
-import type { FunctionTypes } from '../../app';
+import type { FunctionTypes } from '../../functions';
 import type { HMTP, HMTPValue, IActor, ItemType, TeamType } from '../../rpgmaker/declare';
 
 export interface IGoldValue extends Pick<Record<FunctionTypes, () => unknown>, 'Gold'> {

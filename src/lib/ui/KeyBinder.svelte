@@ -41,7 +41,8 @@
   }
 </style>
 
-<button class="wrapper" class:binding={binding} onclick={handleClick} onpointerleave={handleCancel}
+<button class="wrapper" class:binding={binding} title={`Keyboard hot key [${key}]`} onclick={handleClick}
+				onpointerleave={handleCancel}
 				onblur={handleCancel}>
 	{#if binding}
 		[Esc] to clear, wait...
@@ -49,7 +50,7 @@
 		{#if key}
 			[{key}]
 		{:else}
-			Click to bind a key
+			Click to bind a hot key
 		{/if}
 	{/if}
 </button>
