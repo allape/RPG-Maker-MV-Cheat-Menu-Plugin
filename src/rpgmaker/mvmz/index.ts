@@ -402,7 +402,7 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 	setVariable(v: IVariable, value: VariableValue): Script {
 		// language=JavaScript
 		return NewScript(`
-			if (typeof $gameVariables.value(${v.id})) {
+			if (typeof $gameVariables.value(${v.id}) == "string") {
 				$gameVariables.setValue(${v.id}, decodeURIComponent("${encodeURIComponent(value)}"));
 			} else {
 				$gameVariables.setValue(${v.id}, ${parseInt(`${value}`, 10) || 0});

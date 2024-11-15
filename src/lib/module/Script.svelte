@@ -24,6 +24,7 @@
 
 	function run(): void {
 		maker.evaluate(make());
+		maker.playSound(true);
 	}
 
 	onMount(() => {
