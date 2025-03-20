@@ -1,6 +1,12 @@
-
 .wrapper {
-  padding: 10px;
-  max-width: 1800px;
-  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: white;
+  z-index: 9999;
+
+  button {
+    cursor: pointer;
+    user-select: none;
+  }
 }

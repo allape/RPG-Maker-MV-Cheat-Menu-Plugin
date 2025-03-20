@@ -1,0 +1,149 @@
+[
+  {
+    "name": "Fun Gamer",
+    "triggers": [
+      {
+        "name": "<span style=\"color:white;\">Save<br/> 2-5</span>",
+        "hotKey": "`",
+        "actions": [
+          {
+            "type": "SaveInRoll",
+            "value": "{\"min\":2,\"max\":6}",
+            "script": "DataManager._asCheatMenu_saveInRollMin = 2;\nDataManager._asCheatMenu_saveInRollMax = 6;\nif (!('_asCheatMenu_saveInRollCurrent' in DataManager)) {\nDataManager._asCheatMenu_saveInRollCurrent = 0;\n}\nif (DataManager._asCheatMenu_saveInRollCurrent < DataManager._asCheatMenu_saveInRollMin) {\nDataManager._asCheatMenu_saveInRollCurrent = DataManager._asCheatMenu_saveInRollMin;\n} else if (DataManager._asCheatMenu_saveInRollCurrent > DataManager._asCheatMenu_saveInRollMax) {\nDataManager._asCheatMenu_saveInRollCurrent = DataManager._asCheatMenu_saveInRollMax;\n}\nDataManager.saveGame(DataManager._asCheatMenu_saveInRollCurrent++);\nSoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
+        "name": "<span style=\"color:greenyellow;\">HP</span>/<span style=\"color:skyblue;\">MP</span> <span style=\"color:greenyellow;\">Full</span>",
+        "hotKey": "1",
+        "actions": [
+          {
+            "type": "HP | MP | TP",
+            "value": "{\"teamType\":\"alias\",\"type\":\"hp\",\"valueType\":\"full\",\"customValue\":1,\"actorId\":\"all\"}",
+            "script": "var actors = $gameParty.allMembers();\nfor (var i = 0; i < actors.length; i++) {\nvar actor = actors[i];\nif (!actor) continue;\nactor.setHp(actor.mhp);\n}\nSoundManager.playSystemSound(1);"
+          },
+          {
+            "type": "HP | MP | TP",
+            "value": "{\"teamType\":\"alias\",\"type\":\"mp\",\"valueType\":\"full\",\"customValue\":0,\"actorId\":\"all\"}",
+            "script": "var actors = $gameParty.allMembers();\nfor (var i = 0; i < actors.length; i++) {\nvar actor = actors[i];\nif (!actor) continue;\nactor.setMp(actor.mmp);\n}\nSoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
+        "name": "<span style=\"color:red;\">Enemy<br/>ONE</span>",
+        "hotKey": "2",
+        "actions": [
+          {
+            "type": "HP | MP | TP",
+            "value": "{\"teamType\":\"enemy\",\"type\":\"hp\",\"valueType\":\"1\",\"customValue\":0,\"actorId\":\"alive\"}",
+            "script": "var actors = $gameTroop.members();\nfor (var i = 0; i < actors.length; i++) {\nvar actor = actors[i];\nif (!actor) continue;\nif (actor._hp <= 0) continue;\nactor.setHp(1);\n}\nSoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
+        "name": "<span style=\"color:red;\">Enemy<br/>DONE</span>",
+        "hotKey": "3",
+        "actions": [
+          {
+            "type": "HP | MP | TP",
+            "value": "{\"teamType\":\"enemy\",\"type\":\"hp\",\"valueType\":\"0\",\"customValue\":0,\"actorId\":\"alive\"}",
+            "script": "var actors = $gameTroop.members();\nfor (var i = 0; i < actors.length; i++) {\nvar actor = actors[i];\nif (!actor) continue;\nif (actor._hp <= 0) continue;\nactor.setHp(0);\n}\nSoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
+        "name": "<span style=\"color:orange;\">Gold</span><br/>10K",
+        "hotKey": "9",
+        "actions": [
+          {
+            "type": "Gold",
+            "value": "10000",
+            "script": "$gameParty.gainGold(10000);\nSoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
+        "name": "Speed<br/>~",
+        "hotKey": "0",
+        "actions": [
+          {
+            "type": "SpeedHack",
+            "value": "0",
+            "script": "clearInterval(SceneManager._speedHackIntervalId);\nSoundManager.playSystemSound(1);"
+          }
+        ]
+      },
+      {
+        "name": "Speed<br/>+",
+        "hotKey": "-",
+        "actions": [
+          {
+            "type": "SpeedHack",
+            "value": "1",
+            "script": "clearInterval(SceneManager._speedHackIntervalId);\nSoundManager.playSystemSound(1);\nSceneManager._speedHackIntervalId = setInterval(function() {\nSceneManager.updateScene();\n}, 1000 / 60);"
+          }
+        ]
+      },
+      {
+        "name": "Speed<br/>++",
+        "hotKey": "=",
+        "actions": [
+          {
+            "type": "SpeedHack",
+            "value": "2",
+            "script": "clearInterval(SceneManager._speedHackIntervalId);\nSoundManager.playSystemSound(1);\nSceneManager._speedHackIntervalId = setInterval(function() {\nSceneManager.updateScene();\n}, 1000 / 120);"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fast Menu",
+    "triggers": [
+      {
+        "name": "Choose <span style=\"color:orangered\">1st</span>",
+        "hotKey": "q",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": "{\"index\":0,\"sceneWindowName\":\"\"}",
+            "script": "if (!window.SceneManager) return;\nvar scene = SceneManager._scene;\nif (!scene) return;\nvar windowName = decodeURIComponent('');\nif (windowName) {\nscene = scene[windowName];\nif (!scene) return;\n}\nif (!(scene instanceof Window_Selectable)) {\nvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\nscene = found[1];\n}\nif (!scene) return;\nvar index = parseInt('0');\nif (isNaN(index) || index < 0) {\nalert('Invalid index');\n}\nscene._index = parseInt('0');\nscene.processOk();"
+          }
+        ]
+      },
+      {
+        "name": "Choose <span style=\"color:gold\">2nd</span>",
+        "hotKey": "w",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": "{\"index\":1,\"sceneWindowName\":\"\"}",
+            "script": "if (!window.SceneManager) return;\nvar scene = SceneManager._scene;\nif (!scene) return;\nvar windowName = decodeURIComponent('');\nif (windowName) {\nscene = scene[windowName];\nif (!scene) return;\n}\nif (!(scene instanceof Window_Selectable)) {\nvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\nscene = found[1];\n}\nif (!scene) return;\nvar index = parseInt('1');\nif (isNaN(index) || index < 0) {\nalert('Invalid index');\n}\nscene._index = parseInt('1');\nscene.processOk();"
+          }
+        ]
+      },
+      {
+        "name": "Choose <span style=\"color:green\">3rd</span>",
+        "hotKey": "e",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": "{\"index\":2,\"sceneWindowName\":\"\"}",
+            "script": "if (!window.SceneManager) return;\nvar scene = SceneManager._scene;\nif (!scene) return;\nvar windowName = decodeURIComponent('');\nif (windowName) {\nscene = scene[windowName];\nif (!scene) return;\n}\nif (!(scene instanceof Window_Selectable)) {\nvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\nscene = found[1];\n}\nif (!scene) return;\nvar index = parseInt('2');\nif (isNaN(index) || index < 0) {\nalert('Invalid index');\n}\nscene._index = parseInt('2');\nscene.processOk();"
+          }
+        ]
+      },
+      {
+        "name": "Choose <span style=\"color:skyblue\">4th</span>",
+        "hotKey": "r",
+        "actions": [
+          {
+            "type": "OptionSelect",
+            "value": "{\"index\":3,\"sceneWindowName\":\"\"}",
+            "script": "if (!window.SceneManager) return;\nvar scene = SceneManager._scene;\nif (!scene) return;\nvar windowName = decodeURIComponent('');\nif (windowName) {\nscene = scene[windowName];\nif (!scene) return;\n}\nif (!(scene instanceof Window_Selectable)) {\nvar found = Object.entries(scene).reverse().find(([name, value]) => value instanceof Window_Selectable && value.visible);\nscene = found[1];\n}\nif (!scene) return;\nvar index = parseInt('3');\nif (isNaN(index) || index < 0) {\nalert('Invalid index');\n}\nscene._index = parseInt('3');\nscene.processOk();"
+          }
+        ]
+      }
+    ]
+  }
+]

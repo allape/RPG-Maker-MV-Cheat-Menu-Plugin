@@ -1,0 +1,13 @@
+@use "../../../style/flex";
+
+.wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-direction: column;
+  flex: 1;
+
+  .row {
+    @include flex.FillUp;
+  }
+}

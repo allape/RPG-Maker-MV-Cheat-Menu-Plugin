@@ -1,0 +1,58 @@
+@use "../../style/flex";
+
+.wrapper {
+  width: 80px;
+  height: calc(100vh - 2px);
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+
+  &:hover {
+    opacity: 1 !important;
+  }
+
+  .form {
+    text-align: center;
+    padding: 4px 10px;
+    user-select: none;
+    cursor: pointer;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .triggers {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .trigger {
+      padding: 4px;
+      white-space: wrap;
+      word-break: break-word;
+      text-align: center;
+      border: 1px solid white;
+      user-select: none;
+      cursor: pointer;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &:active {
+        opacity: 1;
+      }
+    }
+  }
+}

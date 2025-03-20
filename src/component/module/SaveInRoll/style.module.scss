@@ -1,0 +1,23 @@
+@use "../../../style/flex";
+
+.wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+
+  .row {
+    @include flex.FillUp;
+
+    & {
+      flex: 1;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    input {
+      flex: 1;
+    }
+  }
+}

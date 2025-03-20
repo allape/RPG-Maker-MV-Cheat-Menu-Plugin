@@ -1,0 +1,10 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex: 1;
+
+  input {
+    flex: 1;
+  }
+}
