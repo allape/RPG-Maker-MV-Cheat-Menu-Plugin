@@ -85,7 +85,7 @@ export class Dummy implements IRPGMaker {
   }
 
   getTitle(): string {
-    return window.document.head.title;
+    return document.title;
   }
 
   setup(): void {

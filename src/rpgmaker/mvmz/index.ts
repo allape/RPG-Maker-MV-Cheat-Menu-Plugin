@@ -176,6 +176,7 @@ declare global {
   class Game_Armor extends Game_Item {}
 
   class Data_System {
+    gameTitle: string;
     switches: string[];
     variables: string[];
     terms: {
@@ -469,7 +470,7 @@ export class MVMZ implements IRPGMaker {
   }
 
   getTitle(): string {
-    return $gameSystem.gameTitle;
+    return $dataSystem?.gameTitle;
   }
 
   setup(): void {

@@ -23,15 +23,18 @@ const DefaultConfig: IConfig = {
   },
 };
 
-const ConfigKey = `${__APP_VERSION__}_RPG_MAKER_MV_CHEAT_MENU_PLUGIN_CONFIG_${getRPGMaker().getTitle()}`;
-
 export default function App(): ReactElement {
+  const key = useMemo(
+    () =>
+      `${__APP_VERSION__}_RPG_MAKER_MV_CHEAT_MENU_PLUGIN_CONFIG_${getRPGMaker().getTitle()}`,
+    [],
+  );
   const dc = useMemo(() => clone<IConfig>(DefaultConfig), []);
 
   const configRef = useRef<IConfig>(dc);
 
   const [mode, setMode] = useState<"form" | "menu">("menu");
-  const [config, setConfig] = useStoredState<IConfig>(ConfigKey, dc);
+  const [config, setConfig] = useStoredState<IConfig>(key, dc);
 
   useEffect(() => {
     configRef.current = config;

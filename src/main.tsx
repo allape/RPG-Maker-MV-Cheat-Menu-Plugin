@@ -11,7 +11,21 @@ try {
   console.error(e);
 }
 
-setTimeout(() => {
+let count = 0;
+
+const id = setInterval(() => {
+  if (count++ > 100) {
+    clearInterval(id);
+    alert("Failed to load RPG Maker MV/MZ");
+    return;
+  }
+
+  if (!getRPGMaker().getTitle()) {
+    return;
+  }
+
+  clearInterval(id);
+
   const root = document.createElement("div");
   window.document.body.appendChild(root);
 

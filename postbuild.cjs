@@ -44,9 +44,7 @@ try{
 var module = {};
 ${polyfill.trim()}
 ${indexLegacy.trim()}
-(function(){
-${index.trim()};
-})();
+${index.trim()}
 }catch(e){alert(e.message);}
 `.trim();
 
