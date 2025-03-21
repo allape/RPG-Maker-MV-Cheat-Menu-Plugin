@@ -13,6 +13,9 @@
       }
   </style>
   <script>
+    if (!('module' in window)) {
+      window.module = {};
+    }
     if (window.location.search.includes('mvmz')) {
       window.DataManager = {};
     }
