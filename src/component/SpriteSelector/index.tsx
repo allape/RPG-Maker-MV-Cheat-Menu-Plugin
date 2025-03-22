@@ -24,15 +24,18 @@ export default function SpriteSelector({
       return getRPGMaker().getAliasList();
     }
     return getRPGMaker().getEnemyList();
-  }, []);
+  }, [teamType]);
+
   const label = useMemo(
     () => (teamType === "alias" ? "Aliases" : "Enemies"),
     [teamType],
   );
+
   return (
     <select value={value} onChange={(e) => onChange?.(e.target.value as Value)}>
       {all && <option value="all">All {label}</option>}
       {alive && <option value="alive">Alive {label}</option>}
+      <option value={-1}>-</option>
       {actors.map((a, i) => (
         <option key={i} value={`${a.id}`}>
           {a.name}

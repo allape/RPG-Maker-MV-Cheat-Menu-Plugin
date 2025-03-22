@@ -36,32 +36,41 @@ export default function HMTP({
     useProxy<IValue["customValue"]>(0);
 
   const make = useCallback(() => {
+    const maker = getRPGMaker();
+    const scriptMaker = maker.getScriptGenerator();
+
     let hmtpType: HMTPValue;
     if (valueTypeRef.current === "custom") {
       hmtpType = customValueRef.current;
     } else {
       hmtpType = valueTypeRef.current;
     }
-    let aliveOrActorID: boolean | IActor;
+
+    let aliveOrActorID: boolean | IActor | undefined;
     switch (actorIdRef.current) {
-      case -2:
-        aliveOrActorID = true;
-        break;
-      case -1:
+      case "all":
         aliveOrActorID = false;
         break;
+      case "alive":
+        aliveOrActorID = true;
+        break;
       default:
-        aliveOrActorID = getRPGMaker()
+        aliveOrActorID = maker
           .getAliasList()
-          .find((alias) => alias.id === actorIdRef.current)!;
+          .find((alias) => alias.id === actorIdRef.current);
         if (!aliveOrActorID) {
+          maker.playSound(false);
           return "";
         }
         break;
     }
-    return getRPGMaker()
-      .getScriptGenerator()
-      .setHMTP(teamTypeRef.current, aliveOrActorID, typeRef.current, hmtpType);
+
+    return scriptMaker.setHMTP(
+      teamTypeRef.current,
+      aliveOrActorID,
+      typeRef.current,
+      hmtpType,
+    );
   }, [actorIdRef, customValueRef, teamTypeRef, typeRef, valueTypeRef]);
 
   const run = useCallback(() => {

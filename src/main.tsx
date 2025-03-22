@@ -4,6 +4,8 @@ import "./index.scss";
 import App from "./App.tsx";
 import { getRPGMaker } from "./rpgmaker";
 
+const MaxTryCount = 30;
+
 try {
   const maker = getRPGMaker();
   maker.evaluate(maker.getScriptGenerator().setup());
@@ -14,7 +16,7 @@ try {
 let count = 0;
 
 const id = setInterval(() => {
-  if (count++ > 100) {
+  if (count++ > MaxTryCount) {
     clearInterval(id);
     alert("Failed to load RPG Maker MV/MZ");
     return;
@@ -27,6 +29,7 @@ const id = setInterval(() => {
   clearInterval(id);
 
   const root = document.createElement("div");
+  root.id = "AS_CHEAT_MENU_ROOT";
   window.document.body.appendChild(root);
 
   createRoot(root).render(

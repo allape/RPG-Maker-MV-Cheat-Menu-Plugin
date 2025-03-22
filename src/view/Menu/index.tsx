@@ -42,8 +42,6 @@ export default function Menu({ config, onCancel }: IMenuProps): ReactElement {
     let highlighted: ITrigger["id"][] = [];
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
       clearTimeout(timer);
 
       const triggers = (formulaRef.current?.triggers || []).filter(

@@ -89,8 +89,9 @@ export default function Variable({
 
   const reload = useCallback(() => {
     const maker = getRPGMaker();
-    setSource(maker.getVariableList());
-    setList(maker.getSwitchList().map((i) => `${i.id}: ${i.name}`));
+    const vars = maker.getVariableList();
+    setSource(vars);
+    setList(vars.map((i) => `${i.id}: ${i.name}`));
   }, [setList, setSource]);
 
   const run = useCallback(() => {

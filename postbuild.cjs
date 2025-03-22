@@ -41,9 +41,8 @@ const polyfill = fs.readFileSync(polyfillFileName).toString("utf-8");
 
 const mergedContent = `
 try{
-var module = {};
 ${polyfill.trim()}
-${indexLegacy.trim()}
+var module = {};
 ${index.trim()}
 }catch(e){alert(e.message);}
 `.trim();

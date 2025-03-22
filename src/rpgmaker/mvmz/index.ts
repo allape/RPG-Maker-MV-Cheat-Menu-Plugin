@@ -9,6 +9,7 @@ import type {
   IItem,
   IMap,
   IRPGMaker,
+  IStatus,
   ISwitch,
   ItemType,
   IVariable,
@@ -86,6 +87,7 @@ declare global {
     setTp: (tp: number) => void;
     paySkillCost: (skill: Game_Skill) => void;
     addParam: (statIndex: number, amount: number) => void;
+    addState: (stateId: number) => void;
     currentExp: () => number;
     gainExp: (exp: number) => void;
     clearStates: () => void;
@@ -407,7 +409,7 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
 
     let interceptorScript: Script = "";
     if (typeof aliveOrActor === "boolean") {
-      interceptorScript = `${aliveOrActor ? "" : "if (actor._hp <= 0) continue;"}`;
+      interceptorScript = `${aliveOrActor ? "if (actor._hp <= 0) continue;" : ""}`;
     } else {
       switch (tt) {
         case "alias":
@@ -443,12 +445,60 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
   setVariable(v: IVariable, value: VariableValue): Script {
     // language=JavaScript
     return NewScript(`
-      if (typeof $gameVariables.value(${v.id}) == "string") {
-        $gameVariables.setValue(${v.id}, decodeURIComponent("${encodeURIComponent(value)}"));
+      if (typeof $gameVariables.value(${v.id}) == 'string') {
+        $gameVariables.setValue(${v.id}, decodeURIComponent('${encodeURIComponent(value)}'));
       } else {
         $gameVariables.setValue(${v.id}, ${parseInt(`${value}`, 10) || 0});
       }
       SoundManager.playSystemSound(1);
+    `);
+  }
+
+  gainExp(actorId: IActor["id"], exp: number): Script {
+    // language=JavaScript
+    return NewScript(`
+      var members = $gameParty.allMembers();
+      for (let i = 0; i < members.length; i++) {
+        const m = members[i];
+        if (m._actorId === ${actorId}) {
+          m.gainExp(${exp});
+          break;
+        }
+      }
+    `);
+  }
+
+  gainStatus(
+    actorId: IActor["id"],
+    statusId: IStatus["id"],
+    value: number,
+  ): Script {
+    // language=JavaScript
+    return NewScript(`
+      var members = $gameParty.allMembers();
+      for (let i = 0; i < members.length; i++) {
+        const m = members[i];
+        if (m._actorId === ${actorId}) {
+          if (m._paramPlus[${statusId}]) {
+            m.addParam(${statusId}, ${value});
+          }
+          break;
+        }
+      }
+    `);
+  }
+
+  clearState(actorId: IActor["id"]): Script {
+    // language=JavaScript
+    return NewScript(`
+      var members = $gameParty.allMembers();
+      for (let i = 0; i < members.length; i++) {
+        const m = members[i];
+        if (m._actorId === ${actorId}) {
+          m.clearStates();
+          break;
+        }
+      }
     `);
   }
 }
@@ -587,6 +637,19 @@ export class MVMZ implements IRPGMaker {
       console.log("Error occurred while getting variable list:", e);
       return [];
     }
+  }
+
+  getStatusList(actorId: IActor["id"]): IStatus[] {
+    const actor = $gameActors._data[actorId];
+    if (!actor?._paramPlus.length) {
+      return [];
+    }
+
+    return actor._paramPlus.map((i, index) => ({
+      id: index,
+      name: $dataSystem.terms.params[index],
+      value: i,
+    }));
   }
 
   getScriptGenerator(): ICheatScriptGenerator {

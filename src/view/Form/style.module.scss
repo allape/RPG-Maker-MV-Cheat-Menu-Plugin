@@ -3,7 +3,7 @@
 .wrapper {
   width: 800px;
   border: 1px solid white;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
 
   .buttons {
     @include flex.FillUp;
@@ -127,7 +127,7 @@
   .function {
     border-bottom: 1px solid white;
     padding: 4px 10px;
-    text-align: center;
+    text-align: left;
     opacity: 0.5;
     cursor: not-allowed;
     user-select: none;
@@ -138,6 +138,7 @@
 
       &:hover {
         opacity: 1;
+        background-color: black;
       }
     }
   }

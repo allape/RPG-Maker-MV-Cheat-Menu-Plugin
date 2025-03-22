@@ -7,6 +7,7 @@ import type {
   IItem,
   IMap,
   IRPGMaker,
+  IStatus,
   ISwitch,
   ItemType,
   IVariable,
@@ -70,6 +71,24 @@ export class DummyScriptGenerator implements ICheatScriptGenerator {
 
   setVariable(v: IVariable, value: VariableValue): Script {
     return NewScript(`console.log('called setVariable(${v.id}, ${value})')`);
+  }
+
+  gainExp(actorId: IActor["id"], exp: number): Script {
+    return NewScript(`console.log('called gainExp(${actorId}, ${exp})')`);
+  }
+
+  gainStatus(
+    actorId: IActor["id"],
+    statusId: IStatus["id"],
+    value: number,
+  ): Script {
+    return NewScript(
+      `console.log('called gainState(${actorId}, ${statusId}, ${value})')`,
+    );
+  }
+
+  clearState(actorId: IActor["id"]): Script {
+    return NewScript(`console.log('called clearState(${actorId})')`);
   }
 }
 
@@ -153,5 +172,20 @@ export class Dummy implements IRPGMaker {
 
   getScriptGenerator(): ICheatScriptGenerator {
     return new DummyScriptGenerator();
+  }
+
+  getStatusList(actorId: IActor["id"]): IStatus[] {
+    return [
+      {
+        id: 1,
+        name: `Dummy State1 for ${actorId}`,
+        value: Math.floor(Math.random() * 100),
+      },
+      {
+        id: 2,
+        name: `Dummy State2 for ${actorId}`,
+        value: Math.floor(Math.random() * 100),
+      },
+    ];
   }
 }

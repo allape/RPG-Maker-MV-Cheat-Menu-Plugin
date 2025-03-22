@@ -38,7 +38,6 @@ export default function Gold({
       <input
         type="number"
         step="10000"
-        min={0}
         value={v}
         onChange={(e) => setV(parseInt(e.target.value))}
       />

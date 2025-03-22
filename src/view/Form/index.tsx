@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import Empty from "../../component/Empty";
 import { clone, id, newID } from "../../helper/";
@@ -13,7 +14,7 @@ import { IAction, IConfig, IFormula, ITrigger } from "../../model/config.ts";
 import { getRPGMaker } from "../../rpgmaker";
 import KeyBinder from "./component/KeyBinder";
 import Section from "./component/Section";
-import { Functions, Types } from "./functions.ts";
+import { FunctionKeys, Functions, Types } from "./functions.ts";
 import styles from "./style.module.scss";
 
 export interface IFormProps {
@@ -277,6 +278,8 @@ export default function Form({
     [setConfig],
   );
 
+  const [functionKeyword, setFunctionKeyword] = useState<string>("");
+
   const triggers = formulas.flatMap((formula) => formula.triggers);
   const actions = triggers.flatMap((trigger) => trigger.actions);
 
@@ -416,8 +419,19 @@ export default function Form({
           })}
           {!visibleActions.length && <Empty />}
         </Section>
-        <Section title="Functions">
-          {Object.entries(Functions).map(([name]) => (
+        <Section
+          title={
+            <input
+              type="search"
+              placeholder="Functions"
+              value={functionKeyword}
+              onChange={(e) => setFunctionKeyword(e.target.value)}
+            />
+          }
+        >
+          {FunctionKeys.filter((name) =>
+            name.toLowerCase().includes(functionKeyword),
+          ).map((name) => (
             <div
               key={name}
               className={cls(styles.function, trigger && styles.hasTrigger)}
