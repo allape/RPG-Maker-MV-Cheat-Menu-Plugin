@@ -46,9 +46,9 @@ export default function SaveInRoll({
       onChange?.(
         JSON.stringify({
           // eslint-disable-next-line react-hooks/exhaustive-deps
-          min: maxRef.current,
+          min: minRef.current,
           // eslint-disable-next-line react-hooks/exhaustive-deps
-          max: minRef.current,
+          max: maxRef.current,
         } as IValue),
       );
       onScriptChange?.(make());
