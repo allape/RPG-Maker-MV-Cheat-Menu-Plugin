@@ -460,8 +460,9 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
       var members = $gameParty.allMembers();
       for (let i = 0; i < members.length; i++) {
         const m = members[i];
-        if (m._actorId === ${actorId}) {
+        if (m._actorId == ${actorId}) {
           m.gainExp(${exp});
+          SoundManager.playSystemSound(1);
           break;
         }
       }
@@ -478,9 +479,12 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
       var members = $gameParty.allMembers();
       for (let i = 0; i < members.length; i++) {
         const m = members[i];
-        if (m._actorId === ${actorId}) {
-          if (m._paramPlus[${statusId}]) {
+        if (m._actorId == ${actorId}) {
+          if (m._paramPlus[${statusId}] != undefined) {
             m.addParam(${statusId}, ${value});
+            SoundManager.playSystemSound(1);
+          } else {
+            SoundManager.playSystemSound(2);
           }
           break;
         }
@@ -494,8 +498,9 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
       var members = $gameParty.allMembers();
       for (let i = 0; i < members.length; i++) {
         const m = members[i];
-        if (m._actorId === ${actorId}) {
+        if (m._actorId == ${actorId}) {
           m.clearStates();
+          SoundManager.playSystemSound(1);
           break;
         }
       }
