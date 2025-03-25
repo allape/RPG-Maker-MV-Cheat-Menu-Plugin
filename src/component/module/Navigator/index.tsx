@@ -98,7 +98,7 @@ export default function Navigator({
     <div className={styles.wrapper}>
       <input
         readOnly
-        value={`Current: ${(current?.mapId ? maps[current.mapId]?.name : undefined) || "-"}`}
+        value={`Current: ${current?.mapId || "-"}: ${(current?.mapId ? maps[current.mapId]?.name : undefined) || "-"}`}
       />
       <div className={styles.row}>
         <input readOnly placeholder="X" value={current?.x || "-"} />

@@ -9,5 +9,9 @@
 
   .row {
     @include flex.FillUp;
+
+    & > * {
+      width: 50%;
+    }
   }
 }

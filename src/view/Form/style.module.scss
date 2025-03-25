@@ -22,6 +22,10 @@
     }
   }
 
+  .delete {
+    color: red;
+  }
+
   .formula {
     @include flex.FillUp;
 

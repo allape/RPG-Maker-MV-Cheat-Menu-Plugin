@@ -323,7 +323,12 @@ export default function Form({
                   reload();
                 }}
               />
-              <button onClickCapture={() => removeFormula(f)}>-</button>
+              <button
+                className={styles.delete}
+                onClickCapture={() => removeFormula(f)}
+              >
+                -
+              </button>
             </div>
           ))}
           {!formulas.length && <Empty />}
@@ -373,7 +378,12 @@ export default function Form({
                   ⤒
                 </button>
                 <button onClick={() => handleMoveTrigger(t, -1)}>↑</button>
-                <button onClickCapture={() => handleRemoveTrigger(t)}>-</button>
+                <button
+                  className={styles.delete}
+                  onClickCapture={() => handleRemoveTrigger(t)}
+                >
+                  -
+                </button>
                 <button onClick={() => handleMoveTrigger(t, 1)}>↓</button>
                 <button
                   onClick={() => handleMoveTrigger(t, visibleTriggers.length)}
@@ -399,7 +409,7 @@ export default function Form({
                 <div className={styles.title}>
                   <span>{a.type}</span>
                   <button
-                    className={styles.button}
+                    className={cls(styles.button, styles.delete)}
                     onClickCapture={() => handleRemoveAction(a)}
                   >
                     -
@@ -422,8 +432,9 @@ export default function Form({
         <Section
           title={
             <input
+              style={{ height: "100%", flex: "1" }}
               type="search"
-              placeholder="Functions"
+              placeholder="Functions: Search by Name"
               value={functionKeyword}
               onChange={(e) => setFunctionKeyword(e.target.value)}
             />

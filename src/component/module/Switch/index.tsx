@@ -41,8 +41,8 @@ export default function Switch({
     try {
       const v: IValue = JSON.parse(valueFromProps);
       setIndex((o) => v.index || o);
-      setKeyword((o) => v.keyword || o);
       setValue((o) => v.value || o);
+      setKeyword((o) => v.keyword || o);
     } catch (e) {
       console.error(e);
     }
@@ -55,9 +55,9 @@ export default function Switch({
           // eslint-disable-next-line react-hooks/exhaustive-deps
           index: indexRef.current,
           // eslint-disable-next-line react-hooks/exhaustive-deps
-          keyword: keywordRef.current,
-          // eslint-disable-next-line react-hooks/exhaustive-deps
           value: valueRef.current,
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          keyword: keywordRef.current,
         } as IValue),
       );
       onScriptChange?.(make());

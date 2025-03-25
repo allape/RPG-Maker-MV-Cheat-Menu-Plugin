@@ -22,7 +22,7 @@ export default function MapSelector({
     >
       {maps.map((m) => (
         <option key={m.id} value={m.id}>
-          {m.name}
+          {m.id}: {m.name}
         </option>
       ))}
     </select>

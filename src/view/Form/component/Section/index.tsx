@@ -14,7 +14,7 @@ export default function Section({
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>
-        <span>{title}</span>
+        <div className={styles.text}>{title}</div>
         {action && <div className={styles.action}>{action}</div>}
       </div>
       <div className={styles.slot}>{children}</div>
