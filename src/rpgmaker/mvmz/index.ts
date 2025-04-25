@@ -321,14 +321,23 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
     return NewScript(`
       DataManager._asCheatMenu_saveInRollMin = ${min};
       DataManager._asCheatMenu_saveInRollMax = ${max};
-      if (!('_asCheatMenu_saveInRollCurrent' in DataManager)) {
+      
+      if (
+        !("_asCheatMenu_saveInRollCurrent" in DataManager) 
+        || 
+        isNaN(DataManager._asCheatMenu_saveInRollCurrent)
+      ) {
         DataManager._asCheatMenu_saveInRollCurrent = 0;
       }
-      if (DataManager._asCheatMenu_saveInRollCurrent < DataManager._asCheatMenu_saveInRollMin) {
+
+      if (
+        DataManager._asCheatMenu_saveInRollCurrent < DataManager._asCheatMenu_saveInRollMin
+        || 
+        DataManager._asCheatMenu_saveInRollCurrent > DataManager._asCheatMenu_saveInRollMax
+      ) {
         DataManager._asCheatMenu_saveInRollCurrent = DataManager._asCheatMenu_saveInRollMin;
-      } else if (DataManager._asCheatMenu_saveInRollCurrent > DataManager._asCheatMenu_saveInRollMax) {
-        DataManager._asCheatMenu_saveInRollCurrent = DataManager._asCheatMenu_saveInRollMax;
       }
+      
       DataManager.saveGame(DataManager._asCheatMenu_saveInRollCurrent++);
       SoundManager.playSystemSound(1);
     `);
