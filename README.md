@@ -13,6 +13,10 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
 
 ---
 
+### Previews
+
+[Dummy Playground](https://allape.github.io/RPG-Maker-MV-Cheat-Menu-Plugin/index.html)
+
 ### FAQ
 
 - There is no `www/js/plugins` or `js/plugins` in game folder.
@@ -22,10 +26,6 @@ from) [emerladCoder/RPG-Maker-MV-Cheat-Menu-Plugin](https://github.com/emerladCo
     - Change the line `.\Game.exe` to the executable file of your game.
         - For example: change `.\Game.exe` to `.\Game_en.exe` when game is patched with english translation.
     - Then save it and double click `cm-patch.bat` to patch the game.
-
-### Previews
-
-[Dummy Playground](https://allape.github.io/RPG-Maker-MV-Cheat-Menu-Plugin/index.html)
 
 ### Installation
 
@@ -48,9 +48,3 @@ npm run dev
 # build
 npm run build
 ```
-
-#### Dev FAQ
-
-- By updating to Svelte 5, svelte compiler will use `:where` selector to constraint the style,
-  which will only be available above Chromium 88.
-    - Therefore, [prebuild.cjs](./prebuild.cjs) will change the code of svelte/compiler.
