@@ -28,7 +28,7 @@ export default function HMTP({
     useProxy<IValue["teamType"]>("alias");
   const [actorId, actorIdRef, setActorId] = useProxy<
     IValue["actorId"] | undefined
-  >(undefined);
+  >("all");
   const [type, typeRef, setType] = useProxy<IValue["type"]>("hp");
   const [valueType, valueTypeRef, setValueType] =
     useProxy<IValue["valueType"]>("full");
