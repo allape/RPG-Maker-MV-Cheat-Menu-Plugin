@@ -25,7 +25,13 @@ export default function KeyBinder({
       if (!bindingRef.current) {
         return;
       }
+
       setBinding(false);
+
+      if (e.key === "Escape") {
+        return;
+      }
+
       onChange?.(e.key);
     },
     [bindingRef, onChange, setBinding],
@@ -34,14 +40,14 @@ export default function KeyBinder({
   return (
     <button
       className="wrapper"
-      title={`Keyboard key [${value}]`}
+      title={value ? `Keyboard key [${value}]` : undefined}
       onClick={handleClick}
       onPointerLeave={handleCancel}
       onBlur={handleCancel}
       onKeyUp={handleKeyUp}
     >
       {binding
-        ? "[Esc] to clear, wait..."
+        ? "[Esc] to clear, waiting..."
         : value
           ? `[ ${value} ]`
           : "Click to bind a key"}

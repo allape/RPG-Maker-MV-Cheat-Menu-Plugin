@@ -27,7 +27,7 @@ export default function Item({
   const [type, typeRef, setType] = useProxy<IValue["type"]>("item");
   const [keyword, keywordRef, setKeyword] = useProxy<string>("");
   const [item, itemRef, setItem] = useProxy<IValue["item"]>("");
-  const [amount, amountRef, setAmount] = useProxy<IValue["amount"]>(1);
+  const [amount, amountRef, setAmount] = useProxy<IValue["amount"]>(99);
 
   const [source, sourceRef, setSource] = useProxy<IItem[]>([]);
   const [list, listRef, setList] = useProxy<string[]>([]);

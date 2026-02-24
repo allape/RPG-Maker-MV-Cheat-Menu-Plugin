@@ -3,7 +3,7 @@
     "name": "Fun Gamer",
     "triggers": [
       {
-        "name": "<span style=\"color:white;\">Save<br/> 2-5</span>",
+        "name": "<span style=\"color:white;\">Save<br/> 2-6</span>",
         "hotKey": "`",
         "actions": [
           {
@@ -57,8 +57,8 @@
         "actions": [
           {
             "type": "Gold",
-            "value": "10000",
-            "script": "$gameParty.gainGold(10000);\nSoundManager.playSystemSound(1);"
+            "value": "10000000",
+            "script": "$gameParty.gainGold(10000000);\nSoundManager.playSystemSound(1);"
           }
         ]
       },
@@ -75,7 +75,7 @@
       },
       {
         "name": "Speed<br/>+",
-        "hotKey": "-",
+        "hotKey": "5",
         "actions": [
           {
             "type": "SpeedHack",
@@ -86,7 +86,7 @@
       },
       {
         "name": "Speed<br/>++",
-        "hotKey": "=",
+        "hotKey": "6",
         "actions": [
           {
             "type": "SpeedHack",

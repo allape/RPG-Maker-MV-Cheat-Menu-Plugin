@@ -9,7 +9,7 @@ export default function Gold({
   onChange,
   onScriptChange,
 }: ICheatModuleProps): ReactElement {
-  const [v, vRef, setV] = useProxy<number>(10_000);
+  const [v, vRef, setV] = useProxy<number>(10_000_000);
 
   const make = useCallback(() => {
     return getRPGMaker().getScriptGenerator().gainGold(vRef.current);

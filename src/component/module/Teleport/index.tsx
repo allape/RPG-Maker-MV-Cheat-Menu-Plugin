@@ -1,5 +1,5 @@
 import { useProxy } from "@allape/use-loading";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect } from "react";
 import { getRPGMaker } from "../../../rpgmaker";
 import { IMap } from "../../../rpgmaker/declare";
 import MapSelector from "../../MapSelector";
@@ -12,7 +12,7 @@ interface IValue {
   y: number;
 }
 
-export default function Navigator({
+export default function Teleport({
   value,
   onChange,
   onScriptChange,
@@ -21,7 +21,9 @@ export default function Navigator({
   const [x, xRef, setX] = useProxy<IValue["x"]>(0);
   const [y, yRef, setY] = useProxy<IValue["y"]>(0);
 
-  const [current, setCurrent] = useState<IValue>();
+  const [current, currentRef, setCurrent] = useProxy<IValue | undefined>(
+    undefined,
+  );
 
   const [maps, mapsRef, setMaps] = useProxy<IMap[]>([]);
 
@@ -85,7 +87,17 @@ export default function Navigator({
       x: actor.x,
       y: actor.y,
     });
-  }, []);
+  }, [setCurrent]);
+
+  const handleCopy = useCallback(() => {
+    const currentMap = currentRef.current;
+    if (!currentMap) {
+      return;
+    }
+    setMapId(currentMap.mapId);
+    setX(currentMap.x);
+    setY(currentMap.y);
+  }, [currentRef, setMapId, setX, setY]);
 
   useEffect(() => {
     reload();
@@ -104,6 +116,9 @@ export default function Navigator({
         <input readOnly placeholder="X" value={current?.x || "-"} />
         <input readOnly placeholder="Y" value={current?.y || "-"} />
       </div>
+      <button onClick={handleCopy} className={styles.downButton}>
+        ↓ ↓ ↓
+      </button>
       <MapSelector value={mapId} onChange={setMapId} />
       <div className={styles.row}>
         <input

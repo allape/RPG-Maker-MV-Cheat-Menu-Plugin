@@ -7,7 +7,7 @@ import Exp from "../../component/module/Exp";
 import Gold from "../../component/module/Gold";
 import HMTP from "../../component/module/HMTP";
 import Item from "../../component/module/Item";
-import Navigator from "../../component/module/Navigator";
+import Teleport from "../../component/module/Teleport";
 import OptionSelect from "../../component/module/OptionSelect";
 import Save from "../../component/module/Save";
 import SaveInRoll from "../../component/module/SaveInRoll";
@@ -25,7 +25,7 @@ const functions = {
   Gold,
   "HP | MP | TP": HMTP,
   Item,
-  Navigator,
+  Teleport,
   OptionSelect,
   Save,
   SaveInRoll,
