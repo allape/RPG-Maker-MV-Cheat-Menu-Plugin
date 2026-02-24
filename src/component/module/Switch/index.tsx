@@ -1,5 +1,12 @@
 import { useProxy } from "@allape/use-loading";
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { getRPGMaker } from "../../../rpgmaker";
 import { ISwitch } from "../../../rpgmaker/declare";
 import { ICheatModuleProps } from "../declare";
@@ -98,6 +105,10 @@ export default function Switch({
     reload();
   }, [reload]);
 
+  const currentIndex = useMemo(() => {
+    return [index];
+  }, [index]);
+
   return (
     <div className={styles.wrapper}>
       <input
@@ -106,7 +117,12 @@ export default function Switch({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
-      <select value={index} onChange={(e) => setIndex(e.target.value)}>
+      <select
+        value={currentIndex}
+        onChange={(e) => setIndex(e.target.value)}
+        multiple
+        size={5}
+      >
         <option value="">-</option>
         {renderingList.map((i) => (
           <option key={i} value={i}>

@@ -1,20 +1,15 @@
 @use "../../../style/flex";
 
 .wrapper {
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: stretch;
 
   .row {
-    @include flex.FillUp;
-
-    & {
-      flex: 1;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
+    width: 100px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
     input {
       flex: 1;

@@ -52,7 +52,7 @@
         ]
       },
       {
-        "name": "<span style=\"color:orange;\">Gold</span><br/>10K",
+        "name": "<span style=\"color:orange;\">Gold</span><br/>10M",
         "hotKey": "9",
         "actions": [
           {
@@ -64,7 +64,7 @@
       },
       {
         "name": "Speed<br/>~",
-        "hotKey": "0",
+        "hotKey": "5",
         "actions": [
           {
             "type": "SpeedHack",
@@ -75,7 +75,7 @@
       },
       {
         "name": "Speed<br/>+",
-        "hotKey": "5",
+        "hotKey": "6",
         "actions": [
           {
             "type": "SpeedHack",
@@ -86,7 +86,7 @@
       },
       {
         "name": "Speed<br/>++",
-        "hotKey": "6",
+        "hotKey": "7",
         "actions": [
           {
             "type": "SpeedHack",

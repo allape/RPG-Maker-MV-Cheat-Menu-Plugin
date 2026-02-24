@@ -128,6 +128,10 @@ export default function Item({
     reload();
   }, [reload]);
 
+  const currentItem = useMemo(() => {
+    return [item];
+  }, [item]);
+
   return (
     <div className={styles.wrapper}>
       <select
@@ -144,7 +148,12 @@ export default function Item({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
-      <select value={item} onChange={(e) => setItem(e.target.value)}>
+      <select
+        value={currentItem}
+        onChange={(e) => setItem(e.target.value)}
+        multiple
+        size={5}
+      >
         <option value="">-</option>
         {renderingList.map((i) => (
           <option key={i} value={i}>
@@ -161,7 +170,7 @@ export default function Item({
       <input
         type="number"
         placeholder="Change Amount"
-        step={1}
+        step={10}
         value={amount}
         onChange={(e) => setAmount(+e.target.value)}
       />

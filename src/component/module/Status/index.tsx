@@ -1,5 +1,5 @@
 import { useProxy } from "@allape/use-loading";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { getRPGMaker } from "../../../rpgmaker";
 import { IActor, IStatus } from "../../../rpgmaker/declare";
 import SpriteSelector from "../../SpriteSelector";
@@ -77,6 +77,10 @@ export default function Status({
     };
   }, [actorIdRef, make, onChange, onScriptChange, statIdRef, valueRef]);
 
+  const currentStatId = useMemo(() => {
+    return [`${statId}`];
+  }, [statId]);
+
   return (
     <div className={styles.wrapper}>
       <SpriteSelector
@@ -84,7 +88,12 @@ export default function Status({
         value={actorId}
         onChange={(i) => setActorId(i as number)}
       />
-      <select value={statId} onChange={(e) => setStatId(+e.target.value)}>
+      <select
+        value={currentStatId}
+        onChange={(e) => setStatId(+e.target.value)}
+        multiple
+        size={5}
+      >
         <option value={-1}>-</option>
         {statuses.map((a, i) => (
           <option key={i} value={`${a.id}`}>
