@@ -12,6 +12,7 @@ import Empty from "../../component/Empty";
 import { clone, id, newID } from "../../helper/";
 import { IAction, IConfig, IFormula, ITrigger } from "../../model/config.ts";
 import { getRPGMaker } from "../../rpgmaker";
+import ArrayDifferButton from "./component/ArrayDifferButton";
 import KeyBinder from "./component/KeyBinder";
 import Section from "./component/Section";
 import { FunctionKeys, Functions, Types } from "./functions.ts";
@@ -472,6 +473,7 @@ export default function Form({
             />
           </div>
           <div className={styles.buttons}>
+            <ArrayDifferButton />
             <button onClick={handleImport}>Import</button>
             <button onClick={() => handleOk(true)}>Export</button>
           </div>

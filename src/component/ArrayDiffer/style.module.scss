@@ -1,0 +1,102 @@
+@mixin ColumnFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 500px;
+  border: 1px solid white;
+  opacity: 0.3;
+  display: flex;
+  flex-direction: column;
+  background: black;
+  color: white;
+  z-index: 9998;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .differWrapper {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    overflow-y: scroll;
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      box-sizing: border-box;
+      min-height: 120px;
+      max-height: 120px;
+    }
+
+    .alongWithWrapper {
+      @include ColumnFlex;
+      flex: 1 0 200px;
+
+      .row {
+        justify-content: flex-start;
+      }
+    }
+
+    .resultWrapper {
+      @include ColumnFlex;
+      flex: 1 0 400px;
+
+      .differ {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+      }
+    }
+  }
+
+  .list {
+    flex: 1;
+
+    .row {
+      height: 50px;
+      width: 200px;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid white;
+      border-top: none;
+      user-select: text;
+      padding-left: 5px;
+
+      &.focused {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+
+    button {
+      flex: 1;
+
+      &.reset {
+        color: red;
+      }
+    }
+  }
+}

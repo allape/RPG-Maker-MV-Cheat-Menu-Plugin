@@ -53,7 +53,7 @@
       },
       {
         "name": "<span style=\"color:orange;\">Gold</span><br/>10M",
-        "hotKey": "9",
+        "hotKey": "4",
         "actions": [
           {
             "type": "Gold",
