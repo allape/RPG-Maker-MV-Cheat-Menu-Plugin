@@ -122,6 +122,7 @@ export class Dummy implements IRPGMaker {
   }
 
   evaluate(script: Script): unknown {
+    console.log("Evaluate:", script);
     return new Function(script)();
   }
 

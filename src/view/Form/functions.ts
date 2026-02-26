@@ -13,6 +13,8 @@ import Item from "../../component/module/Item";
 import OptionSelect from "../../component/module/OptionSelect";
 import Save from "../../component/module/Save";
 import SaveInRoll from "../../component/module/SaveInRoll";
+import ItemMenu from "../../component/module/scene/ItemMenu";
+import OpenScene from "../../component/module/scene/OpenScene";
 import Script from "../../component/module/Script";
 import SpeedHack from "../../component/module/SpeedHack";
 import Status from "../../component/module/Status";
@@ -35,6 +37,9 @@ const functions = {
   Save,
   SaveInRoll,
   InfiniteSave,
+
+  ItemMenu,
+  OpenScene,
 
   SpeedHack,
   ChronusTimeHack,
