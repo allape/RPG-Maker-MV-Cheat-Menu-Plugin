@@ -15,7 +15,12 @@ import { getRPGMaker } from "../../rpgmaker";
 import ArrayDifferButton from "./component/ArrayDifferButton";
 import KeyBinder from "./component/KeyBinder";
 import Section from "./component/Section";
-import { FunctionKeys, Functions, Types } from "./functions.ts";
+import {
+  FunctionKeys,
+  Functions,
+  Types,
+  WarningMessages,
+} from "./functions.ts";
 import styles from "./style.module.scss";
 
 export interface IFormProps {
@@ -78,7 +83,7 @@ export default function Form({
         ? newID([clone(preset)])[0]
         : {
             id: id("formula"),
-            name: `New ${formulasRef.current.length}`,
+            name: `F${`${formulasRef.current.length}`.padStart(2, "0")}`,
             triggers: [],
           };
       setFormulas((fs) => [nf, ...fs]);
@@ -193,7 +198,7 @@ export default function Form({
 
     const newTrigger: ITrigger = {
       id: id("trigger"),
-      name: `New ${formulaRef.current?.triggers.length}`,
+      name: `T${`${formulaRef.current?.triggers.length}`.padStart(2, "0")}`,
       actions: [],
     };
 
@@ -296,7 +301,11 @@ export default function Form({
       <div className={styles.sections}>
         <Section
           title="Formulas"
-          action={<button onClick={() => addFormula()}>+</button>}
+          action={
+            <button onClick={() => addFormula()} title="Add a NEW Formula">
+              +
+            </button>
+          }
         >
           {presets?.map((p, pi) => (
             <div
@@ -318,6 +327,7 @@ export default function Form({
             >
               <input
                 type="text"
+                placeholder="Formula Name"
                 value={f.name}
                 onChange={(e) => {
                   f.name = e.target.value;
@@ -327,6 +337,7 @@ export default function Form({
               <button
                 className={styles.delete}
                 onClickCapture={() => removeFormula(f)}
+                title="REMOVE this Formula"
               >
                 -
               </button>
@@ -337,7 +348,11 @@ export default function Form({
         <Section
           title="Triggers"
           action={
-            <button disabled={!formula} onClick={addTrigger}>
+            <button
+              disabled={!formula}
+              onClick={addTrigger}
+              title="Add a NEW Trigger"
+            >
               +
             </button>
           }
@@ -358,6 +373,7 @@ export default function Form({
               <textarea
                 rows={5}
                 value={t.name}
+                placeholder="Trigger Name in HTML"
                 onChange={(e) => {
                   t.name = e.target.value;
                   reload();
@@ -375,19 +391,32 @@ export default function Form({
               <div className={styles.controls}>
                 <button
                   onClick={() => handleMoveTrigger(t, -visibleTriggers.length)}
+                  title="Put this Trigger to TOP"
                 >
                   ⤒
                 </button>
-                <button onClick={() => handleMoveTrigger(t, -1)}>↑</button>
+                <button
+                  onClick={() => handleMoveTrigger(t, -1)}
+                  title="Move this Trigger UP"
+                >
+                  ↑
+                </button>
                 <button
                   className={styles.delete}
                   onClickCapture={() => handleRemoveTrigger(t)}
+                  title="REMOVE this Trigger"
                 >
                   -
                 </button>
-                <button onClick={() => handleMoveTrigger(t, 1)}>↓</button>
+                <button
+                  onClick={() => handleMoveTrigger(t, 1)}
+                  title="Move this Trigger DOWN"
+                >
+                  ↓
+                </button>
                 <button
                   onClick={() => handleMoveTrigger(t, visibleTriggers.length)}
+                  title="Put this Trigger to BOTTOM"
                 >
                   ⤓
                 </button>
@@ -412,6 +441,7 @@ export default function Form({
                   <button
                     className={cls(styles.button, styles.delete)}
                     onClickCapture={() => handleRemoveAction(a)}
+                    title="REMOVE this Action"
                   >
                     -
                   </button>
@@ -443,15 +473,24 @@ export default function Form({
         >
           {FunctionKeys.filter((name) =>
             name.toLowerCase().includes(functionKeyword),
-          ).map((name) => (
-            <div
-              key={name}
-              className={cls(styles.function, trigger && styles.hasTrigger)}
-              onClick={() => addAction(name as Types)}
-            >
-              {name}
-            </div>
-          ))}
+          ).map((name) => {
+            const warningMsg = WarningMessages[name];
+            return (
+              <div
+                key={name}
+                className={cls(
+                  styles.function,
+                  trigger && styles.hasTrigger,
+                  warningMsg && styles.hasWarningMessage,
+                )}
+                onClick={() => addAction(name as Types)}
+                title={warningMsg}
+              >
+                {warningMsg ? "⚠️ " : ""}
+                {name}
+              </div>
+            );
+          })}
         </Section>
       </div>
       <div className={styles.settings}>

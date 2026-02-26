@@ -102,7 +102,11 @@ export default function Menu({ config, onCancel }: IMenuProps): ReactElement {
             data-id={t.id}
             onClick={() => runTrigger(t)}
           >
-            <div dangerouslySetInnerHTML={{ __html: t.name }} />
+            {t.name ? (
+              <div dangerouslySetInnerHTML={{ __html: t.name }} />
+            ) : (
+              "???"
+            )}
             {t.hotKey && <div>[ {t.hotKey} ]</div>}
           </div>
         ))}

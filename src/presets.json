@@ -10,6 +10,11 @@
             "type": "SaveInRoll",
             "value": "{\"min\":2,\"max\":6}",
             "script": "DataManager._asCheatMenu_saveInRollMin = 2;\nDataManager._asCheatMenu_saveInRollMax = 6;\nif (!('_asCheatMenu_saveInRollCurrent' in DataManager)) {\nDataManager._asCheatMenu_saveInRollCurrent = 0;\n}\nif (DataManager._asCheatMenu_saveInRollCurrent < DataManager._asCheatMenu_saveInRollMin) {\nDataManager._asCheatMenu_saveInRollCurrent = DataManager._asCheatMenu_saveInRollMin;\n} else if (DataManager._asCheatMenu_saveInRollCurrent > DataManager._asCheatMenu_saveInRollMax) {\nDataManager._asCheatMenu_saveInRollCurrent = DataManager._asCheatMenu_saveInRollMax;\n}\nDataManager.saveGame(DataManager._asCheatMenu_saveInRollCurrent++);\nSoundManager.playSystemSound(1);"
+          },
+          {
+            "type": "InfiniteSave",
+            "value": "",
+            "script": "DataManager.saveGame(Date.now());\nSoundManager.playSystemSound(1);"
           }
         ]
       },

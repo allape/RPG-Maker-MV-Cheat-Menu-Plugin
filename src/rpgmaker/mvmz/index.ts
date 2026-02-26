@@ -217,6 +217,7 @@ declare global {
 export class MVMZScriptGenerator implements ICheatScriptGenerator {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
+  // noinspection JSUnusedLocalSymbols
   constructor(private readonly maker: IRPGMaker) {}
 
   openDevTools(): Script {
@@ -339,6 +340,14 @@ export class MVMZScriptGenerator implements ICheatScriptGenerator {
       }
       
       DataManager.saveGame(DataManager._asCheatMenu_saveInRollCurrent++);
+      SoundManager.playSystemSound(1);
+    `);
+  }
+
+  saveGameWithTimestampAsName(): Script {
+    // language=JavaScript
+    return NewScript(`
+      DataManager.saveGame(Date.now());
       SoundManager.playSystemSound(1);
     `);
   }

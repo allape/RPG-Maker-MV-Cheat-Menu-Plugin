@@ -3,7 +3,7 @@ import { KeyboardEvent, ReactElement, useCallback } from "react";
 
 export interface IKeyBinderProps {
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value?: string) => void;
 }
 
 export default function KeyBinder({
@@ -29,6 +29,7 @@ export default function KeyBinder({
       setBinding(false);
 
       if (e.key === "Escape") {
+        onChange?.(undefined);
         return;
       }
 
@@ -40,7 +41,7 @@ export default function KeyBinder({
   return (
     <button
       className="wrapper"
-      title={value ? `Keyboard key [${value}]` : undefined}
+      title={`Click to ${value ? "re-bind" : "bind"} a key`}
       onClick={handleClick}
       onPointerLeave={handleCancel}
       onBlur={handleCancel}

@@ -1,0 +1,14 @@
+@use "../../../style/flex";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  text-align: center;
+  padding: 5px 5px 0;
+
+  button {
+    margin-top: 5px;
+  }
+}

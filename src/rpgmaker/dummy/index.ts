@@ -50,6 +50,12 @@ export class DummyScriptGenerator implements ICheatScriptGenerator {
     return NewScript(`console.log('called saveGameInRoll(${min}, ${max})')`);
   }
 
+  saveGameWithTimestampAsName(): Script {
+    return NewScript(
+      `console.log('called saveGameWithTimestampAsName()')`,
+    );
+  }
+
   speedHack(fps: number): Script {
     return NewScript(`console.log('called speedHack(${fps})')`);
   }

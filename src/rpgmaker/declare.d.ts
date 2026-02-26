@@ -94,7 +94,15 @@ export interface ICheatScriptGenerator {
 
   saveGame(index: number): Script;
 
+  /**
+   * Save game from slot {@link min} to slot {@link max}
+   */
   saveGameInRoll(min: number, max: number): Script;
+
+  /**
+   * Use current timestamp as saving index
+   */
+  saveGameWithTimestampAsName(): Script;
 
   speedHack(fps: number): Script;
 
