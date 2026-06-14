@@ -51,9 +51,7 @@ export class DummyScriptGenerator implements ICheatScriptGenerator {
   }
 
   saveGameWithTimestampAsName(): Script {
-    return NewScript(
-      `console.log('called saveGameWithTimestampAsName()')`,
-    );
+    return NewScript(`console.log('called saveGameWithTimestampAsName()')`);
   }
 
   speedHack(fps: number): Script {
@@ -109,8 +107,16 @@ export class Dummy implements IRPGMaker {
     );
   }
 
-  getTitle(): string {
-    return document.title;
+  getTitle(generateIdenticalTitleIfEmpty?: boolean): string {
+    if (document.title) {
+      return document.title;
+    }
+
+    if (generateIdenticalTitleIfEmpty) {
+      return "Dummy Title";
+    }
+
+    return "";
   }
 
   setup(): void {

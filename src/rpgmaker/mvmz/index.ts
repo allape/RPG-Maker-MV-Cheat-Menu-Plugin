@@ -17,9 +17,9 @@ import type {
   TeamType,
   VariableValue,
   X,
-  Y,
-} from '../declare';
-import { NewScript } from '../script';
+  Y
+} from "../declare";
+import { NewScript } from "../script";
 
 declare global {
   const nw: any;
@@ -542,8 +542,23 @@ export class MVMZ implements IRPGMaker {
     ) as string;
   }
 
-  getTitle(): string {
-    return $dataSystem?.gameTitle;
+  getTitle(generateIdenticalTitleIfEmpty?: boolean): string {
+    if ($dataSystem?.gameTitle) {
+      return $dataSystem.gameTitle;
+    }
+
+    if (generateIdenticalTitleIfEmpty) {
+      return (
+        (this.evaluate(
+          // language=JavaScript
+          NewScript(`
+            return process.cwd();
+          `),
+        ) as string) || `${Date.now()}`
+      );
+    }
+
+    return "";
   }
 
   setup(): void {

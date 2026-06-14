@@ -3,6 +3,11 @@ import { createRoot } from "react-dom/client";
 import "./index.scss";
 import App from "./App.tsx";
 import { getRPGMaker } from "./rpgmaker";
+import { IRPGMaker } from "./rpgmaker/declare";
+
+interface ICheatWindow extends Window {
+  __AS_CHEATER__?: IRPGMaker;
+}
 
 const MaxTryCount = 30;
 
@@ -39,4 +44,6 @@ const id = setInterval(() => {
   );
 
   getRPGMaker().playSound(true);
+
+  (window as ICheatWindow).__AS_CHEATER__ = getRPGMaker();
 }, 1000);

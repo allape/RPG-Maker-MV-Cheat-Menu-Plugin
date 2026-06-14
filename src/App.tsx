@@ -26,7 +26,7 @@ const DefaultConfig: IConfig = {
 export default function App(): ReactElement {
   const key = useMemo(
     () =>
-      `${__APP_VERSION__}_RPG_MAKER_MV_CHEAT_MENU_PLUGIN_CONFIG_${getRPGMaker().getTitle()}`,
+      `${__APP_VERSION__}_RPG_MAKER_MV_CHEAT_MENU_PLUGIN_CONFIG_${getRPGMaker().getTitle(true)}`,
     [],
   );
   const dc = useMemo(() => clone<IConfig>(DefaultConfig), []);

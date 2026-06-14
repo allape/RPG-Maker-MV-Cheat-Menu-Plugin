@@ -72,7 +72,11 @@ export interface IRPGMaker {
 
   getVersionString(): string;
 
-  getTitle(): string;
+  /**
+   * The `title` is derived from package.json, which can be empty
+   * @param generateIdenticalTitleIfEmpty
+   */
+  getTitle(generateIdenticalTitleIfEmpty?: boolean): string;
 
   getStatusList(actorId: IActor["id"]): IStatus[];
 
